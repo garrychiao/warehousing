@@ -10,7 +10,8 @@
           採購紀錄 / Purchasing Records
         </div>
         <div class="btn-group btn-group-justified">
-          <a href="/purchase/"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+          <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+          <a href="/purchase/"><button type="button" class="btn btn-primary btn-raised">新增採購 / New Purchase</button></a>
         </div>
       </div>
         <div class="col-sm-10 col-sm-offset-1">
@@ -32,7 +33,25 @@
               <td>{{ $record->count }}</td>
               <td>NT$ {{ $record->amount }}</td>
               <td>
-                <button type="button" target="center" class="btn btn-info btn-sm btn-raised" onclick="window.location.href='{{ URL::route('purchase.show', $record->id) }}'">Details</button>
+                <div class="btn-group">
+                  <button type="button" target="center" class="btn btn-info btn-raised" onclick="window.location.href='{{ URL::route('purchase.show', $record->id) }}'">查看 / Details</button>
+                  <button type="button" class="btn btn-info dropdown-toggle btn-raised" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li align="center">
+                      <button type="button" target="center" class="btn btn-success" onclick="window.location.href='{{ URL::route('purchase.edit', $record->id) }}'">修改 / Modify</button>
+                    </li>
+                    <li align="center">
+                      <form class="form-horizontal" action="{{ url('/purchase/'.$record->id)}}" method="post" role="form">
+                        {!! csrf_field() !!}
+                        <input type="hidden" name="_method" value="delete" />
+                        <input type="submit" class="btn btn-danger" value="刪除 / Delete">
+                      </form>
+                    </li>
+                  </ul>
+                </div>
               </td>
             </tr>
             @endforeach

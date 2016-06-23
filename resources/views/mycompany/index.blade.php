@@ -26,13 +26,13 @@
               </tr>
               <tr>
                 <td>E-Mail</td>
-                <td><input type="text" class="form-control" name="email" value="{{ $show->email }}"></td>
+                <td><input type="email" class="form-control" name="email" value="{{ $show->email }}"></td>
                 <td>統一編號</td>
                 <td><input type="text" class="form-control" name="EIN" value="{{ $show->EIN }}"></td>
               </tr>
               <tr>
-                <td>網站連結</td>
-                <td><input type="text" class="form-control" name="website" value="{{ $show->website }}"></td>
+                <td>負責人</td>
+                <td><input type="text" class="form-control" name="owner" value="{{ $show->owner }}"></td>
                 <td>聯絡人</td>
                 <td><input type="text" class="form-control" name="contact_person" value="{{ $show->contact_person }}"></td>
               </tr>
@@ -49,6 +49,10 @@
                 <td><input type="text" class="form-control" name="address" value="{{ $show->phone_foreign }}"></td>
               </tr>
               <tr>
+                <td>網站連結</td>
+                <td colspan="3"><input type="text" class="form-control" name="website" value="{{ $show->website }}"></td>
+              </tr>
+              <tr>
                 <td>地址</td>
                 <td colspan="3"><input type="text" class="form-control" name="address" value="{{ $show->address }}"></td>
               </tr>
@@ -63,6 +67,7 @@
           @else
           <form class="form-horizontal" action="{{ url('/mycompany/')}}" method="post" role="form">
             {!! csrf_field() !!}
+            <div class="form-group">
             <table class="table table-condensed table-hover table-bordered">
               <tr>
                 <td>公司名稱</td>
@@ -77,8 +82,8 @@
                 <td><input type="text" class="form-control" name="EIN" placeholder="EIN"></td>
               </tr>
               <tr>
-                <td>網站連結</td>
-                <td><input type="text" class="form-control" name="website" placeholder="Web Site"></td>
+                <td>負責人</td>
+                <td><input type="text" class="form-control" name="owner" placeholder="Owner"></td>
                 <td>聯絡人</td>
                 <td><input type="text" class="form-control" name="contact_person" placeholder="Contact Person"></td>
               </tr>
@@ -95,6 +100,10 @@
                 <td><input type="text" class="form-control" name="address" value="Phone For Overseas"></td>
               </tr>
               <tr>
+                <td>網站連結</td>
+                <td colspan="3"><input type="text" class="form-control" name="website" placeholder="Web Site"></td>
+              </tr>
+              <tr>
                 <td>地址</td>
                 <td colspan="3"><input type="text" class="form-control" name="address" placeholder="Address"></td>
               </tr>
@@ -108,6 +117,7 @@
                 <input type="submit" class="btn btn-success btn-raised" value="Submit"/>
               </div>
             </div>
+          </div>
           </form>
           @endif
         </div>

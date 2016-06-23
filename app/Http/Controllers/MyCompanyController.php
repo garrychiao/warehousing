@@ -45,6 +45,7 @@ class MyCompanyController extends Controller
       $customer = MyCompany::create(
       array(
         'name' => $request->name,
+        'owner' => $request->owner,
         'eng_name' => $request->eng_name,
         'EIN' => $request->EIN,
         'contact_person' => $request->contact_person,
@@ -95,6 +96,7 @@ class MyCompanyController extends Controller
 
       $list->update([
               'name' => $request->name,
+              'owner' => $request->owner,
               'eng_name' => $request->eng_name,
               'EIN' => $request->EIN,
               'contact_person' => $request->contact_person,

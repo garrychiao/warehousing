@@ -20,8 +20,13 @@ class InventoryController extends Controller
     {
       $lists = Inventory::orderBy('id', 'asc')->get();
       $show = Inventory::first();
-      $img =  DB::table('image_url')->where('img_resource','=',$show->item_id)->get();
-      return view('/inventory/index')->withLists($lists)->with('show',$show)->with('img',$img);
+      if(isset($show->item_id)){
+        $img =  DB::table('image_url')->where('img_resource','=',$show->item_id)->get();
+        return view('/inventory/index')->withLists($lists)->with('show',$show)->with('img',$img);
+      }else{
+        return view('/inventory/index')->withLists($lists)->with('show',$show);
+
+      }
     }
 
     /**

@@ -24,8 +24,9 @@ class ProformaInvoiceController extends Controller
      public function index()
      {
        $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
-       $customer = Customer::distinct()->select('id','customer_id','company_name','contact_person','phone','recieve_zip_code','recieve_address')->orderBy('id','asc')->get();
-       return view('shippment/proforma/index')->with('inventory',$inventory)->with('customer',$customer);
+       $customer = Customer::distinct()->orderBy('id','asc')->get();
+       $idcount = ProformaInvoice::select('created_at')->whereDate('created_at','=',date("Y-m-d"))->count()+1;
+       return view('shippment/proforma/index')->with('inventory',$inventory)->with('customer',$customer)->with('form_id',$idcount);
      }
 
     /**
@@ -36,7 +37,7 @@ class ProformaInvoiceController extends Controller
     public function create()
     {
       $records = ProformaInvoice::join('customers','customers.id','=','proforma_invoices.customer_id')
-          ->select('proforma_invoices.*','customers.company_name','customers.contact_person')
+          ->select('proforma_invoices.*','customers.chi_name','customers.contact_person')
           ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
           ->orderby('proforma_invoices.id')->get();
       return view('/shippment/proforma/records')->with('records',$records);
@@ -62,6 +63,8 @@ class ProformaInvoiceController extends Controller
             'ship' => $request->ship,
             'via' => $request->via,
             'FOB' => $request->FOB,
+            'sandh' => $request->sandh,
+            'converted' => false,
             'due_date' => $request->due_date
           ));
       $recordID = ProformaInvoice::select('id')->where('order_id','=',$request->order_id)->first();
@@ -78,7 +81,7 @@ class ProformaInvoiceController extends Controller
         ));
       }
 
-      return redirect('/shippment/proforma')->with('message', 'Success!');
+      return redirect('/shippment/proforma/create')->with('message', 'Success!');
     }
 
     /**
@@ -95,11 +98,10 @@ class ProformaInvoiceController extends Controller
         $inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
         ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.descriptions')
         ->where('proforma_invoice_id', $id)->get();
-        $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
-        $SandH = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->where('inventory_id','=','0')->first();
-
+        $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
+        $total = $total_inv + $records->sandh;
         return view('/shippment/proforma/show')->with('records',$records)
-        ->with('total',$total)->with('SandH',$SandH)->with('mycompany_img',$mycompany_img)
+        ->with('total',$total)->with('mycompany_img',$mycompany_img)
         ->with('inventory',$inventory)->with('mycompany',$mycompany);
 
     }
@@ -112,7 +114,17 @@ class ProformaInvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+      $customer = Customer::distinct()->orderBy('id','asc')->get();
+      $records = ProformaInvoice::findOrFail($id);
+      $rec_inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
+      ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name','inventories.descriptions')
+      ->where('proforma_invoice_id', $id)->get();
+      $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
+
+      return view('shippment/proforma/edit')->with('inventory',$inventory)->with('customer',$customer)
+              ->with('records',$records)->with('rec_inventory',$rec_inventory)
+              ->with('total',$total);
     }
 
     /**
@@ -124,7 +136,40 @@ class ProformaInvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+      $proforma_records = ProformaInvoice::find($id);
+
+      $proforma_records->update([
+              'customer_id' => $request->customer_id,
+              'order_id' => $request->order_id,
+              'create_date' => $request->create_date,
+              'bill_to' => $request->bill_to,
+              'ship_to' => $request->ship_to,
+              'POnumber' => $request->POnumber,
+              'payment_terms' => $request->payment_terms,
+              'rep' => $request->rep,
+              'ship' => $request->ship,
+              'via' => $request->via,
+              'FOB' => $request->FOB,
+              'sandh' => $request->sandh,
+              'due_date' => $request->due_date
+      ]);
+      $del_inventory = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id);
+      $del_inventory->delete();
+      //the inventory amount part
+      $length = count($request->item_id);
+      for($i=0 ; $i<$length ; $i++){
+        $PurchaseInventory = ProformaInvoiceInventory::create(array(
+          'proforma_invoice_id' => $id,
+          'inventory_id' => $request->item_id[$i],
+          'quantity' => $request->quantity[$i],
+          'unit_price' => $request->unit_price[$i],
+          'total' => $request->total[$i],
+          'description' => $request->description[$i],
+        ));
+      }
+
+      return redirect('/shippment/proforma/create')->with('message', 'Success!');
     }
 
     /**
@@ -135,6 +180,11 @@ class ProformaInvoiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $del_proforma_records = ProformaInvoice::where('id','=',$id)->delete();
+      $del_inventory_records = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id);
+      $del_inventory_records->delete();
+
+      return redirect('/shippment/proforma/create')->with('message', 'Deleted!');
+
     }
 }

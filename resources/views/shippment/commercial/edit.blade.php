@@ -90,8 +90,7 @@ function changeExporter(name) {
   @empty
     document.getElementById("exporter").value = "";
   @endforelse
-}
-*/
+}*/
 function changeConsignee(name) {
   var value = name.value;
   var index = name.selectedIndex;
@@ -202,8 +201,9 @@ function countTotal(){
           </ul>
         </div>
         @endif
-        <form class="" action="{{ url('/shippment/commercial')}}" method="post" onkeydown="if(event.keyCode==13){return false;}">
+        <form class="" action="{{ url('/shippment/commercial/'.$records->id)}}" method="post" onkeydown="if(event.keyCode==13){return false;}">
           {!! csrf_field() !!}
+          <input type="hidden" name="_method" value="put" />
           <div class="form-group">
             <table class="table table-condensed table-hover table-bordered">
               <tr class="success">
@@ -211,15 +211,8 @@ function countTotal(){
                 <th colspan="2">Create Date</th>
               </tr>
               <tr>
-                <td colspan="2"><input id="form_id" type="text" class="form-control" name="order_id" required></td>
-                <td colspan="2"><input id="create_date" type="date" class="form-control" name="create_date" required></td>
-                <script type="text/javascript">
-                  var now = new Date();
-                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
-                  var timeInMs = Date.now();
-                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                  document.getElementById('create_date').valueAsDate = timeInMs;
-                </script>
+                <td colspan="2"><input id="form_id" type="text" class="form-control" name="order_id" value="{{ $records->order_id }}" required></td>
+                <td colspan="2"><input id="create_date" type="date" class="form-control" name="create_date" value="{{ $records->create_date }}" required></td>
               </tr>
               <tr class="success">
                 <th class="col-sm-2">Date of Export</th>
@@ -228,31 +221,23 @@ function countTotal(){
                 <th class="col-sm-2">Currency</th>
               </tr>
               <tr>
-
-                <td><input type="text" class="form-control" name="reference" value=""></td>
-                <td><input type="text" class="form-control" name="terms_of_sale" value=""></td>
-                <td><input type="text" class="form-control" name="reference" value=""></td>
-                <td><input type="text" class="form-control" name="currency" value=""></td>
+                <td><input type="date" class="form-control" name="export_date" value="{{ $records->export_date}}"></td>
+                <td><input type="text" class="form-control" name="terms_of_sale" value="{{ $records->terms_of_sale }}"></td>
+                <td><input type="text" class="form-control" name="reference" value="{{ $records->reference }}" ></td>
+                <td><input type="text" class="form-control" name="currency" value="{{ $records->currency }}" ></td>
               </tr>
               <tr class="success">
                 <th colspan="2"> Shipper/Exporter :</th>
-                <!--<td>
-                  Took away 6/16 cuz this field is for Own Company, No need to choose
-                  <select id="exporter" class="form-control" onchange="changeExporter(this)">
-                    <option>--Setect--</option>
-                    @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
-                    @empty
-                    <option>No Customer!</option>
-                    @endforelse
-                  </select>
-                </td>-->
-                <th>Consignee :</th>
+                <th>Consignee : </th>
                 <td>
                   <select id="customer_id" name="customer_id" class="form-control" onchange="changeConsignee(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                      @if($lstCustomer->id == $records->customer_id)
+                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                      @else
+                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                      @endif
                     @empty
                     <option>No Customer!</option>
                     @endforelse
@@ -260,11 +245,8 @@ function countTotal(){
                 </td>
               </tr>
               <tr>
-                <td colspan="2">
-                  <textarea type="text" rows="7" class="form-control" name="exporter" id="Exporter">{{ $mycompany->eng_name }}&#10;{{ $mycompany->contact_person }}&#10;{{ $mycompany->phone }}&#10;{{ $mycompany->eng_address }}
-                  </textarea>
-                </td>
-                <td colspan="2"><textarea type="text" rows="7" class="form-control" name="consignee" id="consignee"></textarea></td>
+                <td colspan="2"><textarea type="text" rows="7" class="form-control" name="exporter" id="Exporter">{{$records->exporter}}</textarea></td>
+                <td colspan="2"><textarea type="text" rows="7" class="form-control" name="consignee" id="consignee">{{ $records->consignee}}</textarea></td>
               </tr>
               <tr class="success">
                 <th colspan="2">Country of Ultimate Destination</th>
@@ -273,7 +255,11 @@ function countTotal(){
                   <select id="Notify" class="form-control" onchange="changeNotifyParty(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                      @if($lstCustomer->id == $records->customer_id)
+                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                      @else
+                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                      @endif
                     @empty
                     <option>No Customer!</option>
                     @endforelse
@@ -281,22 +267,23 @@ function countTotal(){
                 </td>
               </tr>
               <tr>
-                <td colspan="2"><input type="text" class="form-control" name="destination_country" value=""></td>
-                <td colspan="2" rowspan="5"><textarea type="text" rows="9" class="form-control" name="notify_party" id="NotifyParty"></textarea></td>
+                <td colspan="2"><input type="text" class="form-control" name="destination_country" value="{{ $records->destination_country}}"></td>
+                <td colspan="2" rowspan="5"><textarea type="text" rows="9" class="form-control" name="notify_party" id="NotifyParty">{{ $records->notify_party}}</textarea></td>
               </tr>
               <tr class="success">
                 <th colspan="2" class="col-sm-2">Country Of Manufacture</th>
               </tr>
               <tr>
-                <td colspan="2"><input type="date" class="form-control" name="manufacture_country" value=""></td>
+                <td colspan="2"><input type="date" class="form-control" name="manufacture_country" value="{{ $records->manufacture_country}}"></td>
               </tr>
               <tr class="success">
                 <th colspan="2" class="col-sm-2">International Airwaybill Number</th>
               </tr>
               <tr>
-                <td colspan="2"><input type="text" class="form-control" name="airwaybill_number" value=""></td>
+                <td colspan="2"><input type="text" class="form-control" name="airwaybill_number" value="{{ $records->airwaybill_number}}"></td>
               </tr>
             </table>
+
             <table class="table table-condensed table-hover table-bordered" id="tblInventory">
               <tr class="success">
                 <th class="col-sm-2">Item Id</th>
@@ -308,43 +295,48 @@ function countTotal(){
                 <th class="col-sm-1">Weight (kg)</th>
                 <th class="col-sm-1">操作</th>
               </tr>
+              @foreach( $rec_inventory as $key => $inv )
               <tr>
                 <td>
                   <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeInventory(this)">
                     @forelse($inventory as $lstInventory)
-                    <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                      @if($lstInventory->id == $inv->inventory_id)
+                        <option selected="selected" value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                      @else
+                        <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                      @endif
                     @empty
-                    <option>Inventory empty!</option>
+                      <option>Inventory empty!</option>
                     @endforelse
-                    <!--<option value="0">S&H</option>-->
                   </select>
                 </td>
                 <td>
-                  @if(count($inventory)>0)
-                  <input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">
+                  <input type="text" class="form-control" name="item_name[]" value="{{ $inv->item_name}}">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="quantity[]" value="{{ $inv->quantity}}" onchange="setUnitPrice(this)">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="unit_price[]" value="{{$inv->unit_price}}" onchange="setTotal(this)">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="total[]" value="{{$inv->total}}" onchange="countTotal()">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="description[]" value="{{$inv->descriptions}}">
+                </td>
+                <td>
+                  <input type="text" class="form-control" name="weight[]" value="{{$inv->weight}}">
+                </td>
+                <td>
+                  @if( $key == 0 )
+                    <input type="button" class="btn btn-info btn-raised" onclick="addRow()" value="新增">
                   @else
-                  <input type="text" class="form-control" name="item_name[]" value="">
+                    <input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">
                   @endif
                 </td>
-                <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>
-                </td>
-                <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>
-                </td>
-                <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" onchange="countTotal()" required>
-                </td>
-                <td>
-                  <input type="text" class="form-control" name="description[]" value="{{$inventory->first()->descriptions}}">
-                </td>
-                <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="" required>
-                </td>
-                <td>
-                  <input type="button" class="btn btn-info btn-sm btn-raised" onclick="addRow()" value="新增">
-                </td>
               </tr>
+              @endforeach
             </table>
             <div class="col-sm-10">
               <table class="table table-condensed table-hover table-bordered">
@@ -356,49 +348,17 @@ function countTotal(){
                   <th class="col-sm-2">Total : $</th>
                 </tr>
                 <tr>
-                  <td><input type="text" class="form-control" id="shipping" name="cost_shipping" onchange="countTotal()" value="0" required></td>
-                  <td><input type="text" class="form-control" id="insurance" name="cost_insurance" onchange="countTotal()" value="0" required></td>
-                  <td><input type="text" class="form-control" id="additional" name="cost_additional" onchange="countTotal()" value="0" required></td>
-                  <td><input type="text" class="form-control" name="packages" value="" required></td>
-                  <td><input type="text" class="form-control" id="FinalTotal" name="final_total" value="0" readonly="true"></td>
+                  <td><input type="text" class="form-control" id="shipping" name="cost_shipping" onchange="countTotal()" value="{{$records->cost_shipping}}"></td>
+                  <td><input type="text" class="form-control" id="insurance" name="cost_insurance" onchange="countTotal()" value="{{$records->cost_insurance}}"></td>
+                  <td><input type="text" class="form-control" id="additional" name="cost_additional" onchange="countTotal()" value="{{$records->cost_additional}}"></td>
+                  <td><input type="text" class="form-control" name="packages" value="{{$records->packages}}"></td>
+                  <td><input type="text" class="form-control" id="FinalTotal" name="final_total" value="{{$records->final_total}}" readonly="true"></td>
                 </tr>
               </table>
             </div>
             <div class="col-sm-2">
               <input type="submit" name="name" value="Submit" class="btn btn-success btn-lg btn-raised">
             </div>
-
-<!--
-          <div class="form-group">
-            <label class="col-sm-2 control-label">產品編號</label>
-            <label class="col-sm-2 control-label">產品名稱</label>
-            <label class="col-sm-2 control-label">訂單數量</label>
-            <label class="col-sm-2 control-label">單價</label>
-            <label class="col-sm-2 control-label">金額</label>
-            <label class="col-sm-2 control-label">操作</label>
-            <div class="col-sm-2" id="div_item_id">
-              <input type="text" class="form-control" name="item_id[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_item_name">
-              <input type="text" class="form-control" name="item_name[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_quantity">
-              <input type="text" class="form-control" name="quantity[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_unit_price">
-              <input type="text" class="form-control" name="unit_price[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_total">
-              <input type="text" class="form-control" name="total[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_remark">
-              <input type="button" class="btn btn-danger btn-raised" disabled="true" value="Del">
-            </div>
-            <div class="col-sm-2">
-              <input type="button" name="btnAddInput" id="btnAddInput" class="btn btn-raised btn-lg" value="+">
-              <input type="button" name="btnDelInput" id="btnDelInput" class="btn btn-raised btn-lg" value="-">
-            </div>
-          </div>-->
         </form>
       </div>
     </div>

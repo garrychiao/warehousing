@@ -16,6 +16,7 @@
               <div class="btn-group btn-group-justified">
                 <a href="/shippment/proforma/create"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
                 <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
+                <a><button type="button" target="center" class="btn btn-primary btn-raised" onclick="window.location.href='{{ URL::route('shippment.proforma.edit', $records->id) }}'">修改 / Modify</button></a>
               </div>
             </div>
 
@@ -49,7 +50,7 @@
               <td colspan="4">{!!nl2br(e($records->ship_to))!!}</td>
             </tr>
             <tr class="success">
-              <th>P.O. Number</th><th>Payment Terms</th><th>Rep</th><th>Ship</th><th>Via</th><th>F.O.B</th><th>Due Date</th>
+              <th>P.O. Number</th><th>Payment Terms</th><th>Rep</th><th>Ship</th><th>Via</th><th>Shipping Term</th><th>Due Date</th>
             </tr>
             <tr>
               <td>{{$records->POnumber}}</td>
@@ -76,9 +77,9 @@
               <tr>
                 <td>1</td>
                 <td>S&H</td>
-                <td colspan="3">{{$SandH->description}}</td>
-                <td>{{$SandH->unit_price}}</td>
-                <td>{{$SandH->total}}</td>
+                <td colspan="3">Shipping and Handling Cost</td>
+                <td>{{$records->sandh}}</td>
+                <td>{{$records->sandh}}</td>
               </tr>
               <tr>
                 <td colspan="5"></td>

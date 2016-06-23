@@ -64,6 +64,7 @@
           @endif
       </div>
       <div class="col-sm-5">
+        @if( count ( $show ) > 0 )
         <div class="col-sm-12">
           <div class="row">
             <div class="col-sm-12">
@@ -109,7 +110,6 @@
             </div>
           </div>
         </div>
-        @if( count ( $show ) > 0 )
         <div class="col-sm-12">
           <form class="form-horizontal" action="{{ url('/inventory/'.$show->id)}}" method="post" role="form">
             {!! csrf_field() !!}
@@ -155,18 +155,18 @@
                   <th colspan="4">產品資訊 (Informations)</th>
                 </tr>
                 <tr>
-                  <th>規格<br> Range1</th><td><input type="text" class="form-control" name="standard" value="{{ $show->standard }}"></td>
-                  <th>條碼<br> Range2</th><td><input type="text" class="form-control" name="barcode" value="{{ $show->barcode }}"></td>
+                  <th>規格<br> Standards</th><td><input type="text" class="form-control" name="standard" value="{{ $show->standard }}"></td>
+                  <th>條碼<br> Barcode</th><td><input type="text" class="form-control" name="barcode" value="{{ $show->barcode }}"></td>
                 </tr>
                 <tr>
-                  <th>單位<br> Range3</th><td><input type="text" class="form-control" name="unit" value="{{ $show->unit }}"></td>
-                  <th>安全庫存<br> Range4</th><td><input type="text" class="form-control" name="safety_inventory" value="{{ $show->safety_inventory }}"></td>
+                  <th>單位<br> Unit</th><td><input type="text" class="form-control" name="unit" value="{{ $show->unit }}"></td>
+                  <th>安全庫存<br> Safety Inventory</th><td><input type="text" class="form-control" name="safety_inventory" value="{{ $show->safety_inventory }}"></td>
                 </tr>
                 <tr>
-                  <th>商品描述<br> Range3</th><td colspan="3"><input type="text" class="form-control" name="descriptions" value="{{ $show->descriptions }}"></td>
+                  <th>商品描述<br> Descriptions</th><td colspan="3"><input type="text" class="form-control" name="descriptions" value="{{ $show->descriptions }}"></td>
                 </tr>
                 <tr>
-                  <th>備註<br> Range4</th><td colspan="3"><input type="text" class="form-control" name="remark" value="{{ $show->remark }}"></td>
+                  <th>備註<br> Remarks</th><td colspan="3"><input type="text" class="form-control" name="remark" value="{{ $show->remark }}"></td>
                 </tr>
               </table>
             </div>

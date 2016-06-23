@@ -24,12 +24,12 @@ class PurchaseRecordRequest extends Request
     public function rules()
     {
       return [
-        'order_id' => 'required|unique:purchase_records',//unique value in the "datatable"
-        'delivery_date' => 'required',
-        'quantity.*' => 'required|numeric|min:0',
-        'unit_price.*' => 'required|numeric|min:0',
-        'total.*' => 'required|numeric|min:0',
-        'purchase_date' => 'required',
+        //'order_id' => 'required|unique:purchase_records',//unique value in the "datatable"
+        //'delivery_date' => 'required',
+        //'quantity.*' => 'required|numeric|min:0',
+        //'unit_price.*' => 'required|numeric|min:0',
+        //'total.*' => 'required|numeric|min:0',
+        //'purchase_date' => 'required',
       ];
     }
 }

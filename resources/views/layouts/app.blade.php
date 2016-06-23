@@ -19,7 +19,29 @@
     <link href="{{asset('css/photoswipe.css')}}" rel="stylesheet">-->
     <!--<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">-->
     <link href="{{asset('css/ripples.min.css')}}" rel="stylesheet">
+    <script type="text/javascript">
+      function modifyImg(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
+            reader.onload = function (e) {
+              $('#modified_img').attr('src', e.target.result);
+              $('#modified_img').attr('width', '200px');
+            }
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+      function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              $('#new_img').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+    </script>
     <style>
         body {
             font-family: 'Lato';
@@ -29,12 +51,30 @@
         }
     </style>
     <style media="print" type="text/css">
-      td {
-        font-size: 2px;
-      }
-      .success {
-        background-color: #000!important;
-      }
+    table, td, th {
+      border: 1px solid black;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th{
+        background-color: #E6E6E6 !important;
+        padding: 2px 2px 2px 2px;
+    }
+    td {
+      height: 0px;
+      vertical-align: bottom;
+      padding: 2px 2px 2px 2px;
+    }
+    p {
+      font-size: 0.1pt;
+      font-family:'Times New Roman',Times,serif;
+    }
+    .label{
+      background-color: #E6E6E6 !important;
+    }
     </style>
 </head>
 <body id="app-layout">
@@ -64,6 +104,8 @@
                       <li><a href="{{ url('/customer') }}">Customer</a></li>
                       <li><a href="{{ url('/inventory') }}">Inventory</a></li>
                       <li><a href="{{ url('/supplier') }}">Supplier</a></li>
+                      <li><a href="{{ url('/purchase/create') }}">Purchase</a></li>
+                      <li><a href="{{ url('/shippment') }}">Shippment</a></li>
                     @endif
                 </ul>
 
@@ -122,28 +164,6 @@
     <script type="text/javascript">
         $.material.init();
     </script>
-    <script type="text/javascript">
-      function modifyImg(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
 
-            reader.onload = function (e) {
-              $('#modified_img').attr('src', e.target.result);
-              $('#modified_img').attr('width', '200px');
-            }
-            reader.readAsDataURL(input.files[0]);
-          }
-        }
-      function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-              $('#new_img').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-          }
-        }
-    </script>
 </body>
 </html>

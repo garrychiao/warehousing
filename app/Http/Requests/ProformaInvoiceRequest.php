@@ -23,14 +23,16 @@ class ProformaInvoiceRequest extends Request
      */
     public function rules()
     {
+
       return [
         'order_id' => 'required|unique:proforma_invoices',//unique value in the "datatable"
-        'create_date' => 'required',
-        'bill_to' => 'required',
-        'quantity.*' => 'required|numeric|min:0',
-        'unit_price.*' => 'required|numeric|min:0',
-        'total.*' => 'required|numeric|min:0',
+        //'create_date' => 'required',
+        //'bill_to' => 'required',
+        //'quantity.*' => 'required|numeric|min:0',
+        //'unit_price.*' => 'required|numeric|min:0',
+        //'total.*' => 'required|numeric|min:0',
       ];
+
     }
 
 }

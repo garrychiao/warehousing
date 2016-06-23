@@ -50,6 +50,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::post('addImage/{resource}/{item}/{item_id}','ImageController@addImage');
 
+    Route::get('convert/{id}','DashBoardController@convert');
+
     Route::get('viewImage/{id}/{item_id}','ImageController@viewImage');
 
     Route::get('deleteImage/{id}/{item_id}','ImageController@deleteImage');

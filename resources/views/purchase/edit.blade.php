@@ -22,10 +22,10 @@ function addRow() {
   selectList.setAttribute("onchange", "changeName(this)");
   cell1.appendChild(selectList);
 
-    @forelse($inventory as $lstInventory)
+    @forelse($select_inventory as $sel_inv)
       var option = document.createElement("option");
-      option.value = "{{$lstInventory->id}}";
-      option.text = "{{$lstInventory->item_id}}";
+      option.value = "{{$sel_inv->id}}";
+      option.text = "{{$sel_inv->item_id}}";
       selectList.appendChild(option);
     @empty
       var option = document.createElement("option");
@@ -39,9 +39,9 @@ function addRow() {
     @else
     cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
     @endif
-  cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setTotal(this)">';
-  cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)">';
-  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="">';
+  cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setTotal(this)" required>';
+  cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
+  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="" required>';
   cell6.innerHTML = '<input type="text" class="form-control" name="remark[]" value="">';
   cell7.innerHTML = '<input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">';
 }
@@ -51,7 +51,7 @@ function delRow(btn) {
 }
 function changeName(name) {
   var value = name.value;
-  @forelse($inventory as $lstInventory)
+  @forelse($select_inventory as $lstInventory)
     if(value =="{{$lstInventory->id}}"){
       var row = name.parentNode.parentNode.cells;
       row[1].children[0].value = "{{ $lstInventory->item_name }}";
@@ -94,31 +94,33 @@ function setTotal(rowid){
           </ul>
         </div>
         @endif
-        <form id="TheForm" action="{{ url('/purchase')}}" method="post" onkeydown="if(event.keyCode==13){return false;}">
+        <form action="{{ url('/purchase/'.$records->id)}}" method="post" onkeydown="if(event.keyCode==13){return false;}">
           {!! csrf_field() !!}
+          <input type="hidden" name="_method" value="put" />
           <div class="form-group">
             <table class="table table-condensed table-hover table-bordered">
               <tr>
-                <td>訂單號碼</td><td><input id="form_id" type="text" class="form-control" name="order_id"></td>
-                <script type="text/javascript">
-                  var now = new Date();
-                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
-                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                </script>
-                <td>交貨日期</td><td><input type="date" class="form-control" name="delivery_date" required></td>
+                <td>訂單號碼</td><td><input type="text" class="form-control" name="order_id" value="{{ $records->order_id }}"></td>
+                <td>交貨日期</td><td><input type="date" class="form-control" name="delivery_date" value="{{ $records->delivery_date }}" required></td>
               </tr>
               <tr>
                 <td>供應廠商</td>
                 <td>
                   <select id="supplier_id" name="supplier_id" class="form-control">
                     @forelse($supplier as $lstSupplier)
-                    <option value="{{ $lstSupplier->id }}">{{{ $lstSupplier->supplier_name }}}</option>
+                      @if( $lstSupplier->id ==  $records->supplier_id){
+                        <option selected="selected" value="{{ $lstSupplier->id }}">{{{ $lstSupplier->supplier_name }}}</option>
+                      }
+                      @else{
+                        <option value="{{ $lstSupplier->id }}">{{{ $lstSupplier->supplier_name }}}</option>
+                      }
+                      @endif
                     @empty
                     <option>Inventory empty!</option>
                     @endforelse
                   </select>
                 </td>
-                <td>付款條件</td><td><input type="text" class="form-control" name="payment_terms"></td>
+                <td>付款條件</td><td><input type="text" class="form-control" name="payment_terms" value="{{ $records->payment_terms }}"></td>
               </tr>
               @if( count($mycompany)>0 )
               <tr>
@@ -141,87 +143,62 @@ function setTotal(rowid){
                 <td class="col-sm-2">備註</td>
                 <td class="col-sm-2">操作</td>
               </tr>
+              @foreach($inventory as $key => $inv)
               <tr>
                 <td>
                   <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeName(this)">
-                    @forelse($inventory as $lstInventory)
-                    <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                    @forelse($select_inventory as $lstInventory)
+                      @if($lstInventory->id == $inv->inventory_id)
+                        <option selected="selected" value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                      @else
+                        <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                      @endif
                     @empty
                     <option>Inventory empty!</option>
                     @endforelse
                   </select>
                 </td>
                 <td>
-                  @if(count($inventory)>0)
-                  <input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">
-                  @else
-                  <input type="text" class="form-control" name="item_name[]" value="">
-                  @endif
+                  <input type="text" class="form-control" name="item_name[]" value="{{$inv->item_name}}">
                 </td>
                 <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setTotal(this)" required>
+                  <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="{{$inv->quantity}}" onchange="setTotal(this)" required>
                 </td>
                 <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>
+                  <input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="{{$inv->unit_price}}" onchange="setTotal(this)" required>
                 </td>
                 <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="" required>
+                  <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="{{$inv->total}}" required>
                 </td>
                 <td>
-                  <input type="text" class="form-control" name="remark[]" value="">
+                  <input type="text" class="form-control" name="remark[]" value="{{$inv->remark}}">
                 </td>
                 <td>
+                @if( $key == 0 )
                   <input type="button" class="btn btn-info btn-raised" onclick="addRow()" value="新增">
+                @else
+                  <input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">
+                @endif
                 </td>
               </tr>
+              @endforeach
             </table>
             <table class="table table-condensed table-hover table-bordered">
               <tr>
-                <td>送貨地點</td><td><input type="text" class="form-control" name="delivery_address"></td>
-                <td>包裝方式</td><td><input type="text" class="form-control" name="packing"></td>
+                <td>送貨地點</td><td><input type="text" class="form-control" name="delivery_address" value="{{ $records->delivery_address }}"></td>
+                <td>包裝方式</td><td><input type="text" class="form-control" name="packing" value="{{ $records->packing }}"></td>
               </tr>
               <tr>
-                <td>出貨樣</td><td><input type="text" class="form-control" name="shipping_sample"></td>
-                <td>注意事項</td><td><input type="text" class="form-control" name="precautions"></td>
+                <td>出貨樣</td><td><input type="text" class="form-control" name="shipping_sample" value="{{ $records->shipping_sample }}"></td>
+                <td>注意事項</td><td><input type="text" class="form-control" name="precautions" value="{{ $records->precautions }}"></td>
               </tr>
               <tr>
-                <td>採購日期</td><td><input type="date" class="form-control" name="purchase_date" required></td>
-                <td>承辦人</td><td><input type="text" class="form-control" name="undertaker"></td>
+                <td>採購日期</td><td><input type="date" class="form-control" name="purchase_date" value="{{ $records->purchase_date }}" required></td>
+                <td>承辦人</td><td><input type="text" class="form-control" name="undertaker" value="{{ $records->undertaker }}"></td>
               </tr>
             </table>
           </div>
-          <input type="submit" value="送出 / Submit" class="btn btn-success btn-raised">
-<!--
-          <div class="form-group">
-            <label class="col-sm-2 control-label">產品編號</label>
-            <label class="col-sm-2 control-label">產品名稱</label>
-            <label class="col-sm-2 control-label">訂單數量</label>
-            <label class="col-sm-2 control-label">單價</label>
-            <label class="col-sm-2 control-label">金額</label>
-            <label class="col-sm-2 control-label">操作</label>
-            <div class="col-sm-2" id="div_item_id">
-              <input type="text" class="form-control" name="item_id[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_item_name">
-              <input type="text" class="form-control" name="item_name[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_quantity">
-              <input type="text" class="form-control" name="quantity[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_unit_price">
-              <input type="text" class="form-control" name="unit_price[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_total">
-              <input type="text" class="form-control" name="total[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_remark">
-              <input type="button" class="btn btn-danger btn-raised" disabled="true" value="Del">
-            </div>
-            <div class="col-sm-2">
-              <input type="button" name="btnAddInput" id="btnAddInput" class="btn btn-raised btn-lg" value="+">
-              <input type="button" name="btnDelInput" id="btnDelInput" class="btn btn-raised btn-lg" value="-">
-            </div>
-          </div>-->
+          <input type="submit" name="name" value="Submit" class="btn btn-success btn-raised">
         </form>
       </div>
     </div>

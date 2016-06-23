@@ -42,7 +42,6 @@ class CustomerController extends Controller
     {
       $customer = Customer::create(
       array('customer_id' => $request->customer_id,
-            'company_name' => $request->company_name,
             'short_name' => $request->short_name,
             'owner' => $request->owner,
             'contact_person' => $request->contact_person,
@@ -58,10 +57,17 @@ class CustomerController extends Controller
             'EIN' => $request->EIN,
             'phone' => $request->phone,
             'cell_phone' => $request->cell_phone,
-            'contact_zip_code' => $request->contact_zip_code,
-            'contact_address' => $request->contact_address,
-            'recieve_zip_code' => $request->recieve_zip_code,
-            'recieve_address' => $request->recieve_address,
+            'consignee_name' => $request->consignee_name,
+            'consignee_contact' => $request->consignee_contact,
+            'consignee_phone' => $request->consignee_phone,
+            'consignee_zip' => $request->consignee_zip,
+            'consignee_address' => $request->consignee_address,
+            'notify_name' => $request->notify_name,
+            'notify_contact' => $request->notify_contact,
+            'notify_phone' => $request->notify_phone,
+            'notify_zip' => $request->notify_zip,
+            'notify_address' => $request->notify_address,
+
           ));
 
       return redirect('/customer');
@@ -121,10 +127,16 @@ class CustomerController extends Controller
                 'EIN' => $request->EIN,
                 'phone' => $request->phone,
                 'cell_phone' => $request->cell_phone,
-                'contact_zip_code' => $request->contact_zip_code,
-                'contact_address' => $request->contact_address,
-                'recieve_zip_code' => $request->recieve_zip_code,
-                'recieve_address' => $request->recieve_address,
+                'consignee_name' => $request->consignee_name,
+                'consignee_contact' => $request->consignee_contact,
+                'consignee_phone' => $request->consignee_phone,
+                'consignee_zip' => $request->consignee_zip,
+                'consignee_address' => $request->consignee_address,
+                'notify_name' => $request->notify_name,
+                'notify_contact' => $request->notify_contact,
+                'notify_phone' => $request->notify_phone,
+                'notify_zip' => $request->notify_zip,
+                'notify_address' => $request->notify_address,
         ]);
         return redirect('customer/'.$id)->with('message', 'Customer updated!');
     }
