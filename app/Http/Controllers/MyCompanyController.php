@@ -12,6 +12,10 @@ use DB;
 
 class MyCompanyController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('emp_rights:administrator');
+  }
     /**
      * Display a listing of the resource.
      *

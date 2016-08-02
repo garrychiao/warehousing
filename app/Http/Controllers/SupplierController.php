@@ -10,6 +10,10 @@ use App\Supplier;
 
 class SupplierController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('emp_rights:supplier');
+  }
     /**
      * Display a listing of the resource.
      *

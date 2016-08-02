@@ -28,7 +28,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/home';
     protected $username = 'name';
     /**
      * Create a new authentication controller instance.
@@ -63,10 +63,38 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+      $count = User::count();
+      if($count == 0){
+        $administrator = true;
+        $inventory = true;
+        $customer = true;
+        $supplier = true;
+        $proforma = true;
+        $commercial = true;
+        $purchase = true;
+        $data_export = true;
+      }else{
+        $administrator = false;
+        $inventory = false;
+        $customer = false;
+        $supplier = false;
+        $proforma = false;
+        $commercial = false;
+        $purchase = false;
+        $data_export = false;
+      }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'administrator' => $administrator,
+            'inventory' => $inventory,
+            'supplier' => $supplier,
+            'customer' => $customer,
+            'proforma' => $proforma,
+            'commercial' => $commercial,
+            'purchase' => $purchase,
+            'data_export' => $data_export,
         ]);
     }
 }

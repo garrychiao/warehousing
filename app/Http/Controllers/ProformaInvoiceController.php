@@ -11,11 +11,17 @@ use App\ProformaInvoiceInventory;
 use App\Inventory;
 use App\Customer;
 use App\MyCompany;
+use App\InventoryKit;
+use App\InventoryKitMember;
 use App\Http\Requests\ProformaInvoiceRequest;
 use DB;
 
 class ProformaInvoiceController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('emp_rights:proforma');
+  }
     /**
      * Display a listing of the resource.
      *
@@ -23,10 +29,12 @@ class ProformaInvoiceController extends Controller
      */
      public function index()
      {
-       $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+       $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+       $inventory_kits = InventoryKit::distinct()->get();
        $customer = Customer::distinct()->orderBy('id','asc')->get();
        $idcount = ProformaInvoice::select('created_at')->whereDate('created_at','=',date("Y-m-d"))->count()+1;
-       return view('shippment/proforma/index')->with('inventory',$inventory)->with('customer',$customer)->with('form_id',$idcount);
+       return view('shippment/proforma/index')->with('inventory',$inventory)->with('inventory_kits',$inventory_kits)
+              ->with('customer',$customer)->with('form_id',$idcount);
      }
 
     /**
@@ -36,9 +44,10 @@ class ProformaInvoiceController extends Controller
      */
     public function create()
     {
-      $records = ProformaInvoice::join('customers','customers.id','=','proforma_invoices.customer_id')
+      $records = ProformaInvoice::leftjoin('customers','customers.id','=','proforma_invoices.customer_id')
           ->select('proforma_invoices.*','customers.chi_name','customers.contact_person')
           ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
+          ->addSelect(DB::raw("(SELECT CASE WHEN due_date >= '".date("Y-m-d")."' THEN false ELSE true END) as overdue"))
           ->orderby('proforma_invoices.id')->get();
       return view('/shippment/proforma/records')->with('records',$records);
     }
@@ -71,14 +80,36 @@ class ProformaInvoiceController extends Controller
       //the inventory amount part
       $length = count($request->item_id);
       for($i=0 ; $i<$length ; $i++){
-        $PurchaseInventory = ProformaInvoiceInventory::create(array(
-          'proforma_invoice_id' => $recordID->id,
-          'inventory_id' => $request->item_id[$i],
-          'quantity' => $request->quantity[$i],
-          'unit_price' => $request->unit_price[$i],
-          'total' => $request->total[$i],
-          'description' => $request->description[$i],
-        ));
+        //$check_is_kit = strstr($request->item_id[$i],'K',true);
+        if(strpos($request->item_id[$i],"K")){
+          $kits_id = strstr($request->item_id[$i],'K',true);
+          $PurchaseInventory = ProformaInvoiceInventory::create(array(
+            'inventory_id' => null,
+            'kits_id'=> $kits_id,
+            'proforma_invoice_id' => $recordID->id,
+            'quantity' => $request->quantity[$i],
+            'unit_price' => $request->unit_price[$i],
+            'total' => $request->total[$i],
+            'weight' => $request->weight[$i],
+            'description' => $request->description[$i],
+          ));
+        }else{
+          $PurchaseInventory = ProformaInvoiceInventory::create(array(
+            'inventory_id' => $request->item_id[$i],
+            'kits_id'=> null,
+            'proforma_invoice_id' => $recordID->id,
+            'quantity' => $request->quantity[$i],
+            'unit_price' => $request->unit_price[$i],
+            'total' => $request->total[$i],
+            'weight' => $request->weight[$i],
+            'description' => $request->description[$i],
+          ));
+        }
+        /*
+        $Inventory = Inventory::find($request->item_id[$i]);
+        //update to preserved quantity
+        $Inventory->preserved_inv += $request->quantity[$i];
+        $Inventory->save();*/
       }
 
       return redirect('/shippment/proforma/create')->with('message', 'Success!');
@@ -92,6 +123,9 @@ class ProformaInvoiceController extends Controller
      */
     public function show($id)
     {
+        $inventory_kits_records = ProformaInvoiceInventory::join('inventory_kits','inventory_kits.id','=','proforma_invoice_inventories.kits_id')
+              ->select('proforma_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id','inventory_kits.kits_description')
+              ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
         $mycompany = MyCompany::firstOrNew(['id' => '1']);
         $mycompany_img = DB::table('image_url')->where('img_resource','=','mycompany')->first();
         $records = ProformaInvoice::findOrFail($id);
@@ -102,6 +136,7 @@ class ProformaInvoiceController extends Controller
         $total = $total_inv + $records->sandh;
         return view('/shippment/proforma/show')->with('records',$records)
         ->with('total',$total)->with('mycompany_img',$mycompany_img)
+        ->with('inventory_kits_records',$inventory_kits_records)
         ->with('inventory',$inventory)->with('mycompany',$mycompany);
 
     }
@@ -114,7 +149,11 @@ class ProformaInvoiceController extends Controller
      */
     public function edit($id)
     {
-      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+      $inventory_kits = InventoryKit::distinct()->get();
+      $inventory_kits_records = ProformaInvoiceInventory::join('inventory_kits','inventory_kits.id','=','proforma_invoice_inventories.kits_id')
+              ->select('proforma_invoice_inventories.*','inventory_kits.kits_name')
+              ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
+      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','unit_weight','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
       $customer = Customer::distinct()->orderBy('id','asc')->get();
       $records = ProformaInvoice::findOrFail($id);
       $rec_inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
@@ -124,6 +163,7 @@ class ProformaInvoiceController extends Controller
 
       return view('shippment/proforma/edit')->with('inventory',$inventory)->with('customer',$customer)
               ->with('records',$records)->with('rec_inventory',$rec_inventory)
+              ->with('inventory_kits',$inventory_kits)->with('inventory_kits_records',$inventory_kits_records)
               ->with('total',$total);
     }
 
@@ -156,8 +196,36 @@ class ProformaInvoiceController extends Controller
       ]);
       $del_inventory = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id);
       $del_inventory->delete();
-      //the inventory amount part
+
       $length = count($request->item_id);
+      for($i=0 ; $i<$length ; $i++){
+        //$check_is_kit = strstr($request->item_id[$i],'K',true);
+        if(strpos($request->item_id[$i],"K")){
+          $kits_id = strstr($request->item_id[$i],'K',true);
+          $PurchaseInventory = ProformaInvoiceInventory::create(array(
+            'inventory_id' => null,
+            'kits_id'=> $kits_id,
+            'proforma_invoice_id' => $id,
+            'quantity' => $request->quantity[$i],
+            'unit_price' => $request->unit_price[$i],
+            'total' => $request->total[$i],
+            'weight' => $request->weight[$i],
+            'description' => $request->description[$i],
+          ));
+        }else{
+          $PurchaseInventory = ProformaInvoiceInventory::create(array(
+            'inventory_id' => $request->item_id[$i],
+            'kits_id'=> null,
+            'proforma_invoice_id' => $id,
+            'quantity' => $request->quantity[$i],
+            'unit_price' => $request->unit_price[$i],
+            'total' => $request->total[$i],
+            'weight' => $request->weight[$i],
+            'description' => $request->description[$i],
+          ));
+        }
+      //the inventory amount part
+      /*$length = count($request->item_id);
       for($i=0 ; $i<$length ; $i++){
         $PurchaseInventory = ProformaInvoiceInventory::create(array(
           'proforma_invoice_id' => $id,
@@ -165,8 +233,14 @@ class ProformaInvoiceController extends Controller
           'quantity' => $request->quantity[$i],
           'unit_price' => $request->unit_price[$i],
           'total' => $request->total[$i],
+          'weight' => $request->weight[$i],
           'description' => $request->description[$i],
-        ));
+        ));*/
+        /*
+        $Inventory = Inventory::find($request->item_id[$i]);
+        //update to preserved quantity
+        $Inventory->preserved_inv = $request->quantity[$i];
+        $Inventory->save();*/
       }
 
       return redirect('/shippment/proforma/create')->with('message', 'Success!');

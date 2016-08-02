@@ -37,8 +37,8 @@
               <td>NT$ {{ number_format($record->final_total,2) }}</td>
               <td>
                 <div class="btn-group">
-                  <button type="button" target="center" class="btn btn-info btn-raised" onclick="window.location.href='{{ URL::route('shippment.commercial.show', $record->id) }}'">內容 / Details</button>
-                  <button type="button" class="btn btn-info dropdown-toggle btn-raised" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('shippment.commercial.show', $record->id) }}'">內容 / Details</button>
+                  <button type="button" class="btn btn-info dropdown-toggle btn-raised btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>

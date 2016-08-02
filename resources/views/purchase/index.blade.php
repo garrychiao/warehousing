@@ -100,11 +100,6 @@ function setTotal(rowid){
             <table class="table table-condensed table-hover table-bordered">
               <tr>
                 <td>訂單號碼</td><td><input id="form_id" type="text" class="form-control" name="order_id"></td>
-                <script type="text/javascript">
-                  var now = new Date();
-                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
-                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                </script>
                 <td>交貨日期</td><td><input type="date" class="form-control" name="delivery_date" required></td>
               </tr>
               <tr>
@@ -185,7 +180,14 @@ function setTotal(rowid){
                 <td>注意事項</td><td><input type="text" class="form-control" name="precautions"></td>
               </tr>
               <tr>
-                <td>採購日期</td><td><input type="date" class="form-control" name="purchase_date" required></td>
+                <td>採購日期</td><td><input type="date" id="date_now" class="form-control" name="purchase_date" required></td>
+                <script type="text/javascript">
+                  var now = new Date();
+                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
+                  var date = now.getFullYear() + "-" + ("0" + now.getMonth()).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
+                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
+                  document.getElementById('date_now').value = date;
+                </script>
                 <td>承辦人</td><td><input type="text" class="form-control" name="undertaker"></td>
               </tr>
             </table>

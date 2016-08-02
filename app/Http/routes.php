@@ -23,22 +23,21 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+
+  Route::get('/', 'DashboardController@welcome');
+
+  Route::auth();
 });
 
-Route::group(['middleware' => 'web'], function () {
-
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
-    Route::auth();
+Route::group(['middleware' => ['web','auth']], function () {
 
     Route::resource('customer', 'CustomerController');
 
     Route::resource('inventory', 'InventoryController');
 
     Route::resource('supplier', 'SupplierController');
+
+    Route::resource('employee', 'EmployeeController');
 
     Route::resource('purchase', 'ManagePurchaseController');
 
@@ -48,9 +47,15 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::resource('shippment/commercial', 'CommercialInvoiceController');
 
+    Route::resource('setKits','setKitsController');
+
     Route::post('addImage/{resource}/{item}/{item_id}','ImageController@addImage');
 
-    Route::get('convert/{id}','DashBoardController@convert');
+    Route::get('information','DashboardController@InformationIndex');
+
+    Route::post('information/{type}','DashboardController@InformationExport');
+
+    Route::get('convert/{id}','DashboardController@convert');
 
     Route::get('viewImage/{id}/{item_id}','ImageController@viewImage');
 
@@ -59,5 +64,6 @@ Route::group(['middleware' => 'web'], function () {
     Route::get('shippment', function () {
         return view('shippment.index');
     });
+
     Route::get('/home', 'HomeController@index');
 });

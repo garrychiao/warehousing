@@ -13,19 +13,14 @@
               {{$records->order_id}}
             </div>
             <div class="btn-group btn-group-justified">
-              <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-              <a href="/shippment/commercial/create"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+              <a href="{{ url('/home') }}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+              <a href="{{ url('/shippment/commercial/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
               <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
             </div>
           </div>
 
           <table class="table table-condensed table-bordered table-hover hidden-print">
             <tr>
-              <!--<td colspan="2" align="center">
-                @if(count($mycompany_img)>0)
-                  <img src="../../{{ $mycompany_img->img_url }}" alt="" width="120px" />
-                @endif
-              </td>-->
               <td colspan="8" class="col-sm-10" align="center">
                 <h2>{{$mycompany->eng_name}}</h2>{{$mycompany->eng_address}}<br>
                 {{$mycompany->email}}<br>Tel. {{$mycompany->phone}} +886{{$mycompany->cell_phone}}
@@ -120,6 +115,18 @@
             <tr class="success">
               <th>Item Code</th><th colspan="3">Description</th><th>Weight (kg)</th><th>Quantity</th><th>Price Each</th><th>Amount</th>
             </tr>
+            @if(count($inventory_kits_records)>0)
+              @foreach($inventory_kits_records as $kit)
+              <tr>
+                <td>{{$kit->item_id}}</td>
+                <td colspan="3">{{$kit->kits_description}}</td>
+                <td>{{number_format($kit->weight,2)}}</td>
+                <td>{{number_format($kit->quantity,0)}}</td>
+                <td>{{number_format($kit->unit_price,2)}}</td>
+                <td align="right">{{number_format($kit->total,2)}}</td>
+              </tr>
+              @endforeach
+            @endif
             @if(count($inventory)>0)
               @foreach($inventory as $inv)
                 <tr>

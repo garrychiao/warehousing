@@ -15,6 +15,7 @@ function addRow() {
   var cell5 = row.insertCell(4);
   var cell6 = row.insertCell(5);
   var cell7 = row.insertCell(6);
+  var cell8 = row.insertCell(7);
   //Create and append select list
   var selectList = document.createElement("select");
   selectList.id = "Select_id";
@@ -22,6 +23,14 @@ function addRow() {
   selectList.className = "form-control";
   selectList.setAttribute("onchange", "changeInventory(this)");
   cell1.appendChild(selectList);
+  @if(count( $inventory_kits )>0)
+    @foreach( $inventory_kits as $kits)
+    var option = document.createElement("option");
+    option.value = "{{$kits->id}}K";
+    option.text = "{{$kits->kits_id}}";
+    selectList.appendChild(option);
+    @endforeach
+  @endif
     @forelse($inventory as $lstInventory)
       var option = document.createElement("option");
       option.value = "{{$lstInventory->id}}";
@@ -34,16 +43,17 @@ function addRow() {
       cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
     @endforelse
     @if(count($inventory)>0)
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">';
-    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="{{$inventory->first()->descriptions}}">';
+    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}" required>';
+    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="{{$inventory->first()->descriptions}}" required>';
     @else
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
+    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="" required>';
     cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="">';
     @endif
-  cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)">';
-  cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)">';
-  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="">';
-  cell7.innerHTML = '<input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">';
+  cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>';
+  cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
+  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="" required>';
+  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
+  cell8.innerHTML = '<input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">';
 }
 function delRow(btn) {
   var row = btn.parentNode.parentNode;
@@ -54,13 +64,14 @@ function delRow(btn) {
 function changeInventory(name) {
   var value = name.value;
   var row = name.parentNode.parentNode.cells;
-  if(value =="0"){
-    row[1].children[0].value = "S&H";
-    row[2].children[0].value = "0";
-    row[3].children[0].value = "0";
-    row[4].children[0].value = "0";
-    row[5].children[0].value = "Shipping and Handling Charge";
-  }
+  @if(count( $inventory_kits )>0)
+    @foreach( $inventory_kits as $kits)
+    if(value =="{{$kits->id}}K"){
+      row[1].children[0].value = "{{ $kits->kits_name }}";
+      row[5].children[0].value = "{{ $kits->kits_description }}";
+    }
+    @endforeach
+  @endif
   @forelse($inventory as $lstInventory)
     if(value =="{{$lstInventory->id}}"){
       row[1].children[0].value = "{{ $lstInventory->item_name }}";
@@ -79,7 +90,7 @@ function changeBillCustomer(name) {
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("BillToInfo").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->contact_person }}";
       document.getElementById("BillToInfo").innerHTML += "\r\n{{ $lstCustomer->phone }}";
-      document.getElementById("BillToInfo").innerHTML +="\r\n{{ $lstCustomer->recieve_zip_code }} {{$lstCustomer->recieve_address}}";
+      document.getElementById("BillToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{$lstCustomer->notify_address}}";
       changeShipCustomer(name);
       document.getElementById('shipTo').selectedIndex=index;
     }
@@ -93,7 +104,7 @@ function changeShipCustomer(name) {
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("ShipToInfo").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->contact_person }}";
       document.getElementById("ShipToInfo").innerHTML += "\r\n{{ $lstCustomer->phone }}";
-      document.getElementById("ShipToInfo").innerHTML +="\r\n{{ $lstCustomer->recieve_zip_code }}{{$lstCustomer->recieve_address}}";
+      document.getElementById("ShipToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }}{{$lstCustomer->notify_address}}";
     }
   @empty
     document.getElementById("ShipToInfo").value = "";
@@ -104,9 +115,36 @@ function setUnitPrice(rowid){
   var item = row[0].children[0].value;
   var Qty = row[2].children[0].value;
   var UnitPrice = row[3].children[0].value;
+  //Qty * Unit Price
   if(isNaN(Qty)){
     return ;
   }else{
+    @if(count( $inventory_kits )>0)
+      @foreach( $inventory_kits as $kits)
+      if(item =="{{$kits->id}}K"){
+        if(Qty <=20){
+          row[3].children[0].value = "{{ $kits->price1 }}";
+        }
+        if(Qty >20 && Qty <= 100){
+          row[3].children[0].value = "{{ $kits->price2 }}";
+        }
+        if(Qty >100 && Qty <= 300){
+          row[3].children[0].value = "{{ $kits->price3 }}";
+        }
+        if(Qty >300 && Qty <= 500){
+          row[3].children[0].value = "{{ $kits->price4 }}";
+        }
+        if(Qty >500 && Qty <= 1000){
+          row[3].children[0].value = "{{ $kits->price5 }}";
+        }
+        if(Qty >1000){
+          row[3].children[0].value = "{{ $kits->price6 }}";
+        }
+        //set total weight
+        row[6].children[0].value = (Qty * {{ $kits->kits_weight }}).toFixed(2);
+      }
+      @endforeach
+    @endif
     @forelse($inventory as $lstInventory)
     if(item =="{{$lstInventory->id}}"){
       if(Qty <=20){
@@ -127,6 +165,8 @@ function setUnitPrice(rowid){
       if(Qty >1000){
         row[3].children[0].value = "{{ $lstInventory->price6 }}";
       }
+      //set total weight
+      row[6].children[0].value = (Qty * "{{ $lstInventory->unit_weight }}").toFixed(2);
     }
     @empty
       row[3].children[0].value = "";
@@ -150,7 +190,7 @@ function setTotal(rowid){
   for (i=1;i<=length;i++) {
       FinalTotal += parseFloat(tblInventory.rows[i].cells[4].children[0].value, 2);
   }
-  document.getElementById("FinalTotal").innerHTML = FinalTotal;
+  document.getElementById("FinalTotal").innerHTML = FinalTotal.toFixed(2);
 }
 </script>
 <div class="container">
@@ -158,10 +198,12 @@ function setTotal(rowid){
       <div class="col-sm-12">
         <div class="alert alert-success" role="alert">
           報價單 / Proforma Invoice
+          <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+          修改 / Modify
         </div>
         <div class="btn-group btn-group-justified">
-          <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-          <a href="/shippment/proforma/create"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+          <a href="{{ url('/home') }}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+          <a href="{{ url('/shippment/proforma/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
         </div>
       </div>
       <!--info needed for purchase sheet-->
@@ -254,12 +296,114 @@ function setTotal(rowid){
                 <td class="col-sm-1">單價</td>
                 <td class="col-sm-1">金額</td>
                 <td class="col-sm-2">內容</td>
+                <td class="col-sm-1">重量</td>
                 <td class="col-sm-1">操作</td>
               </tr>
+              @if(count($inventory_kits_records)>0)
+              <!--kits will be displayed first, then signle invs-->
+                @foreach($inventory_kits_records as $key => $kit)
+                <tr>
+                  <td>
+                    <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeInventory(this)">
+                      @if(count( $inventory_kits )>0)
+                        @foreach( $inventory_kits as $kits)
+                          @if($kits->id == $kit->kits_id)
+                            <option selected="selected" value="{{ $kits->id}}K">{{{ $kits->kits_id }}}</option>
+                          @else
+                            <option value="{{ $kits->id}}K">{{{ $kits->kits_id }}}</option>
+                          @endif
+                        @endforeach
+                      @endif
+                      @forelse($inventory as $lstInventory)
+                        <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                      @empty
+                        <option>Inventory empty!</option>
+                      @endforelse
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="item_name[]" value="{{$kit->kits_name}}">
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="{{$kit->quantity}}" onchange="setUnitPrice(this)" required>
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="{{$kit->unit_price}}" onchange="setTotal(this)" required>
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="{{$kit->total}}" required>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="description[]" value="{{$kit->description}}">
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="{{$kit->weight}}">
+                  </td>
+                  <td>
+                    @if( $key == 0 )
+                      <input type="button" class="btn btn-info btn-raised" onclick="addRow()" value="新增">
+                    @else
+                      <input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">
+                    @endif
+                  </td>
+                </tr>
+                @endforeach
+                <!--single inv parts-->
+                @foreach($rec_inventory as $key => $inv)
+                <tr>
+                  <td>
+                    <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeInventory(this)">
+                      @if(count( $inventory_kits )>0)
+                        @foreach( $inventory_kits as $kits)
+                        <!--Kits return value with final "K"-->
+                        <option value="{{ $kits->id}}K">{{{ $kits->kits_id }}}</option>
+                        @endforeach
+                      @endif
+                      @forelse($inventory as $lstInventory)
+                        @if($lstInventory->id == $inv->inventory_id)
+                          <option selected="selected" value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                        @else
+                          <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
+                        @endif
+                      @empty
+                        <option>Inventory empty!</option>
+                      @endforelse
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="item_name[]" value="{{$inv->item_name}}">
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="{{$inv->quantity}}" onchange="setUnitPrice(this)" required>
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="{{$inv->unit_price}}" onchange="setTotal(this)" required>
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="{{$inv->total}}" required>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" name="description[]" value="{{$inv->description}}">
+                  </td>
+                  <td>
+                    <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="{{$inv->weight}}">
+                  </td>
+                  <td>
+                    <input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">
+                  </td>
+                </tr>
+                @endforeach
+              @else
               @foreach($rec_inventory as $key => $inv)
               <tr>
                 <td>
                   <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeInventory(this)">
+                    @if(count( $inventory_kits )>0)
+                      @foreach( $inventory_kits as $kits)
+                      <!--Kits return value with final "K"-->
+                      <option value="{{ $kits->id}}K">{{{ $kits->kits_id }}}</option>
+                      @endforeach
+                    @endif
                     @forelse($inventory as $lstInventory)
                       @if($lstInventory->id == $inv->inventory_id)
                         <option selected="selected" value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
@@ -269,7 +413,6 @@ function setTotal(rowid){
                     @empty
                       <option>Inventory empty!</option>
                     @endforelse
-                    <option value="0">S&H</option>
                   </select>
                 </td>
                 <td>
@@ -288,6 +431,9 @@ function setTotal(rowid){
                   <input type="text" class="form-control" name="description[]" value="{{$inv->description}}">
                 </td>
                 <td>
+                  <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="{{$inv->weight}}">
+                </td>
+                <td>
                   @if( $key == 0 )
                     <input type="button" class="btn btn-info btn-raised" onclick="addRow()" value="新增">
                   @else
@@ -296,6 +442,7 @@ function setTotal(rowid){
                 </td>
               </tr>
               @endforeach
+              @endif
             </table>
             <div class="col-sm-12">
               <table class="table">

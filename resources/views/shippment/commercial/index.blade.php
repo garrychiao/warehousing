@@ -23,6 +23,14 @@ function addRow() {
   selectList.className = "form-control";
   selectList.setAttribute("onchange", "changeInventory(this)");
   cell1.appendChild(selectList);
+  @if(count( $inventory_kits )>0)
+    @foreach( $inventory_kits as $kits)
+    var option = document.createElement("option");
+    option.value = "{{$kits->id}}K";
+    option.text = "{{$kits->kits_id}}";
+    selectList.appendChild(option);
+    @endforeach
+  @endif
     @forelse($inventory as $lstInventory)
       var option = document.createElement("option");
       option.value = "{{$lstInventory->id}}";
@@ -34,21 +42,17 @@ function addRow() {
       selectList.appendChild(option);
       cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
     @endforelse
-    //var option = document.createElement("option");
-    //option.value = "0";
-    //option.text = "S&H";
-    //selectList.appendChild(option);
     @if(count($inventory)>0)
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">';
-    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="{{$inventory->first()->descriptions}}">';
+    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif" required>';
+    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_description}}@else{{$inventory->first()->description}}@endif">';
     @else
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
+    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="" required>';
     cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="">';
     @endif
   cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>';
   cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
   cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" onchange="countTotal()" required>';
-  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="" required>';
+  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
   cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="Delete">';
 }
 function delRow(btn) {
@@ -59,13 +63,14 @@ function delRow(btn) {
 function changeInventory(name) {
   var value = name.value;
   var row = name.parentNode.parentNode.cells;
-  if(value =="0"){
-    row[1].children[0].value = "S&H";
-    row[2].children[0].value = "0";
-    row[3].children[0].value = "0";
-    row[4].children[0].value = "0";
-    row[5].children[0].value = "Shipping and Handling Charge";
-  }
+  @if(count( $inventory_kits )>0)
+    @foreach( $inventory_kits as $kits)
+    if(value =="{{$kits->id}}K"){
+      row[1].children[0].value = "{{ $kits->kits_name }}";
+      row[5].children[0].value = "{{ $kits->kits_description }}";
+    }
+    @endforeach
+  @endif
   @forelse($inventory as $lstInventory)
     if(value =="{{$lstInventory->id}}"){
       row[1].children[0].value = "{{ $lstInventory->item_name }}";
@@ -128,6 +133,32 @@ function setUnitPrice(rowid){
   if(isNaN(Qty)){
     return ;
   }else{
+    @if(count( $inventory_kits )>0)
+      @foreach( $inventory_kits as $kits)
+      if(item =="{{$kits->id}}K"){
+        if(Qty <=20){
+          row[3].children[0].value = "{{ $kits->price1 }}";
+        }
+        if(Qty >20 && Qty <= 100){
+          row[3].children[0].value = "{{ $kits->price2 }}";
+        }
+        if(Qty >100 && Qty <= 300){
+          row[3].children[0].value = "{{ $kits->price3 }}";
+        }
+        if(Qty >300 && Qty <= 500){
+          row[3].children[0].value = "{{ $kits->price4 }}";
+        }
+        if(Qty >500 && Qty <= 1000){
+          row[3].children[0].value = "{{ $kits->price5 }}";
+        }
+        if(Qty >1000){
+          row[3].children[0].value = "{{ $kits->price6 }}";
+        }
+        //set total weight
+        row[6].children[0].value = (Qty * {{ $kits->kits_weight }}).toFixed(2);
+      }
+      @endforeach
+    @endif
     @forelse($inventory as $lstInventory)
     if(item =="{{$lstInventory->id}}"){
       if(Qty <=20){
@@ -148,6 +179,8 @@ function setUnitPrice(rowid){
       if(Qty >1000){
         row[3].children[0].value = "{{ $lstInventory->price6 }}";
       }
+      //set total weight
+      row[6].children[0].value = (Qty * "{{ $lstInventory->unit_weight }}").toFixed(2);
     }
     @empty
       row[3].children[0].value = "";
@@ -212,13 +245,23 @@ function countTotal(){
               </tr>
               <tr>
                 <td colspan="2"><input id="form_id" type="text" class="form-control" name="order_id" required></td>
-                <td colspan="2"><input id="create_date" type="date" class="form-control" name="create_date" required></td>
+                <td colspan="2"><input id="date_now" type="date" class="form-control" name="create_date" required></td>
+                <!--<script type="text/javascript">
+                  var now = new Date();
+                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
+                  var date = now.getFullYear() + "-" + ("0" + now.getMonth()).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
+                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
+                  document.getElementById('date_now').value = date;
+                  alert(date);
+                </script>-->
                 <script type="text/javascript">
                   var now = new Date();
                   var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
                   var timeInMs = Date.now();
+                  var string = "";
                   document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                  document.getElementById('create_date').valueAsDate = timeInMs;
+                  document.getElementById('date_now').valueAsDate = timeInMs;
+
                 </script>
               </tr>
               <tr class="success">
@@ -229,7 +272,7 @@ function countTotal(){
               </tr>
               <tr>
 
-                <td><input type="text" class="form-control" name="reference" value=""></td>
+                <td><input type="date" class="form-control" name="export_date" value=""></td>
                 <td><input type="text" class="form-control" name="terms_of_sale" value=""></td>
                 <td><input type="text" class="form-control" name="reference" value=""></td>
                 <td><input type="text" class="form-control" name="currency" value=""></td>
@@ -288,7 +331,7 @@ function countTotal(){
                 <th colspan="2" class="col-sm-2">Country Of Manufacture</th>
               </tr>
               <tr>
-                <td colspan="2"><input type="date" class="form-control" name="manufacture_country" value=""></td>
+                <td colspan="2"><input type="text" class="form-control" name="manufacture_country" value=""></td>
               </tr>
               <tr class="success">
                 <th colspan="2" class="col-sm-2">International Airwaybill Number</th>
@@ -311,6 +354,12 @@ function countTotal(){
               <tr>
                 <td>
                   <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeInventory(this)">
+                    @if(count( $inventory_kits )>0)
+                      @foreach( $inventory_kits as $kits)
+                      <!--Kits return value with heading "K"-->
+                      <option value="{{ $kits->id}}K">{{{ $kits->kits_id }}}</option>
+                      @endforeach
+                    @endif
                     @forelse($inventory as $lstInventory)
                     <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
                     @empty
@@ -321,7 +370,7 @@ function countTotal(){
                 </td>
                 <td>
                   @if(count($inventory)>0)
-                  <input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">
+                  <input type="text" class="form-control" name="item_name[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif">
                   @else
                   <input type="text" class="form-control" name="item_name[]" value="">
                   @endif
@@ -336,7 +385,7 @@ function countTotal(){
                   <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" onchange="countTotal()" required>
                 </td>
                 <td>
-                  <input type="text" class="form-control" name="description[]" value="{{$inventory->first()->descriptions}}">
+                  <input type="text" class="form-control" name="description[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_description}}@else{{$inventory->first()->description}}@endif">
                 </td>
                 <td>
                   <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="" required>

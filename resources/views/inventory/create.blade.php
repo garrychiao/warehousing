@@ -9,7 +9,7 @@
       新增 / Add New Inventory
     </div>
     <div class="btn-group btn-group-justified">
-      <a href="/inventory"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+      <a href="{{ url('/inventory')}}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
     </div>
   </div>
 </div>
@@ -101,6 +101,12 @@
       <label class="col-sm-1 control-label">價格區間6</label>
       <div class="col-sm-3">
         <input type="text" class="form-control" name="price6" placeholder="Price6">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label">單位重量</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" name="unit_weight" placeholder="Unit Weight">
       </div>
     </div>
     <input type="hidden" name="inventory" value="0"/>

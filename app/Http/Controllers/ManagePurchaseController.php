@@ -16,6 +16,10 @@ use DB;
 
 class ManagePurchaseController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('emp_rights:purchase');
+  }
     /**
      * Display a listing of the resource.
      *

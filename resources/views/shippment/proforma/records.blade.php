@@ -24,6 +24,7 @@
               <td>聯絡人</td>
               <td>輸出至出貨單</td>
               <td>報價日期</td>
+              <td>到期日</td>
               <td>報價金額</td>
               <td>詳細內容</td>
             </tr>
@@ -40,18 +41,19 @@
                 @endif
               </td>
               <td>{{ $record->create_date }}</td>
+              <td>{{ $record->due_date }}</td>
               <td>NT$ {{ $record->amount }}</td>
               <td>
                 <div class="btn-group">
-                  <button type="button" target="center" class="btn btn-info btn-raised" onclick="window.location.href='{{ URL::route('shippment.proforma.show', $record->id) }}'">內容 / Details</button>
-                  <button type="button" class="btn btn-info dropdown-toggle btn-raised" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('shippment.proforma.show', $record->id) }}'">內容 / Details</button>
+                  <button type="button" class="btn btn-info dropdown-toggle btn-raised btn-sm " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu">
                     <li align="center">
                       <button type="button" target="center" class="btn btn-success" onclick="window.location.href='{{ URL::route('shippment.proforma.edit', $record->id) }}'">修改 / Modify</button>
-                      @if( $record->converted == false)
+                      @if( $record->converted == false && $record->overdue == false)
                         <a type="button" href="{{ url('/convert/'.$record->id)}}" class="btn btn-warning">轉換 / Convert</a>
                       @endif
                     </li>
