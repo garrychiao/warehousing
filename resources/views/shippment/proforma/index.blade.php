@@ -220,13 +220,7 @@ function setTotal(rowid){
               <tr>
                 <td>編號</td><td><input id="form_id" type="text" class="form-control" name="order_id" required></td>
                 <td>日期</td><td><input type="date" id="date_now" class="form-control" name="create_date" value="" required></td>
-                <script type="text/javascript">
-                  var now = new Date();
-                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
-                  var date = now.getFullYear() + "-" + ("0" + now.getMonth()).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
-                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                  document.getElementById('date_now').value = date;
-                </script>
+
               </tr>
               <tr>
                 <td>Bill To:</td>
@@ -274,7 +268,7 @@ function setTotal(rowid){
                 <td><input type="date" class="form-control" name="ship" value="{{Request::old('ship')}}"></td>
                 <td><input type="text" class="form-control" name="via" value="{{Request::old('via')}}"></td>
                 <td><input type="text" class="form-control" name="FOB" value="{{Request::old('FOB')}}"></td>
-                <td><input type="date" class="form-control" name="due_date" value="{{Request::old('due_date')}}"></td>
+                <td><input type="date" class="form-control" id="due_date" name="due_date" value="{{Request::old('due_date')}}"></td>
               </tr>
 
             </table>
@@ -345,7 +339,16 @@ function setTotal(rowid){
             <div class="col-sm-12">
               <input type="submit" name="name" value="Submit" class="btn btn-success btn-raised">
             </div>
-
+            <script type="text/javascript">
+              var now = new Date();
+              var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
+              var date = now.getFullYear() + "-" + ("0" + now.getMonth()).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
+              var due_date = new Date();
+              due_date.setDate(now.getDate() + 7);
+              document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
+              document.getElementById('date_now').value = date;
+              document.getElementById('due_date').valueAsDate = due_date;
+            </script>
 <!--
           <div class="form-group">
             <label class="col-sm-2 control-label">產品編號</label>
