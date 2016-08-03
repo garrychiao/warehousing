@@ -73,9 +73,10 @@ class DashboardController extends Controller
           # code...
           break;
       }
+      $mycompany = MyCompany::firstOrNew(['id' => '1']);
 
       return view('information/show')
-        ->with('type',$type)->with('information',$information);
+        ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
     }
 
 }

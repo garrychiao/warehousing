@@ -246,22 +246,13 @@ function countTotal(){
               <tr>
                 <td colspan="2"><input id="form_id" type="text" class="form-control" name="order_id" required></td>
                 <td colspan="2"><input id="date_now" type="date" class="form-control" name="create_date" required></td>
-                <!--<script type="text/javascript">
-                  var now = new Date();
-                  var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
-                  var date = now.getFullYear() + "-" + ("0" + now.getMonth()).slice(-2) + "-" + ("0" + now.getDate()).slice(-2);
-                  document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                  document.getElementById('date_now').value = date;
-                  alert(date);
-                </script>-->
                 <script type="text/javascript">
                   var now = new Date();
                   var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
-                  var timeInMs = Date.now();
-                  var string = "";
+                  var date = new Date();
+                  date.setHours(now.getDate() + 8 );
                   document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
-                  document.getElementById('date_now').valueAsDate = timeInMs;
-
+                  document.getElementById('date_now').valueAsDate = date;
                 </script>
               </tr>
               <tr class="success">

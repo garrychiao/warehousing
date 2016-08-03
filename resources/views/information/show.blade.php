@@ -15,7 +15,28 @@
           <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
         </div>
         <div class="col-sm-12">
-          <h2>{{ ucfirst($type) }} Informations</h2>
+          <table class="table table-condensed table-bordered">
+            <tr>
+              <td colspan="2" align="center">
+                <h2>{{$mycompany->eng_name}}</h2>
+              </td>
+            </tr>
+            <tr align="center">
+              <td>
+                @if($type == "customer")
+                <h4>Customer Informations</h4>
+                @elseif($type == "inventory")
+                <h4>Product Informations</h4>
+                @elseif($type == "supplier")
+                <h4>Supplier Informations</h4>
+                @endif
+              </td>
+              <td>
+                {{$mycompany->eng_address}}
+                {{$mycompany->email}}<br>Tel. +886{{$mycompany->phone}} +886{{$mycompany->cell_phone}}
+              </td>
+            </tr>
+          </table>
           <table class="table table-condensed table-bordered table-hover">
           @if( $type == "customer")
             <tr>
