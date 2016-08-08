@@ -6,6 +6,13 @@
     var respond = document.getElementById("respond_person").value;
     document.getElementById("contact_person").value = respond;
   }
+  function copy_shipping_info(){
+    document.getElementById("consignee_name").value = document.getElementById("notify_name").value;
+    document.getElementById("consignee_contact").value = document.getElementById("notify_contact").value;
+    document.getElementById("consignee_phone").value = document.getElementById("notify_phone").value;
+    document.getElementById("consignee_zip").value = document.getElementById("notify_zip").value;
+    document.getElementById("consignee_address").value = document.getElementById("notify_address").value;
+  }
 </script>
 <div class="container">
     <div class="row">
@@ -161,47 +168,52 @@
                     <table class="table table-condensed table-bordered table-hover">
                       <tr class="info">
                         <th colspan="8">
-                          Consignee Info
-                        </th>
-                      </tr>
-                      <tr>
-                        <td>公司名稱</td><td><input type="text" class="form-control" name="consignee_name" value="{{ $show->consignee_name }}"></td>
-                      </tr>
-                      <tr>
-                        <td>聯絡人</td><td><input type="text" class="form-control" name="consignee_contact" value="{{ $show->consignee_contact }}"></td>
-                      </tr>
-                      <tr>
-                        <td>電話</td><td><input type="text" class="form-control" name="consignee_phone" value="{{ $show->consignee_phone }}"></td>
-                      </tr>
-                      <tr>
-                        <td>地址</td>
-                        <!--<td><input type="text" class="form-control" name="consignee_address" ss"></td>-->
-                        <td>
-                          <input type="text" class="form-control" name="consignee_zip" value="{{ $show->consignee_zip }}">
-                          <textarea name="consignee_address" type="text" rows="5" class="form-control">{{ $show->consignee_address }}</textarea>
-                        </td>
-                      </tr>
-                      <tr class="info">
-                        <th colspan="8">
                           Notify Party Info
                         </th>
                       </tr>
                       <tr>
-                        <td>公司名稱</td><td><input type="text" class="form-control" name="notify_name" value="{{ $show->notify_name }}"></td>
+                        <td>公司名稱</td><td><input type="text" id="notify_name" class="form-control" name="notify_name" value="{{ $show->notify_name }}"></td>
                       </tr>
                       <tr>
-                        <td>聯絡人</td><td><input type="text" class="form-control" name="notify_contact" value="{{ $show->notify_contact }}"></td>
+                        <td>聯絡人</td><td><input type="text" id="notify_contact" class="form-control" name="notify_contact" value="{{ $show->notify_contact }}"></td>
                       </tr>
                       <tr>
-                        <td>電話</td><td><input type="text" class="form-control" name="notify_phone" value="{{ $show->notify_phone }}"></td>
+                        <td>電話</td><td><input type="text" id="notify_phone" class="form-control" name="notify_phone" value="{{ $show->notify_phone }}"></td>
                       </tr>
                       <tr>
                         <td>
                           地址
                         </td>
                         <td>
-                          <input type="text" class="form-control" name="notify_zip" value="{{ $show->notify_zip }}">
-                          <textarea name="notify_address" type="text" rows="5" class="form-control">{{ $show->notify_address }}</textarea>
+                          <input type="text" id="notify_zip" class="form-control" name="notify_zip" value="{{ $show->notify_zip }}">
+                          <textarea name="notify_address" id="notify_address" type="text" rows="5" class="form-control">{{ $show->notify_address }}</textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="8">
+                          <button type="button" class="btn btn-block btn-warning btn-raised" onclick="copy_shipping_info();">Copy</button>
+                        </td>
+                      </tr>
+                      <tr class="info">
+                        <th colspan="8">
+                          Consignee Info
+                        </th>
+                      </tr>
+                      <tr>
+                        <td>公司名稱</td><td><input type="text" id="consignee_name" class="form-control" name="consignee_name" value="{{ $show->consignee_name }}"></td>
+                      </tr>
+                      <tr>
+                        <td>聯絡人</td><td><input type="text" id="consignee_contact" class="form-control" name="consignee_contact" value="{{ $show->consignee_contact }}"></td>
+                      </tr>
+                      <tr>
+                        <td>電話</td><td><input type="text" id="consignee_phone" class="form-control" name="consignee_phone" value="{{ $show->consignee_phone }}"></td>
+                      </tr>
+                      <tr>
+                        <td>地址</td>
+                        <!--<td><input type="text" class="form-control" name="consignee_address" ss"></td>-->
+                        <td>
+                          <input type="text" class="form-control" id="consignee_zip" name="consignee_zip" value="{{ $show->consignee_zip }}">
+                          <textarea name="consignee_address" id="consignee_address" type="text" rows="5" class="form-control">{{ $show->consignee_address }}</textarea>
                         </td>
                       </tr>
                     </table>

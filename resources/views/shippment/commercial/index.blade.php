@@ -4,6 +4,7 @@
 @section('content')
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
+/*
 function addRow() {
   var table = document.getElementById("tblInventory");
   var num = document.getElementById("tblInventory").rows.length;
@@ -54,6 +55,83 @@ function addRow() {
   cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" onchange="countTotal()" required>';
   cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
   cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="Delete">';
+}*/
+function addRow() {
+  var table = document.getElementById("tblInventory");
+  var num = document.getElementById("tblInventory").rows.length;
+  var row = table.insertRow(num);
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  var cell3 = row.insertCell(2);
+  var cell4 = row.insertCell(3);
+  var cell5 = row.insertCell(4);
+  var cell6 = row.insertCell(5);
+  var cell7 = row.insertCell(6);
+  var cell8 = row.insertCell(7);
+  //Create and append select list
+  //cell1
+  var selectList = document.createElement("select");
+  selectList.id = "Select_id";
+  selectList.name = "item_id[]";
+  selectList.className = "form-control";
+  selectList.setAttribute("onchange", "changeInventory(this)");
+  cell1.appendChild(selectList);
+  @if(count( $inventory_kits )>0)
+    @foreach( $inventory_kits as $kits)
+    var option = document.createElement("option");
+    option.value = "{{$kits->id}}K";
+    option.text = "{{$kits->kits_id}}";
+    selectList.appendChild(option);
+    @endforeach
+  @endif
+  @forelse($inventory as $lstInventory)
+    var option = document.createElement("option");
+    option.value = "{{$lstInventory->id}}";
+    option.text = "{{$lstInventory->item_id}}";
+    selectList.appendChild(option);
+  @empty
+    var option = document.createElement("option");
+    option.text = "No Inventory";
+    selectList.appendChild(option);
+    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
+  @endforelse
+  //cell2
+  var selectList_cell2 = document.createElement("select");
+  selectList_cell2.name = "item_name[]";
+  selectList_cell2.className = "form-control";
+  selectList_cell2.setAttribute("onchange", "changeByName(this)");
+  cell2.appendChild(selectList_cell2);
+  @if(count( $inventory_kits )>0)
+    @foreach( $inventory_kits as $kits)
+    var option = document.createElement("option");
+    option.value = "{{$kits->kits_name}}";
+    option.text = "{{$kits->kits_name}}";
+    selectList_cell2.appendChild(option);
+    @endforeach
+  @endif
+  @forelse($inventory as $lstInventory)
+    var option = document.createElement("option");
+    option.value = "{{$lstInventory->item_name}}";
+    option.text = "{{$lstInventory->item_name}}";
+    selectList_cell2.appendChild(option);
+  @empty
+    var option = document.createElement("option");
+    option.text = "No Inventory";
+    selectList_cell2.appendChild(option);
+  @endforelse
+  //other cells
+    @if(count($inventory)>0)
+    //cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif" required>';
+    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_description}}@else{{$inventory->first()->description}}@endif">';
+    @else
+    //cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="" required>';
+    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="">';
+    @endif
+  cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>';
+  cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
+  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" required>';
+  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
+  cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="Delete">';
 }
 function delRow(btn) {
   var row = btn.parentNode.parentNode;
@@ -80,6 +158,13 @@ function changeInventory(name) {
     row[1].children[0].text = " ";
   @endforelse
   setUnitPrice(name);
+}
+function changeByName(name) {
+  var index = name.selectedIndex;
+  var row = name.parentNode.parentNode.cells;
+  row[0].children[0].selectedIndex = index;
+  var item_id = row[0].children[0];
+  changeInventory(item_id);
 }
 /*
 function changeExporter(name) {
@@ -360,11 +445,25 @@ function countTotal(){
                   </select>
                 </td>
                 <td>
+                  <select name="item_name[]" class="form-control" onchange="changeByName(this)">
+                    @if(count( $inventory_kits )>0)
+                      @foreach( $inventory_kits as $kits)
+                      <!--Kits return value with heading "K"-->
+                      <option value="{{ $kits->kits_name}}">{{{ $kits->kits_name }}}</option>
+                      @endforeach
+                    @endif
+                    @forelse($inventory as $lstInventory)
+                    <option value="{{ $lstInventory->item_name}}">{{{ $lstInventory->item_name }}}</option>
+                    @empty
+                    <option>Inventory empty!</option>
+                    @endforelse
+                  </select>
+                  <!--
                   @if(count($inventory)>0)
                   <input type="text" class="form-control" name="item_name[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif">
                   @else
                   <input type="text" class="form-control" name="item_name[]" value="">
-                  @endif
+                  @endif-->
                 </td>
                 <td>
                   <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>
@@ -399,7 +498,7 @@ function countTotal(){
                   <td><input type="text" class="form-control" id="shipping" name="cost_shipping" onchange="countTotal()" value="0" required></td>
                   <td><input type="text" class="form-control" id="insurance" name="cost_insurance" onchange="countTotal()" value="0" required></td>
                   <td><input type="text" class="form-control" id="additional" name="cost_additional" onchange="countTotal()" value="0" required></td>
-                  <td><input type="text" class="form-control" name="packages" value="" required></td>
+                  <td><input type="text" class="form-control" name="packages" value="1" required></td>
                   <td><input type="text" class="form-control" id="FinalTotal" name="final_total" value="0" readonly="true"></td>
                 </tr>
               </table>

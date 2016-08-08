@@ -79,6 +79,7 @@ class ProformaInvoiceController extends Controller
       $recordID = ProformaInvoice::select('id')->where('order_id','=',$request->order_id)->first();
       //the inventory amount part
       $length = count($request->item_id);
+      echo $length;
       for($i=0 ; $i<$length ; $i++){
         //$check_is_kit = strstr($request->item_id[$i],'K',true);
         if(strpos($request->item_id[$i],"K")){
