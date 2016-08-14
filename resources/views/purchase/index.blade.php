@@ -19,7 +19,7 @@ function addRow() {
   selectList.id = "Select_id";
   selectList.name = "item_id[]";
   selectList.className = "form-control";
-  selectList.setAttribute("onchange", "changeName(this)");
+  selectList.setAttribute("onchange", "changeById(this)");
   cell1.appendChild(selectList);
 
     @forelse($inventory as $lstInventory)
@@ -31,25 +31,26 @@ function addRow() {
       var option = document.createElement("option");
       option.text = "No Inventory";
       selectList.appendChild(option);
-      cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
+      cell2.innerHTML = '<input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);">';
     @endforelse
 
     @if(count($inventory)>0)
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">';
+    cell2.innerHTML = '<input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);">';
     @else
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
+    cell2.innerHTML = '<input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);">';
     @endif
   cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setTotal(this)">';
   cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)">';
   cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="">';
   cell6.innerHTML = '<input type="text" class="form-control" name="remark[]" value="">';
   cell7.innerHTML = '<input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">';
+  resetTypeahead();
 }
 function delRow(btn) {
   var row = btn.parentNode.parentNode;
   row.parentNode.removeChild(row);
 }
-function changeName(name) {
+function changeById(name) {
   var value = name.value;
   @forelse($inventory as $lstInventory)
     if(value =="{{$lstInventory->id}}"){
@@ -60,6 +61,25 @@ function changeName(name) {
     var row = name.parentNode.parentNode.cells;
     row[1].children[0].text = " ";
   @endforelse
+}
+function changeByName(name){
+  var value = name.value;
+  var row = name.parentNode.parentNode.cells;
+  var selItemId = row[0].children[0];
+  switch(value) {
+    @forelse($inventory as $lstInventory)
+    case "{{ $lstInventory->item_name}}":
+      for (i = 0; i < selItemId.length; i++) {
+        if(selItemId.options[i].value == "{{ $lstInventory->id}}"){
+          row[0].children[0].selectedIndex = i;
+         }
+      }
+      break;
+    @empty
+
+    @endforelse
+      default:
+    }
 }
 function setTotal(rowid){
   var row = rowid.parentNode.parentNode.cells;
@@ -138,7 +158,7 @@ function setTotal(rowid){
               </tr>
               <tr>
                 <td>
-                  <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeName(this)">
+                  <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeById(this)">
                     @forelse($inventory as $lstInventory)
                     <option value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
                     @empty
@@ -148,9 +168,9 @@ function setTotal(rowid){
                 </td>
                 <td>
                   @if(count($inventory)>0)
-                  <input type="text" class="form-control" name="item_name[]" value="{{$inventory->first()->item_name}}">
+                  <input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);">
                   @else
-                  <input type="text" class="form-control" name="item_name[]" value="">
+                  <input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);">
                   @endif
                 </td>
                 <td>
@@ -193,40 +213,25 @@ function setTotal(rowid){
             </table>
           </div>
           <input type="submit" value="送出 / Submit" class="btn btn-success btn-raised">
-<!--
-          <div class="form-group">
-            <label class="col-sm-2 control-label">產品編號</label>
-            <label class="col-sm-2 control-label">產品名稱</label>
-            <label class="col-sm-2 control-label">訂單數量</label>
-            <label class="col-sm-2 control-label">單價</label>
-            <label class="col-sm-2 control-label">金額</label>
-            <label class="col-sm-2 control-label">操作</label>
-            <div class="col-sm-2" id="div_item_id">
-              <input type="text" class="form-control" name="item_id[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_item_name">
-              <input type="text" class="form-control" name="item_name[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_quantity">
-              <input type="text" class="form-control" name="quantity[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_unit_price">
-              <input type="text" class="form-control" name="unit_price[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_total">
-              <input type="text" class="form-control" name="total[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_remark">
-              <input type="button" class="btn btn-danger btn-raised" disabled="true" value="Del">
-            </div>
-            <div class="col-sm-2">
-              <input type="button" name="btnAddInput" id="btnAddInput" class="btn btn-raised btn-lg" value="+">
-              <input type="button" name="btnDelInput" id="btnDelInput" class="btn btn-raised btn-lg" value="-">
-            </div>
-          </div>-->
         </form>
       </div>
     </div>
 </div>
+<script src="{{asset('js/bootstrap3-typeahead.min.js')}}"></script>
+<script>
+  var data = [
+    @forelse($inventory as $lstInventory)
+      "{{ $lstInventory->item_name }}",
+    @empty
 
+    @endforelse
+  ];
+  function resetTypeahead(){
+    $('.typeahead').typeahead('destroy');
+    $('.typeahead').typeahead({source:data,
+      autoSelect: true});
+  }
+  $('.typeahead').typeahead({source:data,
+    autoSelect: true});
+</script>
 @endsection

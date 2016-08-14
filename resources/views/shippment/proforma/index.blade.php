@@ -347,7 +347,6 @@ function setTotal(rowid){
                 </td>
                 <td>
                   <input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);">
-
 <!--
                   <select name="item_name[]" class="form-control select_search" onchange="changeByName(this)" style="width: 100%">
                     @if(count( $inventory_kits )>0)
