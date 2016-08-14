@@ -19,6 +19,8 @@
     <link href="{{asset('css/photoswipe.css')}}" rel="stylesheet">-->
     <!--<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">-->
     <link href="{{asset('css/ripples.min.css')}}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
     <script type="text/javascript">
       function modifyImg(input) {
         if (input.files && input.files[0]) {
@@ -151,18 +153,38 @@
 
   </div>
     <!-- JavaScripts -->
+    <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{{asset('js/bootstrap3-typeahead.min.js')}}"></script>
+    <script type="text/javascript">
+      //$('.typeahead').typeahead()
+      var $input = $('.typeahead');
+      $input.typeahead({source:[
+        {id: "someId1", name: "Display name 1"},
+        {id: "hahaha1", name: "Display name jaja1"},
+        {id: "hahaha2", name: "Display name jaja2"},
+        {id: "hahaha3", name: "Display name jaja3"},
+        {id: "hahaha4", name: "Display name jaja4"},
+        {id: "someId2", name: "Display name 2"}
+      ],
+        autoSelect: true});
+    </script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
     <!--<script src="{{asset('js/bootstrap.min.js')}}"></script>-->
-    <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/material.min.js')}}"></script>
     <script src="{{asset('js/ripples.min.js')}}"></script>
     <!--<script src="{{asset('js/photoswipe-ui-default.min.js')}}"></script>
     <script src="{{asset('js/photoswipe.min.js')}}"></script>-->
     <script type="text/javascript">
-        $.material.init();
+      $.material.init();
     </script>
-
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script type="text/javascript">
+      $('.select_search').select2({
+        theme: "classic"
+      });
+    </script>-->
 </body>
 </html>
