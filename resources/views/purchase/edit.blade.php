@@ -19,7 +19,7 @@ function addRow() {
   selectList.id = "Select_id";
   selectList.name = "item_id[]";
   selectList.className = "form-control";
-  selectList.setAttribute("onchange", "changeName(this)");
+  selectList.setAttribute("onchange", "changeById(this)");
   cell1.appendChild(selectList);
 
     @forelse($select_inventory as $sel_inv)
@@ -44,12 +44,13 @@ function addRow() {
   cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="" required>';
   cell6.innerHTML = '<input type="text" class="form-control" name="remark[]" value="">';
   cell7.innerHTML = '<input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">';
+  resetTypeahead();
 }
 function delRow(btn) {
   var row = btn.parentNode.parentNode;
   row.parentNode.removeChild(row);
 }
-function changeName(name) {
+function changeById(name) {
   var value = name.value;
   @forelse($select_inventory as $lstInventory)
     if(value =="{{$lstInventory->id}}"){
@@ -60,6 +61,25 @@ function changeName(name) {
     var row = name.parentNode.parentNode.cells;
     row[1].children[0].text = " ";
   @endforelse
+}
+function changeByName(name){
+  var value = name.value;
+  var row = name.parentNode.parentNode.cells;
+  var selItemId = row[0].children[0];
+  switch(value) {
+    @forelse($inventory as $lstInventory)
+    case "{{ $lstInventory->item_name}}":
+      for (i = 0; i < selItemId.length; i++) {
+        if(selItemId.options[i].value == "{{ $lstInventory->id}}"){
+          row[0].children[0].selectedIndex = i;
+         }
+      }
+      break;
+    @empty
+
+    @endforelse
+      default:
+    }
 }
 function setTotal(rowid){
   var row = rowid.parentNode.parentNode.cells;
@@ -146,7 +166,7 @@ function setTotal(rowid){
               @foreach($inventory as $key => $inv)
               <tr>
                 <td>
-                  <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeName(this)">
+                  <select id="select_item_id" name="item_id[]" class="form-control" onchange="changeById(this)">
                     @forelse($select_inventory as $lstInventory)
                       @if($lstInventory->id == $inv->inventory_id)
                         <option selected="selected" value="{{ $lstInventory->id}}">{{{ $lstInventory->item_id }}}</option>
@@ -159,7 +179,8 @@ function setTotal(rowid){
                   </select>
                 </td>
                 <td>
-                  <input type="text" class="form-control" name="item_name[]" value="{{$inv->item_name}}">
+                  <input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);" value="{{$inv->item_name}}">
+                  <!--<input type="text" class="form-control" name="item_name[]" value="{{$inv->item_name}}">-->
                 </td>
                 <td>
                   <input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="{{$inv->quantity}}" onchange="setTotal(this)" required>
@@ -203,5 +224,22 @@ function setTotal(rowid){
       </div>
     </div>
 </div>
+<script src="{{asset('js/bootstrap3-typeahead.min.js')}}"></script>
+<script>
+  var data = [
+    @forelse($inventory as $lstInventory)
+      "{{ $lstInventory->item_name }}",
+    @empty
+
+    @endforelse
+  ];
+  function resetTypeahead(){
+    $('.typeahead').typeahead('destroy');
+    $('.typeahead').typeahead({source:data,
+      autoSelect: true});
+  }
+  $('.typeahead').typeahead({source:data,
+    autoSelect: true});
+</script>
 
 @endsection
