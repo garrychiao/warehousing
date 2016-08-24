@@ -157,7 +157,9 @@ return [
         App\Providers\RouteServiceProvider::class,
         //Intervention Image Service
         Intervention\Image\ImageServiceProvider::class,
-
+        //Laravel excel
+        Collective\Bus\BusServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -205,6 +207,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         //intervention image service
         'Image' => Intervention\Image\Facades\Image::class,
+        //Laravel Excel
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

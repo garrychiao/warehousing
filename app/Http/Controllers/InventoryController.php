@@ -30,16 +30,20 @@ class InventoryController extends Controller
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
                 ->orderBy('id', 'asc')->get();
-      $lists_proforma_kits = ProformaInvoiceInventory::select('kits_id','quantity')->join('proforma_invoices', 'proforma_invoices.id', '=', 'proforma_invoice_inventories.proforma_invoice_id')
-                ->where('due_date','>=',date('Y-m-d'))->where('converted','=',false)->whereNotNull('kits_id')->get();
-      $lists_commercial_kits = CommercialInvoiceInventory::select('kits_id','quantity')->join('commercial_invoices', 'commercial_invoices.id', '=', 'commercial_invoice_inventories.commercial_invoice_id')
-                ->whereNotNull('kits_id')->get();
+      //Update invenotry datas
       foreach($lists as $list){
         DB::table('inventories')
               ->where('id','=',$list->id)
               ->update(['preserved_inv' => $list->preserved_inventory,
                         'shipped_inv' => $list->shipped_inventory]);
       }
+      //select proforma inventory "kits" part and add to the above before due_date for each item
+      $lists_proforma_kits = ProformaInvoiceInventory::select('kits_id','quantity')->join('proforma_invoices', 'proforma_invoices.id', '=', 'proforma_invoice_inventories.proforma_invoice_id')
+                ->where('due_date','>=',date('Y-m-d'))->where('converted','=',false)->whereNotNull('kits_id')->get();
+      //select each commercial inventory "kits" part to substract to the purchased
+      $lists_commercial_kits = CommercialInvoiceInventory::select('kits_id','quantity')->join('commercial_invoices', 'commercial_invoices.id', '=', 'commercial_invoice_inventories.commercial_invoice_id')
+                ->whereNotNull('kits_id')->get();
+
       foreach ($lists_proforma_kits as $p_kits) {
         $find_kits = InventoryKitMember::select('inventory_id','inventory_name','quantity')->where('kits_id','=',$p_kits->kits_id)->get();
         foreach ($find_kits as $find) {
@@ -56,6 +60,12 @@ class InventoryController extends Controller
                 ->increment('shipped_inv', $find->quantity*$c_kits->quantity);
         }
       }
+      
+      $lists = Inventory::select('*',
+                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
+                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
+                ->orderBy('id', 'asc')->get();
+
       $show = Inventory::select('*',DB::raw("(SELECT CASE WHEN sum(quantity) IS NULL THEN 0 ELSE sum(quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date <= '".date('Y-m-d')."' and a2.converted = false) as preserved_inventory"))->first();
       if(isset($show->item_id)){
         $img =  DB::table('image_url')->where('img_resource','=',$show->item_id)->get();

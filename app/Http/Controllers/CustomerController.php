@@ -115,7 +115,6 @@ class CustomerController extends Controller
 
         $list->update([
                 'customer_id' => $request->customer_id,
-                'company_name' => $request->company_name,
                 'short_name' => $request->short_name,
                 'owner' => $request->owner,
                 'contact_person' => $request->contact_person,

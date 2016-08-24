@@ -23,7 +23,7 @@
             <tr>
               <td colspan="8" class="col-sm-10" align="center">
                 <h2>{{$mycompany->eng_name}}</h2>{{$mycompany->eng_address}}<br>
-                {{$mycompany->email}}<br>Tel. {{$mycompany->phone}} +886{{$mycompany->cell_phone}}
+                {{$mycompany->email}}<br>Tel. {{$mycompany->phone}}{{$mycompany->cell_phone}}
                 <h3>Commercial Invoice</h3>
               </td>
             </tr>

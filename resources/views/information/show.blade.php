@@ -10,9 +10,36 @@
           {{ ucfirst($type) }}
         </div>
         <div class="btn-group btn-group-justified hidden-print">
-          <a href="{{ url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-          <a href="{{ url('/information')}}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
-          <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
+          <div class="col-sm-6">
+            <a href="{{ url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+            <a href="{{ url('/information')}}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+            <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
+          </div>
+          <div class="col-sm-2">
+            <form class="form-horizontal" action="{{ url('/excel')}}" method="post" role="form">
+              {!! csrf_field() !!}
+              <input type="hidden" name="export_type" value="{{ $type }}" />
+              @forelse($information as $info)
+              <input type="hidden" name="item_id[]" value="{{ $info->id }}" />
+              @empty
+
+              @endforelse
+              <input type="submit" class="btn btn-primary btn-raised btn-block" value="Excel">
+            </form>
+          </div>
+          <!--
+          <div class="col-sm-2">
+            <form class="form-horizontal" action="{{ url('/pdf')}}" method="post" role="form">
+              {!! csrf_field() !!}
+              <input type="hidden" name="export_type" value="{{ $type }}" />
+              @forelse($information as $info)
+              <input type="hidden" name="item_id[]" value="{{ $info->id }}" />
+              @empty
+
+              @endforelse
+              <input type="submit" class="btn btn-primary btn-raised btn-block" value="PDF">
+            </form>
+          </div>-->
         </div>
         <div class="col-sm-12">
           <table class="table table-condensed table-bordered">
@@ -33,7 +60,7 @@
               </td>
               <td>
                 {{$mycompany->eng_address}}
-                {{$mycompany->email}}<br>Tel. +886{{$mycompany->phone}} +886{{$mycompany->cell_phone}}
+                {{$mycompany->email}}<br>Tel. {{$mycompany->phone}}<br> {{$mycompany->cell_phone}}
               </td>
             </tr>
           </table>

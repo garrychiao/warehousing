@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\ProformaInvoice;
 use App\ProformaInvoiceInventory;
+use App\CommercialInvoice;
+use App\CommercialInvoiceInventory;
 use App\Inventory;
 use App\Customer;
 use App\MyCompany;
@@ -225,23 +227,29 @@ class ProformaInvoiceController extends Controller
             'description' => $request->description[$i],
           ));
         }
-      //the inventory amount part
-      /*$length = count($request->item_id);
-      for($i=0 ; $i<$length ; $i++){
-        $PurchaseInventory = ProformaInvoiceInventory::create(array(
-          'proforma_invoice_id' => $id,
-          'inventory_id' => $request->item_id[$i],
-          'quantity' => $request->quantity[$i],
-          'unit_price' => $request->unit_price[$i],
-          'total' => $request->total[$i],
-          'weight' => $request->weight[$i],
-          'description' => $request->description[$i],
-        ));*/
-        /*
-        $Inventory = Inventory::find($request->item_id[$i]);
-        //update to preserved quantity
-        $Inventory->preserved_inv = $request->quantity[$i];
-        $Inventory->save();*/
+      }
+      if($proforma_records->converted == true){
+        echo "has converted";
+        $commercial_records = CommercialInvoice::where('reference','=',$request->order_id)->get();
+
+        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records->id)->get();
+
+        foreach ($del_inventory_records as $del) {
+          //echo $del->inventory_id;
+          $Inventory = Inventory::find($del->inventory_id);
+          //add to inventory to item
+          $del_totalInv = $Inventory->inventory+$del->quantity;
+          //update
+          $Inventory->inventory = $del_totalInv;
+          $Inventory->save();
+        }
+        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records->id);
+        $del_inventory_records->delete();
+
+        $commercial_records = CommercialInvoice::where('reference','=',$request->order_id)->delete();
+
+        $proforma_records->converted = false;
+        $proforma_records->save();
       }
 
       return redirect('/shippment/proforma/create')->with('message', 'Success!');

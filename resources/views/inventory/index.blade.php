@@ -72,6 +72,7 @@
           </table>
           @endif
       </div>
+      <!--seperated invenotry information section-->
       <div class="col-sm-5">
         @if( count ( $show ) > 0 )
         <div class="col-sm-12">

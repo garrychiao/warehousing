@@ -40,8 +40,8 @@
                 </td>
                 <td>
                   <div class="btn-group">
-                    <button type="button" target="center" class="btn btn-info btn-raised" onclick="window.location.href='{{ URL::route('supplier.show', $list->id) }}'">Details</button>
-                    <button type="button" class="btn btn-info dropdown-toggle btn-raised" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" target="center" class="btn btn-info btn-sm btn-raised" onclick="window.location.href='{{ URL::route('supplier.show', $list->id) }}'">Details</button>
+                    <button type="button" class="btn btn-info dropdown-toggle btn-sm btn-raised" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
@@ -50,7 +50,7 @@
                         <form class="form-horizontal" action="{{ url('/supplier/'.$list->id)}}" method="post" role="form">
                           {!! csrf_field() !!}
                           <input type="hidden" name="_method" value="delete" />
-                          <input type="submit" class="btn btn-danger" value="Delete">
+                          <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                         </form>
                       </li>
                     </ul>
@@ -68,53 +68,45 @@
           {!! csrf_field() !!}
           <input type="hidden" name="_method" value="put" />
           <div class="form-group">
-            <label class="col-sm-2 control-label">編號</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="supplier_id" value="{{ $show->supplier_id }}">
-            </div>
-            <label class="col-sm-2 control-label">名稱</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="supplier_name" value="{{ $show->supplier_name }}">
-            </div>
-            <label class="col-sm-2 control-label">簡稱</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="short_name" value="{{ $show->short_name }}">
-            </div>
-            <label class="col-sm-2 control-label">負責人</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="owner" value="{{ $show->owner }}">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">電話</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="phone" value="{{ $show->phone }}">
-            </div>
-            <label class="col-sm-2 control-label">手機</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="cell_phone" value="{{ $show->cell_phone }}">
-            </div>
-            <label class="col-sm-2 control-label">傳真</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="fax" value="{{ $show->fax }}">
-            </div>
-            <label class="col-sm-2 control-label">電子郵件</label>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="email" value="{{ $show->email }}">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">地址</label>
-            <div class="col-sm-2">
-              <input type="text" class="form-control" name="zip_code" value="{{ $show->zip_code }}">
-            </div>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="address" value="{{ $show->address }}">
-            </div>
-            <label class="col-sm-2 control-label">備註</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="remark" value="{{ $show->remark }}">
-            </div>
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <th>名稱<br>Name</th>
+                <td colspan="3"><input type="text" class="form-control" name="supplier_name" value="{{ $show->supplier_name }}"></td>
+              </tr>
+              <tr>
+                <th>編號<br>ID</th><td><input type="text" class="form-control" name="supplier_id" value="{{ $show->supplier_id }}"></td>
+                <th>簡稱<br>Short Name</th><td><input type="text" class="form-control" name="short_name" value="{{ $show->short_name }}"></td>
+              </tr>
+              <tr>
+                <th>負責人<br>Owner</th><td><input type="text" class="form-control" name="owner" value="{{ $show->owner }}"></td>
+                <th>電話<br>Phone</th><td><input type="text" class="form-control" name="phone" value="{{ $show->phone }}"></td>
+              </tr>
+              <tr>
+                <th>手機<br>Cell Phone</th><td><input type="text" class="form-control" name="cell_phone" value="{{ $show->cell_phone }}"></td>
+                <th>傳真<br>Fax</th><td><input type="text" class="form-control" name="fax" value="{{ $show->fax }}"></td>
+              </tr>
+              <tr>
+                <th>電子郵件<br>Email</th>
+                <td colspan="3"><input type="email" class="form-control" name="email" value="{{ $show->email }}"></td>
+              </tr>
+              <tr>
+                <th>地址<br>Address</th>
+                <td colspan="3">
+                  <div class="col-sm-3">
+                    <input type="text" class="form-control" name="zip_code" placeholder="Zip Code" value="{{ $show->zip_code }}">
+                  </div>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" name="address" placeholder="Address" value="{{ $show->address }}">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>備註<br>Remarks</th>
+                <td colspan="3">
+                  <input type="text" class="form-control" name="remark" value="{{ $show->remark }}">
+                </td>
+              </tr>
+            </table>
           </div>
           <div class="form-group">
             <div class="col-sm-6">

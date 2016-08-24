@@ -56,27 +56,32 @@ class DashboardController extends Controller
     }
 
     public function InformationExport(Request $request,$type){
+
+      $mycompany = MyCompany::firstOrNew(['id' => '1']);
+
       switch ($type) {
         case 'customer':
         $information = Customer::whereIn('id', $request->customer)->get();
+        return view('information/show')
+          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
           break;
 
         case 'inventory':
         $information = Inventory::whereIn('id', $request->inventory)->get();
+        return view('information/show')
+          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
           break;
 
         case 'supplier':
         $information = Supplier::whereIn('id', $request->supplier)->get();
+        return view('information/show')
+          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
           break;
 
         default:
           # code...
           break;
       }
-      $mycompany = MyCompany::firstOrNew(['id' => '1']);
-
-      return view('information/show')
-        ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
     }
 
 }

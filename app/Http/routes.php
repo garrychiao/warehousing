@@ -30,7 +30,12 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::group(['middleware' => ['web','auth']], function () {
+    //Basic routes
+    Route::get('/home', 'HomeController@index');
 
+    Route::get('shippment', function () {
+        return view('shippment.index');
+    });
     Route::resource('customer', 'CustomerController');
 
     Route::resource('inventory', 'InventoryController');
@@ -48,22 +53,23 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::resource('shippment/commercial', 'CommercialInvoiceController');
 
     Route::resource('setKits','setKitsController');
-
+    //Editing Images
     Route::post('addImage/{resource}/{item}/{item_id}','ImageController@addImage');
-
-    Route::get('information','DashboardController@InformationIndex');
-
-    Route::post('information/{type}','DashboardController@InformationExport');
-
-    Route::get('convert/{id}','DashboardController@convert');
 
     Route::get('viewImage/{id}/{item_id}','ImageController@viewImage');
 
     Route::get('deleteImage/{id}/{item_id}','ImageController@deleteImage');
+    //Managing Information Export
+    Route::get('information','DashboardController@InformationIndex');
 
-    Route::get('shippment', function () {
-        return view('shippment.index');
-    });
+    Route::post('information/{type}','DashboardController@InformationExport');
+    //Converts the proforma records to shipping records
+    Route::get('convert/{id}','DashboardController@convert');
+    //Excel and PDF
+    //excel
+    Route::post('excel','ExcelController@exportExcel');
+    //pdf
+    Route::post('pdf','ExcelController@exportPDF');
 
-    Route::get('/home', 'HomeController@index');
+
 });
