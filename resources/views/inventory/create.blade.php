@@ -41,9 +41,9 @@
       <div class="col-sm-2">
         <input type="text" class="form-control" name="item_name" placeholder="Item Name">
       </div>
-      <label class="col-sm-1 control-label">圖號</label>
+      <label class="col-sm-1 control-label">中文品名</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" name="graph_id" placeholder="Graph ID">
+        <input type="text" class="form-control" name="chi_item_name" placeholder="Item Name (Chi)">
       </div>
     </div>
     <div class="form-group">
@@ -107,6 +107,10 @@
       <label class="col-sm-1 control-label">單位重量</label>
       <div class="col-sm-3">
         <input type="text" class="form-control" name="unit_weight" placeholder="Unit Weight">
+      </div>
+      <label class="col-sm-1 control-label">圖號</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" name="graph_id" placeholder="Graph ID">
       </div>
     </div>
     <input type="hidden" name="inventory" value="0"/>

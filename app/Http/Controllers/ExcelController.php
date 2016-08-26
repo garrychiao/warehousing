@@ -19,7 +19,8 @@ class ExcelController extends Controller
       switch ($type) {
         case 'customer':
         $FileName = "CustomerInfo";
-        $information = Customer::whereIn('id', $request->item_id)->get();
+        $information = Customer::select('customer_id as ID','chi_name as Name(Chi)','eng_name as Name(Eng)','owner as Owner','contact_person as Contact','email','phone','fax','nationality','notify_address')
+          ->whereIn('id', $request->item_id)->get();
           break;
 
         case 'inventory':
@@ -30,7 +31,8 @@ class ExcelController extends Controller
 
         case 'supplier':
         $FileName = "SupplierInfo";
-        $information = Supplier::whereIn('id', $request->item_id)->get();
+        $information = Supplier::select('supplier_id as ID','supplier_name as Name','owner as Owner','phone','fax','email','address')
+        ->whereIn('id', $request->item_id)->get();
           break;
 
         default:

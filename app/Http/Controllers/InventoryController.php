@@ -60,7 +60,7 @@ class InventoryController extends Controller
                 ->increment('shipped_inv', $find->quantity*$c_kits->quantity);
         }
       }
-      
+
       $lists = Inventory::select('*',
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
@@ -97,6 +97,7 @@ class InventoryController extends Controller
       array('item_id' => $request->item_id,
             'category' => $request->category,
             'item_name' => $request->item_name,
+            'chi_item_name' => $request->chi_item_name,
             'standard' => $request->standard,
             'graph_id' => $request->graph_id,
             'barcode' => $request->barcode,
@@ -158,6 +159,7 @@ class InventoryController extends Controller
       $list->update([
               'item_id' => $request->item_id,
               'category' => $request->category,
+              'chi_item_name' => $request->chi_item_name,
               'item_name' => $request->item_name,
               'standard' => $request->standard,
               'graph_id' => $request->graph_id,

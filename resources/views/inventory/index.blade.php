@@ -133,7 +133,7 @@
                 </tr>
                 <tr>
                   <th>品名<br>Item Name</th><td><input type="text" class="form-control" name="item_name" value="{{ $show->item_name }}"></td>
-                  <th>圖號<br>Graph ID</th><td><input type="text" class="form-control" name="graph_id" value="{{ $show->graph_id }}"></td>
+                  <th>中文品名<br>Item Name (Chi)</th><td><input type="text" class="form-control" name="chi_item_name" value="{{ $show->chi_item_name }}"></td>
                 </tr>
                 <tr>
                   <th>庫存<br>Inventory</th>
@@ -186,7 +186,8 @@
                   <th>安全庫存<br> Safety Inventory</th><td><input type="text" class="form-control" name="safety_inventory" value="{{ $show->safety_inventory }}"></td>
                 </tr>
                 <tr>
-                  <th>單位重量<br> Unit Weight</th><td colspan="3"><input type="number" step="0.01" min="0" class="form-control" name="unit_weight" value="{{ $show->unit_weight }}"></td>
+                  <th>單位重量<br> Unit Weight</th><td><input type="number" step="0.01" min="0" class="form-control" name="unit_weight" value="{{ $show->unit_weight }}"></td>
+                  <th>圖號<br>Graph ID</th><td><input type="text" class="form-control" name="graph_id" value="{{ $show->graph_id }}"></td>
                 </tr>
                 <tr>
                   <th>商品描述<br> Descriptions</th><td colspan="3"><input type="text" class="form-control" name="descriptions" value="{{ $show->descriptions }}"></td>
