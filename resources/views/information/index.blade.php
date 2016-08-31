@@ -179,7 +179,48 @@ function check_all(obj,cName)
                 </form>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="invoices">Invoices</div>
+            <div role="tabpanel" class="tab-pane fade" id="invoices">
+              <h2>Invoices</h2>
+              <form action="{{ url('/information/invoices') }}" method="post">
+                {!! csrf_field() !!}
+                <div class="col-sm-3">
+                  <div class="radio radio-primary">
+                    <label>
+                      <input type="radio" name="invoice_type" value="purchase" checked="true">
+                      Purchase Records
+                    </label>
+                  </div>
+                  <div class="radio radio-primary">
+                    <label>
+                      <input type="radio" name="invoice_type" value="proforma">
+                      Proforma Invoice Records
+                    </label>
+                  </div>
+                  <div class="radio radio-primary">
+                    <label>
+                      <input type="radio" name="invoice_type" value="commercial">
+                      Commercial Invoice Records
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="form-group">
+                    <label for="start_date" class="col-md-2 control-label">From</label>
+                    <div class="col-md-10">
+                      <input type="date" class="form-control" id="start_date" name="start_date" placeholder="From" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="end_date" class="col-md-2 control-label">End</label>
+                    <div class="col-md-10">
+                      <input type="date" class="form-control" id="end_date" name="end_date" placeholder="From" required>
+                    </div>
+                  </div>
+                  <input type="submit" name="name" class="btn btn-success btn-raised" value="Export">
+                </div>
+              </form>
+            </div>
+
           </div>
         </div>
       </div>

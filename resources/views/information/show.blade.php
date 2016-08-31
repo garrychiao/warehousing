@@ -50,12 +50,19 @@
             </tr>
             <tr align="center">
               <td>
+                <!--Title part-->
                 @if($type == "customer")
                 <h4>Customer Informations</h4>
                 @elseif($type == "inventory")
                 <h4>Product Informations</h4>
                 @elseif($type == "supplier")
                 <h4>Supplier Informations</h4>
+                @elseif($type == "purchase")
+                <h4>Purchased Informations</h4>
+                @elseif($type == "proforma")
+                <h4>Proforma Invoices Informations</h4>
+                @elseif($type == "commercial")
+                <h4>Commercial Invoices Informations</h4>
                 @endif
               </td>
               <td>
@@ -65,6 +72,7 @@
             </tr>
           </table>
           <table class="table table-condensed table-bordered table-hover">
+          <!--The customer information shows here-->
           @if( $type == "customer")
             <tr>
               <td>ID</td>
@@ -93,6 +101,7 @@
               <td>無資料</td>
             </tr>
             @endforelse
+          <!--invnentory shows as products here-->
           @elseif($type == "inventory")
           <tr>
             <td>ID</td>
@@ -133,6 +142,7 @@
             <td>無資料</td>
           </tr>
           @endforelse
+          <!--supplier info-->
           @elseif($type == "supplier")
           <tr>
             <td>ID</td>
@@ -161,7 +171,37 @@
             <td>無資料</td>
           </tr>
           @endforelse
+          <!--Purchase Records Informations-->
+          @elseif($type == "purchase")
+          <tr>
+            <td>ID</td>
+            <td>採購日期</td>
+            <td>供應廠商</td>
+            <td>總金額</td>
+            <td>交貨日期</td>
+            <td>地址</td>
+          </tr>
+          @forelse($information as $pur)
+          <tr>
+            <td>{{ $pur->order_id}}</td>
+            <td>{{ $pur->purchase_date}}</td>
+            <td>{{ $pur->supplier_name}}</td>
+            <td>{{ $pur->amount}}</td>
+            <td>{{ $pur->delivery_date}}</td>
+            <td>{{ $pur->delivery_address}}</td>
+          </tr>
+          @empty
+          <tr>
+            <td>無資料</td>
+            <td>無資料</td>
+            <td>無資料</td>
+            <td>無資料</td>
+            <td>無資料</td>
+            <td>無資料</td>
+          </tr>
+          @endforelse
           @endif
+
           </table>
         </div>
       </div>

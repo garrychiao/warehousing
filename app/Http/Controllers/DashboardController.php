@@ -10,9 +10,13 @@ use App\Supplier;
 use App\Inventory;
 use App\MyCompany;
 use App\InventoryKit;
+use App\PurchaseRecord;
+use App\PurchaseInventoryRecord;
 use App\CommercialInvoice;
+use App\CommercialInvoiceInventory;
 use App\ProformaInvoice;
 use App\ProformaInvoiceInventory;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -74,6 +78,35 @@ class DashboardController extends Controller
 
         case 'supplier':
         $information = Supplier::whereIn('id', $request->supplier)->get();
+        return view('information/show')
+          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
+          break;
+        //
+        case 'invoices':
+          switch($request->invoice_type){
+            case 'purchase':
+              $type = 'purchase';
+              $information = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
+                  ->select('purchase_records.*','suppliers.supplier_name')
+                  ->addSelect(DB::raw("(SELECT sum(total) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as amount"))
+                  ->whereBetween('purchase_date', [$request->start_date,$request->end_date])->get();
+              break;
+
+            case 'proforma':
+              $type = 'proforma';
+              $information = Supplier::whereIn('id', $request->supplier)->get();
+              break;
+
+            case 'commercial':
+              $type = 'commercial';
+              $information = Supplier::whereIn('id', $request->supplier)->get();
+              break;
+
+            default:
+
+              break;
+
+          }
         return view('information/show')
           ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
           break;
