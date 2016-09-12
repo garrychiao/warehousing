@@ -61,7 +61,7 @@
                         <form class="form-horizontal" action="{{ url('/inventory/'.$list->id)}}" method="post" role="form">
                           {!! csrf_field() !!}
                           <input type="hidden" name="_method" value="delete" />
-                          <input type="submit" class="btn btn-danger" value="Delete">
+                          <input type="submit" class="btn btn-sm btn-danger" value="Delete">
                         </form>
                       </li>
                     </ul>
@@ -80,7 +80,7 @@
         <div class="tab-content">
           @foreach($lists as $key => $list)
           <div role="tabpanel" class="tab-pane fade @if($key ==0 ) in active @endif" id="{{ $list->id }}">
-            <div class="col-sm-12">
+            <!--<div class="col-sm-12">
               <div class="row">
                 <div class="col-sm-12">
                   <button type="button" class="btn btn-raised btn-default" data-toggle="modal" data-target="#addImage">
@@ -90,14 +90,14 @@
                 @if(count($img)>0)
                   @foreach($img as $image)
                   <div class="col-xs-6 col-sm-6">
-                    <a href="{{ url('/viewImage/'.$image->id.'/'.$show->id)}}" class="thumbnail">
+                    <a href="{{ url('/viewImage/'.$image->id.'/'.$list->id)}}" class="thumbnail">
                       <img src="../{{ $image->img_url }}">
                     </a>
                   </div>
                   @endforeach
                 @endif
               </div>
-              <!-- Modal -->
+
               <div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
@@ -124,7 +124,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
             <div class="col-sm-12">
               <form class="form-horizontal" action="{{ url('/inventory/'.$list->id)}}" method="post" role="form">
                 {!! csrf_field() !!}
@@ -208,134 +208,6 @@
           </div>
           @endforeach
         </div>
-<!--
-        @if( count ( $show ) > 0 )
-        <div class="col-sm-12">
-          <div class="row">
-            <div class="col-sm-12">
-              <button type="button" class="btn btn-raised btn-default" data-toggle="modal" data-target="#addImage">
-                新增圖片/Add Image
-              </button>
-            </div>
-            @if(count($img)>0)
-              @foreach($img as $image)
-              <div class="col-xs-6 col-sm-6">
-                <a href="{{ url('/viewImage/'.$image->id.'/'.$show->id)}}" class="thumbnail">
-                  <img src="../{{ $image->img_url }}">
-                </a>
-              </div>
-              @endforeach
-            @endif
-          </div>
-
-          <div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="myModalLabel">Add Image</h4>
-                </div>
-                <form class="" action="{{ url('/addImage/inventory/'.$show->item_id.'/'.$show->id)}}" method="post" enctype="multipart/form-data">
-                  {!! csrf_field() !!}
-                <div class="modal-body">
-                  <div class="form-group">
-                    <input type="text" readonly="" class="form-control" placeholder="Browse...">
-                    <input type="file" id="fileToUpload" name="fileToUpload" multiple="" onchange="modifyImg(this);">
-                  </div>
-                  <div class="col-sm-12">
-                    <img id="modified_img" src="#" alt="your image"/>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-12">
-          <form class="form-horizontal" action="{{ url('/inventory/'.$show->id)}}" method="post" role="form">
-            {!! csrf_field() !!}
-            <input type="hidden" name="_method" value="put" />
-            <div class="form-group">
-              <table class="table table-bordered table-condensed">
-                <tr class="success"><td colspan="4"><h3>{{ $show->item_name }}</h3></td></tr>
-                <tr>
-                  <th class="col-sm-3">品號<br>Item ID</th><td class="col-sm-3"><input type="text" class="form-control" name="item_id" value="{{ $show->item_id }}"></td>
-                  <th class="col-sm-3">類別<br>Category</th><td class="col-sm-3"><input type="text" class="form-control" name="category" value="{{ $show->category }}"></td>
-                </tr>
-                <tr>
-                  <th>品名<br>Item Name</th><td><input type="text" class="form-control" name="item_name" value="{{ $show->item_name }}"></td>
-                  <th>中文品名<br>Item Name (Chi)</th><td><input type="text" class="form-control" name="chi_item_name" value="{{ $show->chi_item_name }}"></td>
-                </tr>
-                <tr>
-                  <th>庫存<br>Inventory</th>
-                  <td>
-                    <h4>{{ number_format( $show->inventory-$show->shipped_inv ) }}</h4>
-                    <input type="text" class="form-control hidden" name="inventory" value="{{ $show->inventory }}">
-                  </td>
-                  <th>預約庫存<br>Preserved</th>
-                  <td>
-                    <h4>{{ number_format( $show->preserved_inv ) }}</h4>
-                    <input type="text" class="form-control hidden" name="preserved_inv" value="{{ $show->avg_cost }}">
-                  </td>
-                </tr>
-                <tr>
-                  <th>可用庫存<br>Available</th>
-                  <td>
-                    <h4>{{ number_format( $show->inventory-$show->preserved_inv-$show->shipped_inv)}}</h4>
-                    <input type="text" class="form-control hidden" name="avg_cost" value="{{ $show->avg_cost }}">
-                  </td>
-                  <th>平均成本<br>Average</th>
-                  <td>
-                    <h4>{{ number_format( $show->avg_cost ,2)}}</h4>
-                    <input type="text" class="form-control hidden" name="avg_cost" value="{{ $show->avg_cost }}">
-                  </td>
-                </tr>
-                <tr class="success">
-                  <th colspan="4">價格區間 (Pricing Range)</th>
-                </tr>
-                <tr>
-                  <th>區間1<br> Range1</th><td><input type="number" step="0.01" min="0" class="form-control" name="price1" value="{{ $show->price1 }}"></td>
-                  <th>區間2<br> Range2</th><td><input type="number" step="0.01" min="0" class="form-control" name="price2" value="{{ $show->price2 }}"></td>
-                </tr>
-                <tr>
-                  <th>區間3<br> Range3</th><td><input type="number" step="0.01" min="0" class="form-control" name="price3" value="{{ $show->price3 }}"></td>
-                  <th>區間4<br> Range4</th><td><input type="number" step="0.01" min="0" class="form-control" name="price4" value="{{ $show->price4 }}"></td>
-                </tr>
-                <tr>
-                  <th>區間5<br> Range5</th><td><input type="number" step="0.01" min="0" class="form-control" name="price5" value="{{ $show->price5 }}"></td>
-                  <th>區間6<br> Range6</th><td><input type="number" step="0.01" min="0" class="form-control" name="price6" value="{{ $show->price6 }}"></td>
-                </tr>
-                <tr class="success">
-                  <th colspan="4">產品資訊 (Informations)</th>
-                </tr>
-                <tr>
-                  <th>規格<br> Standards</th><td><input type="text" class="form-control" name="standard" value="{{ $show->standard }}"></td>
-                  <th>條碼<br> Barcode</th><td><input type="text" class="form-control" name="barcode" value="{{ $show->barcode }}"></td>
-                </tr>
-                <tr>
-                  <th>單位<br> Unit</th><td><input type="text" class="form-control" name="unit" value="{{ $show->unit }}"></td>
-                  <th>安全庫存<br> Safety Inventory</th><td><input type="text" class="form-control" name="safety_inventory" value="{{ $show->safety_inventory }}"></td>
-                </tr>
-                <tr>
-                  <th>單位重量<br> Unit Weight</th><td><input type="number" step="0.01" min="0" class="form-control" name="unit_weight" value="{{ $show->unit_weight }}"></td>
-                  <th>圖號<br>Graph ID</th><td><input type="text" class="form-control" name="graph_id" value="{{ $show->graph_id }}"></td>
-                </tr>
-                <tr>
-                  <th>商品描述<br> Descriptions</th><td colspan="3"><input type="text" class="form-control" name="descriptions" value="{{ $show->descriptions }}"></td>
-                </tr>
-                <tr>
-                  <th>備註<br> Remarks</th><td colspan="3"><input type="text" class="form-control" name="remark" value="{{ $show->remark }}"></td>
-                </tr>
-              </table>
-            </div>
-            <input type="submit" class="btn btn-success btn-raised" value="修改/Update"/>
-          </form>
-        </div>
-        @endif-->
       </div>
     </div>
 </div>

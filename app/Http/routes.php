@@ -54,7 +54,17 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::resource('setKits','setKitsController');
     //Editing Images
-    Route::post('addImage/{resource}/{item}/{item_id}','ImageController@addImage');
+    //new version
+    Route::get('myImage/','ImageController@myImage');
+
+    Route::post('addImage/inventory','ImageController@addInvImage');
+
+    Route::post('addImage/mycompany','ImageController@addComImage');
+
+    Route::get('deleteImage/inventory/{id}','ImageController@deleteInvImage');
+
+    //old version
+    //Route::post('addImage/{resource}/{item}/{item_id}','ImageController@addImage');
 
     Route::get('viewImage/{id}/{item_id}','ImageController@viewImage');
 

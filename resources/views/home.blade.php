@@ -3,29 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row">
-      <!--<div class="col-sm-12">
-        <div class="col-sm-4">
-          <a href="{{ url('/mycompany') }}" class="thumbnail">
-            <i class="fa fa-university fa-5x" aria-hidden="true"></i>
-          </a>
-        </div>
-        <div class="col-sm-4">
-          <a href="{{ url('/information') }}" class="thumbnail">
-            <img src="{{ url('/img/system/data_export.png') }}" alt="...">
-          </a>
-        </div>
-        <div class="col-sm-4">
-          <a href="{{ url('/employee') }}" class="thumbnail">
-            <img src="{{ url('/img/system/employee.png') }}" alt="...">
-          </a>
-        </div>
-      </div>-->
         <div class="col-sm-10 col-sm-offset-1">
             <div class="jumbotron">
                 <div class="panel-body">
                     <a href="{{ url('/mycompany') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>公司資訊<br><i class="fa fa-home fa-3x" aria-hidden="true"></i><br>My Company</button></a>
                     <a href="{{ url('/information') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->data_export==false) disabled @endif>資料輸出<br><i class="fa fa-file-text-o fa-3x" aria-hidden="true"></i><br>Data Export</button></a>
                     <a href="{{ url('/employee') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>員工管理<br><i class="fa fa-users fa-3x" aria-hidden="true"></i><br>Employee</button></a>
+                    <a href="{{ url('/myImage') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>產品圖片<br><i class="fa fa-picture-o fa-3x" aria-hidden="true"></i><br>Inv Pictures</button></a>
                 </div>
             </div>
         </div>

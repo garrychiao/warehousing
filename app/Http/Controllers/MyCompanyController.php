@@ -23,9 +23,8 @@ class MyCompanyController extends Controller
      */
     public function index()
     {
-        $img =  DB::table('image_url')->where('img_resource','=','mycompany')->get();
         $show = MyCompany::first();
-        return view('/mycompany/index')->with('show',$show)->with('img',$img);
+        return view('/mycompany/index')->with('show',$show);
     }
 
     /**

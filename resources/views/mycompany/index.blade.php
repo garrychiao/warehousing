@@ -128,14 +128,12 @@
                 Change Image
               </button>
             </div>
-            @if(count($img)>0)
-              @foreach($img as $image)
-              <div class="col-sm-12">
-                <a href="{{ url('/viewImage/'.$image->id.'/index')}}" class="thumbnail">
-                  <img src="{{ $image->img_url }}">
-                </a>
-              </div>
-              @endforeach
+            @if( count($show->img_url)>0 )
+            <div class="col-sm-12">
+              <a class="thumbnail">
+                <img src="{{ $show->img_url }}">
+              </a>
+            </div>
             @endif
           </div>
 
@@ -147,7 +145,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title" id="myModalLabel">Add Image</h4>
                 </div>
-                <form class="" action="addImage/mycompany/mycompany/index" method="post" enctype="multipart/form-data">
+                <form action="addImage/mycompany" method="post" enctype="multipart/form-data">
                   {!! csrf_field() !!}
                 <div class="modal-body">
                   <div class="form-group">
