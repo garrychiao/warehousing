@@ -81,5 +81,5 @@ Route::group(['middleware' => ['web','auth']], function () {
     //pdf
     Route::post('pdf','ExcelController@exportPDF');
 
-
+    Route::get('test','DashboardController@test');
 });

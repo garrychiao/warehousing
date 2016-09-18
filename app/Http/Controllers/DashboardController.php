@@ -17,6 +17,7 @@ use App\CommercialInvoiceInventory;
 use App\ProformaInvoice;
 use App\ProformaInvoiceInventory;
 use DB;
+use Mail;
 
 class DashboardController extends Controller
 {
@@ -117,4 +118,10 @@ class DashboardController extends Controller
       }
     }
 
+    public function test(){
+      Mail::raw('測試使用 Laravel 5 的 Mailgun 寄信服務', function($message)
+      {
+        $message->to('g50905g@gmail.com');
+      });
+    }
 }
