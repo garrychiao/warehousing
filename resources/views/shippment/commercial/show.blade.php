@@ -72,9 +72,9 @@
             </tr>
             <!--<tr>
               <td colspan="2" align="center">
-                @if(count($mycompany_img)>0)
-                  <img src="../../{{ $mycompany_img->img_url }}" alt="" width="120px" />
-                @endif
+              @if(isset($mycompany->img_url))
+              <img src="../../{{ $mycompany->img_url }}" alt="" width="120px" />
+              @endif
               </td>
               <td colspan="8" class="col-sm-10" align="center">
                 <h2>{{$mycompany->eng_name}}</h2>{{$mycompany->eng_address}}<br>

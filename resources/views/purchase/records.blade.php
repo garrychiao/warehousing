@@ -56,6 +56,7 @@
             </tr>
             @endforeach
           </table>
+          {{ $records->links() }}
           @endif
         </div>
     </div>

@@ -14,7 +14,7 @@
                 {{$records->order_id}}
               </div>
               <div class="btn-group btn-group-justified">
-                <a href="/shippment/proforma/create"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+                <a href="{{ url('/shippment/proforma/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
                 <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
                 <a><button type="button" target="center" class="btn btn-primary btn-raised" onclick="window.location.href='{{ URL::route('shippment.proforma.edit', $records->id) }}'">修改 / Modify</button></a>
               </div>
@@ -24,8 +24,8 @@
             <tr class="visible-print"><th colspan="7">Proforma Invoice</th></tr>
             <tr>
               <td colspan="2" align="center">
-                @if(count($mycompany_img)>0)
-                  <img src="../../{{ $mycompany_img->img_url }}" alt="" width="120px" />
+                @if(isset($mycompany->img_url))
+                <img src="../../{{ $mycompany->img_url }}" alt="" width="120px" />
                 @endif
               </td>
               <td colspan="4">

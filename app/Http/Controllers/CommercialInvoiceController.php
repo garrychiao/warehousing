@@ -142,7 +142,6 @@ class CommercialInvoiceController extends Controller
     public function show($id)
     {
       $mycompany = MyCompany::firstOrNew(['id' => '1']);
-      $mycompany_img = DB::table('image_url')->where('img_resource','=','mycompany')->first();
       $records = CommercialInvoice::findOrFail($id);
       $inventory = CommercialInvoiceInventory::join('inventories','inventories.id','=','commercial_invoice_inventories.inventory_id')
             ->select('commercial_invoice_inventories.*','inventories.item_id','inventories.descriptions')
@@ -155,7 +154,7 @@ class CommercialInvoiceController extends Controller
       $final_total = $records->cost_shipping+$records->cost_insurance+$records->cost_additional+$total->total;
 
       return view('/shippment/commercial/show')->with('records',$records)
-      ->with('total',$total)->with('inventory',$inventory)->with('mycompany_img',$mycompany_img)
+      ->with('total',$total)->with('inventory',$inventory)
       ->with('inventory_kits_records',$inventory_kits_records)
       ->with('mycompany',$mycompany)->with('final_total',$final_total);
     }

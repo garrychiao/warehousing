@@ -45,7 +45,7 @@ class ManagePurchaseController extends Controller
           ->select('purchase_records.*','suppliers.supplier_name')
           ->addSelect(DB::raw("(SELECT count(*) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as count"))
           ->addSelect(DB::raw("(SELECT sum(total) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as amount"))
-          ->orderby('purchase_records.id')->get();
+          ->orderby('purchase_records.id')->paginate(10);
       return view('/purchase/records')->with('records',$records);
     }
 

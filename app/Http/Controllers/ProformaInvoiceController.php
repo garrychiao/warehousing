@@ -130,7 +130,6 @@ class ProformaInvoiceController extends Controller
               ->select('proforma_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id','inventory_kits.kits_description')
               ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
         $mycompany = MyCompany::firstOrNew(['id' => '1']);
-        $mycompany_img = DB::table('image_url')->where('img_resource','=','mycompany')->first();
         $records = ProformaInvoice::findOrFail($id);
         $inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
         ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.descriptions')
@@ -138,8 +137,7 @@ class ProformaInvoiceController extends Controller
         $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
         $total = $total_inv + $records->sandh;
         return view('/shippment/proforma/show')->with('records',$records)
-        ->with('total',$total)->with('mycompany_img',$mycompany_img)
-        ->with('inventory_kits_records',$inventory_kits_records)
+        ->with('total',$total)->with('inventory_kits_records',$inventory_kits_records)
         ->with('inventory',$inventory)->with('mycompany',$mycompany);
 
     }
