@@ -45,9 +45,18 @@ class CommercialInvoiceController extends Controller
     public function create()
     {
       $records = CommercialInvoice::join('customers','customers.id','=','commercial_invoices.customer_id')
-          ->select('commercial_invoices.*','customers.chi_name','customers.contact_person')
-          ->orderby('commercial_invoices.id')->get();
-      return view('/shippment/commercial/records')->with('records',$records);
+          ->select('commercial_invoices.*','customers.eng_name','customers.contact_person')
+          ->orderby('commercial_invoices.id')->paginate(10);
+
+      $id = array();
+      foreach($records as $rec){
+        array_push($id,$rec->id);
+      }
+      $inv_records = CommercialInvoiceInventory::leftjoin('inventories','commercial_invoice_inventories.inventory_id','=','inventories.id')
+      ->leftjoin('inventory_kits','commercial_invoice_inventories.kits_id','=','inventory_kits.id')
+      ->whereIn('commercial_invoice_inventories.commercial_invoice_id', $id)->get();
+
+      return view('/shippment/commercial/records')->with('records',$records)->with('inv_records',$inv_records);
     }
 
     /**

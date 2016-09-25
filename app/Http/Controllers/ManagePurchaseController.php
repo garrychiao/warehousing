@@ -43,10 +43,18 @@ class ManagePurchaseController extends Controller
     {
       $records = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
           ->select('purchase_records.*','suppliers.supplier_name')
-          ->addSelect(DB::raw("(SELECT count(*) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as count"))
+          //->addSelect(DB::raw("(SELECT count(*) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as count"))
           ->addSelect(DB::raw("(SELECT sum(total) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as amount"))
           ->orderby('purchase_records.id')->paginate(10);
-      return view('/purchase/records')->with('records',$records);
+      //fetch inv datas
+      $id = array();
+      foreach($records as $rec){
+        array_push($id,$rec->id);
+      }
+      $inv_records = PurchaseInventoryRecord::join('inventories','purchase_inventory_records.inventory_id','=','inventories.id')
+      ->whereIn('purchase_records_id', $id)->get();
+
+      return view('/purchase/records')->with('records',$records)->with('inv_records',$inv_records);
     }
 
     /**

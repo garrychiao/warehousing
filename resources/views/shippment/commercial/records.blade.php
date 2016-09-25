@@ -15,26 +15,41 @@
           <a href="/shippment/commercial"><button type="button" class="btn btn-primary btn-raised">新增出貨單 / New Commercial Invoice</button></a>
         </div>
       </div>
-        <div class="col-sm-10 col-sm-offset-1">
+        <div class="col-sm-12">
           @if(count($records)>0)
           <table class="table table-condensed table-bordered table-hover">
             <tr>
-              <td>訂單編號</td>
-              <td>參考報價單</td>
-              <td>客戶</td>
-              <td>聯絡人</td>
-              <td>報價日期</td>
-              <td>報價金額</td>
-              <td>詳細內容</td>
+              <td class="col-sm-1">訂單編號</td>
+              <td class="col-sm-1">客戶</td>
+              <td class="col-sm-1">聯絡人</td>
+              <td class="col-sm-1">參考報價單</td>
+              <td class="col-sm-1">出貨日期</td>
+              <td class="col-sm-2">出貨項目</td>
+              <td class="col-sm-1">金額</td>
+              <td class="col-sm-1"></td>
             </tr>
             @foreach($records as $record)
             <tr>
               <td>{{ $record->order_id }}</td>
-              <td>{{ $record->reference }}</td>
-              <td>{{ $record->chi_name }}</td>
+              <td>{{ $record->eng_name }}</td>
               <td>{{ $record->contact_person }}</td>
-              <td>{{ $record->create_date }}</td>
-              <td>NT$ {{ number_format($record->final_total,2) }}</td>
+              <td>{{ $record->reference }}</td>
+              <td>{{ $record->export_date }}</td>
+              <td>
+                @foreach($inv_records as $inv_rec)
+                  @if($inv_rec->commercial_invoice_id == $record->id)
+                  {{$inv_rec->item_name}}{{$inv_rec->kits_name}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($inv_records as $inv_rec)
+                  @if($inv_rec->commercial_invoice_id == $record->id)
+                  {{ number_format($inv_rec->total,2) }}<br>
+                  @endif
+                @endforeach
+                <strong>{{ number_format($record->final_total,2) }}</strong>
+              </td>
               <td>
                 <div class="btn-group">
                   <button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('shippment.commercial.show', $record->id) }}'">內容 / Details</button>
@@ -59,6 +74,7 @@
             </tr>
             @endforeach
           </table>
+          {{ $records->links() }}
           @endif
         </div>
     </div>

@@ -50,8 +50,17 @@ class ProformaInvoiceController extends Controller
           ->select('proforma_invoices.*','customers.chi_name','customers.contact_person')
           ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
           ->addSelect(DB::raw("(SELECT CASE WHEN due_date >= '".date("Y-m-d")."' THEN false ELSE true END) as overdue"))
-          ->orderby('proforma_invoices.id')->get();
-      return view('/shippment/proforma/records')->with('records',$records);
+          ->orderby('proforma_invoices.id')->paginate(10);
+
+      $id = array();
+      foreach($records as $rec){
+        array_push($id,$rec->id);
+      }
+      $inv_records = ProformaInvoiceInventory::leftjoin('inventories','proforma_invoice_inventories.inventory_id','=','inventories.id')
+      ->leftjoin('inventory_kits','proforma_invoice_inventories.kits_id','=','inventory_kits.id')
+      ->whereIn('proforma_invoice_inventories.proforma_invoice_id', $id)->get();
+
+      return view('/shippment/proforma/records')->with('records',$records)->with('inv_records',$inv_records);
     }
 
     /**
@@ -81,7 +90,6 @@ class ProformaInvoiceController extends Controller
       $recordID = ProformaInvoice::select('id')->where('order_id','=',$request->order_id)->first();
       //the inventory amount part
       $length = count($request->item_id);
-      echo $length;
       for($i=0 ; $i<$length ; $i++){
         //$check_is_kit = strstr($request->item_id[$i],'K',true);
         if(strpos($request->item_id[$i],"K")){

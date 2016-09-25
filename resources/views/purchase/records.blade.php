@@ -30,12 +30,25 @@
               <td>{{ $record->order_id }}</td>
               <td>{{ $record->purchase_date }}</td>
               <td>{{ $record->supplier_name }}</td>
-              <td>{{ $record->count }}</td>
-              <td>NT$ {{ $record->amount }}</td>
+              <td>
+                @foreach($inv_records as $inv_rec)
+                  @if($inv_rec->purchase_records_id == $record->id)
+                  {{$inv_rec->item_name}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td>
+                @foreach($inv_records as $inv_rec)
+                  @if($inv_rec->purchase_records_id == $record->id)
+                  {{ number_format( $inv_rec->total , 2 ) }}<br>
+                  @endif
+                @endforeach
+                <strong>{{ number_format($record->amount,2) }}</strong>
+              </td>
               <td>
                 <div class="btn-group">
-                  <button type="button" target="center" class="btn btn-info btn-raised" onclick="window.location.href='{{ URL::route('purchase.show', $record->id) }}'">查看 / Details</button>
-                  <button type="button" class="btn btn-info dropdown-toggle btn-raised" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('purchase.show', $record->id) }}'">查看 / Details</button>
+                  <button type="button" class="btn btn-info dropdown-toggle btn-raised btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>

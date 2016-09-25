@@ -15,18 +15,19 @@
           <a href="/shippment/proforma"><button type="button" class="btn btn-primary btn-raised">新增報價單 / New Proforma Invoice</button></a>
         </div>
       </div>
-        <div class="col-sm-10 col-sm-offset-1">
+        <div class="col-sm-12">
           @if(count($records)>0)
           <table class="table table-condensed table-bordered table-hover">
             <tr>
-              <td>訂單編號</td>
-              <td>客戶</td>
-              <td>聯絡人</td>
-              <td>輸出至出貨單</td>
-              <td>報價日期</td>
-              <td>到期日</td>
-              <td>報價金額</td>
-              <td>詳細內容</td>
+              <td class="col-sm-1">訂單編號</td>
+              <td class="col-sm-1">客戶</td>
+              <td class="col-sm-1">聯絡人</td>
+              <td class="col-sm-1">輸出至出貨單</td>
+              <td class="col-sm-1">報價日期</td>
+              <td class="col-sm-1">到期日</td>
+              <td class="col-sm-3">報價項目</td>
+              <td class="col-sm-1">報價金額</td>
+              <td class="col-sm-2">詳細內容</td>
             </tr>
             @foreach($records as $record)
             <tr>
@@ -42,7 +43,21 @@
               </td>
               <td>{{ $record->create_date }}</td>
               <td>{{ $record->due_date }}</td>
-              <td>NT$ {{ $record->amount }}</td>
+              <td>
+                @foreach($inv_records as $inv_rec)
+                  @if($inv_rec->proforma_invoice_id == $record->id)
+                  {{$inv_rec->item_name}}{{$inv_rec->kits_name}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($inv_records as $inv_rec)
+                  @if($inv_rec->proforma_invoice_id == $record->id)
+                  {{ number_format($inv_rec->total,2) }}<br>
+                  @endif
+                @endforeach
+                <strong>{{ number_format($record->amount,2) }}</strong>
+              </td>
               <td>
                 <div class="btn-group">
                   <button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('shippment.proforma.show', $record->id) }}'">內容 / Details</button>
@@ -70,6 +85,7 @@
             </tr>
             @endforeach
           </table>
+          {{ $records->links() }}
           @endif
         </div>
     </div>

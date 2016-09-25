@@ -18,6 +18,7 @@ use App\ProformaInvoice;
 use App\ProformaInvoiceInventory;
 use DB;
 use Mail;
+use Excel;
 
 class DashboardController extends Controller
 {
@@ -52,76 +53,15 @@ class DashboardController extends Controller
         ->with('total',$total)->with('rec_customer',$rec_customer)->with('final_total',$final_total);
     }
 
-    public function InformationIndex(){
-      $inventory = Inventory::distinct()->orderby('id','asc')->get();
-      $customer = Customer::distinct()->orderby('id','asc')->get();
-      $supplier = Supplier::distinct()->orderby('id','asc')->get();
-      return view('information/index')->with('inventory',$inventory)
-        ->with('customer',$customer)->with('supplier',$supplier);
-    }
-
-    public function InformationExport(Request $request,$type){
-
-      $mycompany = MyCompany::firstOrNew(['id' => '1']);
-
-      switch ($type) {
-        case 'customer':
-        $information = Customer::whereIn('id', $request->customer)->get();
-        return view('information/show')
-          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
-          break;
-
-        case 'inventory':
-        $information = Inventory::whereIn('id', $request->inventory)->get();
-        return view('information/show')
-          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
-          break;
-
-        case 'supplier':
-        $information = Supplier::whereIn('id', $request->supplier)->get();
-        return view('information/show')
-          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
-          break;
-        //
-        case 'invoices':
-          switch($request->invoice_type){
-            case 'purchase':
-              $type = 'purchase';
-              $information = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
-                  ->select('purchase_records.*','suppliers.supplier_name')
-                  ->addSelect(DB::raw("(SELECT sum(total) from purchase_inventory_records WHERE purchase_inventory_records.purchase_records_id = purchase_records.id) as amount"))
-                  ->whereBetween('purchase_date', [$request->start_date,$request->end_date])->get();
-              break;
-
-            case 'proforma':
-              $type = 'proforma';
-              $information = Supplier::whereIn('id', $request->supplier)->get();
-              break;
-
-            case 'commercial':
-              $type = 'commercial';
-              $information = Supplier::whereIn('id', $request->supplier)->get();
-              break;
-
-            default:
-
-              break;
-
-          }
-        return view('information/show')
-          ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
-          break;
-
-        default:
-          # code...
-          break;
-      }
-    }
-
     public function test(){
-      Mail::raw('測試使用 Laravel 5 的 Mailgun 寄信服務', function($message)
-      {
-        $message->to('g50905g@gmail.com');
+      Excel::create('New file', function($excel) {
+
+        $excel->sheet('New sheet', function($sheet) {
+
+          $sheet->loadView('information.show');
+
+        });
+
       });
     }
 }

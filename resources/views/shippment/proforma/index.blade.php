@@ -266,7 +266,6 @@ function setTotal(rowid){
               <tr>
                 <td>編號</td><td><input id="form_id" type="text" class="form-control" name="order_id" required></td>
                 <td>日期</td><td><input type="date" id="date_now" class="form-control" name="create_date" value="" required></td>
-
               </tr>
               <tr>
                 <td>Bill To:</td>

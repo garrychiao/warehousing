@@ -181,6 +181,130 @@ function check_all(obj,cName)
             </div>
             <div role="tabpanel" class="tab-pane fade" id="invoices">
               <h2>Invoices</h2>
+              <div class="col-sm-12">
+                <!--purchase records panel-->
+                <div class="col-sm-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading"><strong>進貨資料 / Purchase Records</strong></div>
+                    <div class="panel-body">
+                      <form class="" action="{{ url('/information/invoices_purchase') }}" method="post">
+                        {!! csrf_field() !!}
+                        <div class="form-group">
+                          <label for="select111" class="col-sm-12 control-label">供應商 <br> Supplier</label>
+                          <div class="col-sm-12">
+                            <select name="supplier_id" class="form-control">
+                              <option value="0">--select--</option>
+                              @forelse($supplier as $sup)
+                              <option value="{{ $sup->id}}">{{{ $sup->supplier_name }}}</option>
+                              @empty
+
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="select111" class="col-sm-12 control-label">日期 <br> Date</label>
+                          <label for="start_date" class="col-sm-2 control-label">起<br>From</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" id="pur_start_date" name="start_date" placeholder="From" required>
+                          </div>
+                          <label for="end_date" class="col-sm-2 control-label">迄<br>To</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" id="pur_end_date" name="end_date" placeholder="From" required>
+                          </div>
+                        </div>
+                        <input type="submit" class="btn btn-success btn-raised" value="查詢 / Search">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <!--proforma invoice records panel-->
+                <div class="col-sm-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading"><strong>報價資料 / Proforma Invoice Records</strong></div>
+                    <div class="panel-body">
+                      <form class="" action="{{ url('/information/invoices_proforma') }}" method="post">
+                        {!! csrf_field() !!}
+                        <div class="form-group">
+                          <label for="select111" class="col-sm-12 control-label">客戶 <br> Customer</label>
+                          <div class="col-sm-12">
+                            <select name="supllier_id" class="form-control">
+                              <option>--select--</option>
+                              @forelse($customer as $cus)
+                              <option value="{{ $cus->id}}">{{{ $cus->eng_name }}}</option>
+                              @empty
+
+                              @endforelse
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="select111" class="col-sm-12 control-label">日期 <br> Date</label>
+                          <label for="start_date" class="col-sm-2 control-label">起<br>From</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" id="pro_start_date" name="start_date" placeholder="From" required>
+                          </div>
+                          <label for="end_date" class="col-sm-2 control-label">迄<br>To</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" id="pro_end_date" name="end_date" placeholder="To" required>
+                          </div>
+                        </div>
+                        <input type="submit" class="btn btn-success btn-raised" value="查詢 / Search">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <!--commercial invoice records panel-->
+                <div class="col-sm-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading"><strong>出貨資料 / Commercial Invoice Records</strong></div>
+                    <div class="panel-body">
+                      <form class="" action="{{ url('/information/invoices_commercial') }}" method="post">
+                        {!! csrf_field() !!}
+                        <div class="form-group">
+                          <label for="select111" class="col-sm-12 control-label">客戶 <br> Customer</label>
+                          <div class="col-sm-12">
+                            <select name="supllier_id" class="form-control">
+                              <option>--select--</option>
+                              @forelse($customer as $cus)
+                              <option value="{{ $cus->id}}">{{{ $cus->eng_name }}}</option>
+                              @empty
+
+                              @endforelse
+                            </select>
+                          </div>
+                          <label for="select111" class="col-sm-12 control-label">日期 <br> Date</label>
+                          <label for="start_date" class="col-sm-2 control-label">起<br>From</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" id="com_start_date" name="start_date" placeholder="From" required>
+                          </div>
+                          <label for="end_date" class="col-sm-2 control-label">迄<br>To</label>
+                          <div class="col-sm-10">
+                            <input type="date" class="form-control" id="com_end_date" name="end_date" placeholder="To" required>
+                          </div>
+                        </div>
+                        <input type="submit" class="btn btn-success btn-raised" value="查詢 / Search">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <script type="text/javascript">
+                var now = new Date();
+                var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
+                var date = new Date();
+                var start_date = new Date();
+                date.setHours(now.getDate() + 8 );
+                start_date.setDate(1);
+                start_date.setHours(start_date.getDate() + 8 );
+                document.getElementById('pur_start_date').valueAsDate = start_date;
+                document.getElementById('pur_end_date').valueAsDate = date;
+                document.getElementById('pro_start_date').valueAsDate = start_date;
+                document.getElementById('pro_end_date').valueAsDate = date;
+                document.getElementById('com_start_date').valueAsDate = start_date;
+                document.getElementById('com_end_date').valueAsDate = date;
+              </script>
+              <!--
               <form action="{{ url('/information/invoices') }}" method="post">
                 {!! csrf_field() !!}
                 <div class="col-sm-3">
@@ -219,6 +343,7 @@ function check_all(obj,cName)
                   <input type="submit" name="name" class="btn btn-success btn-raised" value="Export">
                 </div>
               </form>
+            -->
             </div>
 
           </div>

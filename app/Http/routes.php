@@ -70,14 +70,16 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::get('deleteImage/{id}/{item_id}','ImageController@deleteImage');
     //Managing Information Export
-    Route::get('information','DashboardController@InformationIndex');
+    Route::get('information','InformationController@InformationIndex');
 
-    Route::post('information/{type}','DashboardController@InformationExport');
+    Route::post('information/{type}','InformationController@InformationExport');
     //Converts the proforma records to shipping records
     Route::get('convert/{id}','DashboardController@convert');
     //Excel and PDF
     //excel
     Route::post('excel','ExcelController@exportExcel');
+    //invoices excel outputs
+    Route::post('excel','ExcelController@exportExcel_invoice');
     //pdf
     Route::post('pdf','ExcelController@exportPDF');
 

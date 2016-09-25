@@ -27,6 +27,7 @@
               <input type="submit" class="btn btn-primary btn-raised btn-block" value="Excel">
             </form>
           </div>
+          <a href="{{ url('/test')}}"><button type="button" class="btn btn-primary btn-raised">test</button></a>
           <!--
           <div class="col-sm-2">
             <form class="form-horizontal" action="{{ url('/pdf')}}" method="post" role="form">
@@ -42,7 +43,7 @@
           </div>-->
         </div>
         <div class="col-sm-12">
-          <table class="table table-condensed table-bordered">
+          <table class="table table-condensed table-bordered table-striped">
             <tr>
               <td colspan="2" align="center">
                 <h2>{{$mycompany->eng_name}}</h2>
@@ -57,12 +58,6 @@
                 <h4>Product Informations</h4>
                 @elseif($type == "supplier")
                 <h4>Supplier Informations</h4>
-                @elseif($type == "purchase")
-                <h4>Purchased Informations</h4>
-                @elseif($type == "proforma")
-                <h4>Proforma Invoices Informations</h4>
-                @elseif($type == "commercial")
-                <h4>Commercial Invoices Informations</h4>
                 @endif
               </td>
               <td>
@@ -71,7 +66,7 @@
               </td>
             </tr>
           </table>
-          <table class="table table-condensed table-bordered table-hover">
+          <table class="table table-condensed table-bordered table-hover table table-striped">
           <!--The customer information shows here-->
           @if( $type == "customer")
             <tr>
@@ -171,37 +166,7 @@
             <td>無資料</td>
           </tr>
           @endforelse
-          <!--Purchase Records Informations-->
-          @elseif($type == "purchase")
-          <tr>
-            <td>ID</td>
-            <td>採購日期</td>
-            <td>供應廠商</td>
-            <td>總金額</td>
-            <td>交貨日期</td>
-            <td>地址</td>
-          </tr>
-          @forelse($information as $pur)
-          <tr>
-            <td>{{ $pur->order_id}}</td>
-            <td>{{ $pur->purchase_date}}</td>
-            <td>{{ $pur->supplier_name}}</td>
-            <td>{{ $pur->amount}}</td>
-            <td>{{ $pur->delivery_date}}</td>
-            <td>{{ $pur->delivery_address}}</td>
-          </tr>
-          @empty
-          <tr>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-          </tr>
-          @endforelse
           @endif
-
           </table>
         </div>
       </div>
