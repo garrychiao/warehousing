@@ -16,7 +16,7 @@
             <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
           </div>
           <div class="col-sm-2">
-            <form class="form-horizontal" action="{{ url('/excel')}}" method="post" role="form">
+            <form class="form-horizontal" action="{{ url('/excel_invoice')}}" method="post" role="form">
               {!! csrf_field() !!}
               <input type="hidden" name="export_type" value="{{ $type }}" />
               @forelse($information as $info)

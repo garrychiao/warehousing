@@ -26,7 +26,7 @@
               <td class="col-sm-1">出貨日期</td>
               <td class="col-sm-2">出貨項目</td>
               <td class="col-sm-1">金額</td>
-              <td class="col-sm-1"></td>
+              <td class="col-sm-1">詳細內容</td>
             </tr>
             @foreach($records as $record)
             <tr>

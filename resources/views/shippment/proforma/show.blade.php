@@ -17,6 +17,7 @@
                 <a href="{{ url('/shippment/proforma/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
                 <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
                 <a><button type="button" target="center" class="btn btn-primary btn-raised" onclick="window.location.href='{{ URL::route('shippment.proforma.edit', $records->id) }}'">修改 / Modify</button></a>
+                <a href="{{ url('/excel/proforma/'.$records->id) }}"><button type="button" class="btn btn-primary btn-raised">Excel</button></a>
               </div>
             </div>
           </div>

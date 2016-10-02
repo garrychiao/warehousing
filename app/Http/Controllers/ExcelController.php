@@ -13,10 +13,15 @@ use App\MyCompany;
 use App\InventoryKit;
 use App\PurchaseRecord;
 use App\PurchaseInventoryRecord;
+use App\ProformaInvoice;
+use App\ProformaInvoiceInventory;
+use App\CommercialInvoice;
+use App\CommercialInvoiceInventory;
 use DB;
 
 class ExcelController extends Controller
 {
+    //for information basic customer, inventory and supplier
     public function exportExcel(Request $request){
       $type = $request->export_type;
       switch ($type) {
@@ -106,7 +111,7 @@ class ExcelController extends Controller
 
       })->export('xls');
     }
-
+    // for information output invoices
     public function exportExcel_invoice(Request $request){
       $type = $request->export_type;
       switch ($type) {
@@ -222,7 +227,99 @@ class ExcelController extends Controller
 
       })->export('xls');
     }
+    //for shown records
+    public function exportExcel_record($invoice, $id){
 
+      $mycompany = MyCompany::firstOrNew(['id' => '1']);
+
+      switch($invoice){
+        //purchase records
+        case 'purchase':
+          //get basic records
+          $records = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
+          ->select('purchase_records.*','suppliers.supplier_name')
+          ->where('purchase_records.id','=',$id)->get();
+          //get each inventory records
+          $inventory = PurchaseInventoryRecord::join('inventories','inventories.id','=','purchase_inventory_records.inventory_id')
+          ->select('purchase_inventory_records.*','inventories.item_id','inventories.item_name')
+          ->where('purchase_records_id','=',$id)->get();
+          //set kits null
+          $inventory_kits_records = null;
+          //data passed to purchase/excel.blade.php which copied from purchase/show.blade.php
+          $total = PurchaseInventoryRecord::where('purchase_records_id','=',$id)->sum('total');
+          //customer/supplier name + order id
+          $FileName = $records[0]->supplier_name."_".$records[0]->order_id;
+          break;
+        //proforma invoice records
+        case 'proforma':
+          //get basic records
+          $records = ProformaInvoice::join('customers','customers.id','=','proforma_invoices.customer_id')
+          ->select('proforma_invoices.*','customers.eng_name')
+          ->where('proforma_invoices.id','=',$id)->get();
+          //get each inventory records
+          $inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
+          ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name')
+          ->where('proforma_invoice_id','=',$id)->get();
+          //get inventory kits
+          $inventory_kits_records = ProformaInvoiceInventory::join('inventory_kits','inventory_kits.id','=','proforma_invoice_inventories.kits_id')
+          ->select('proforma_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id','inventory_kits.kits_description')
+          ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
+          //data passed to purchase/excel.blade.php which copied from purchase/show.blade.php
+          $total = PurchaseInventoryRecord::where('purchase_records_id','=',$id)->sum('total');
+          //customer/supplier name + order id
+          $FileName = $records[0]->eng_name."_".$records[0]->order_id;
+          break;
+
+        case 'commercial':
+          //get basic records
+          $records = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
+          ->select('purchase_records.*','suppliers.supplier_name')
+          ->where('purchase_records.id','=',$id)->get();
+          //get each inventory records
+          $inventory = PurchaseInventoryRecord::join('inventories','inventories.id','=','purchase_inventory_records.inventory_id')
+          ->select('purchase_inventory_records.*','inventories.item_id','inventories.item_name')
+          ->where('purchase_records_id','=',$id)->get();
+          //data passed to purchase/excel.blade.php which copied from purchase/show.blade.php
+          $total = PurchaseInventoryRecord::where('purchase_records_id','=',$id)->sum('total');
+          //customer/supplier name + order id
+          $FileName = $records[0]->supplier_name."_".$records[0]->order_id;
+          break;
+
+        default:
+          # code...
+          break;
+      }
+
+      Excel::create($FileName, function($excel) use($FileName,$invoice,$mycompany,$records,$inventory,$total,$inventory_kits_records) {
+
+        $excel->sheet('Sheetname', function($sheet) use($FileName,$invoice,$mycompany,$records,$inventory,$total,$inventory_kits_records) {
+
+          switch($invoice){
+            case 'purchase':
+            $sheet->loadView('purchase.excel')->with('records',$records)->with('inventory',$inventory)
+                ->with('mycompany',$mycompany)->with('total',$total);
+              break;
+
+            case 'proforma':
+            $sheet->loadView('shippment.proforma.excel')->with('records',$records)->with('inventory',$inventory)
+                ->with('mycompany',$mycompany)->with('total',$total)->with('inventory_kits_records',$inventory_kits_records);
+              break;
+
+            case 'commercial':
+            $sheet->loadView('purchase.excel')->with('records',$records)->with('inventory',$inventory)
+                ->with('mycompany',$mycompany)->with('total',$total);
+              break;
+
+            default:
+              # code...
+              break;
+          }
+          
+        });
+
+      })->export('xls');
+
+    }
     /*
     public function exportPDF(Request $request){
       $type = $request->export_type;

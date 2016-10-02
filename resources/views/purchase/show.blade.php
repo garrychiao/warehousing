@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
+          @if(count($records)>0)
           <div class="hidden-print">
             <div class="alert alert-success" role="alert">
               採購單 / Purchasing
@@ -13,13 +14,13 @@
               {{$records->order_id}}
             </div>
             <div class="btn-group btn-group-justified">
-              <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-              <a href="/purchase/create"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+              <a href="{{ url('/home') }}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+              <a href="{{ url('/purchase/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
               <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
               <a><button type="button" target="center" class="btn btn-primary btn-raised" onclick="window.location.href='{{ URL::route('purchase.edit', $records->id) }}'">修改 / Modify</button></a>
+              <a href="{{ url('/excel/purchase/'.$records->id) }}"><button type="button" class="btn btn-primary btn-raised">Excel</button></a>
             </div>
           </div>
-          @if(count($records)>0)
           <table class="table table-condensed table-bordered table-hover" id="print_area">
             <tr>
               <th colspan="6"><h3 align="center">{{ $mycompany->name }}<br>{{ $mycompany->eng_name }}</h3>
