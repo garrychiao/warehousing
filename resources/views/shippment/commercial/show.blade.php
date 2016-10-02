@@ -16,6 +16,7 @@
               <a href="{{ url('/home') }}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
               <a href="{{ url('/shippment/commercial/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
               <a><button type="button" class="btn btn-primary btn-raised" onclick="print()">列印 / Print</button></a>
+              <a href="{{ url('/excel/commercial/'.$records->id) }}"><button type="button" class="btn btn-primary btn-raised">Excel</button></a>
             </div>
           </div>
 

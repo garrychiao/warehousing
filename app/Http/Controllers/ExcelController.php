@@ -265,24 +265,30 @@ class ExcelController extends Controller
           ->select('proforma_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id','inventory_kits.kits_description')
           ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
           //data passed to purchase/excel.blade.php which copied from purchase/show.blade.php
-          $total = PurchaseInventoryRecord::where('purchase_records_id','=',$id)->sum('total');
+          $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
+          $total = $total_inv + $records->sandh;
           //customer/supplier name + order id
           $FileName = $records[0]->eng_name."_".$records[0]->order_id;
           break;
 
         case 'commercial':
           //get basic records
-          $records = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
-          ->select('purchase_records.*','suppliers.supplier_name')
-          ->where('purchase_records.id','=',$id)->get();
+          $records = CommercialInvoice::join('customers','customers.id','=','commercial_invoices.customer_id')
+          ->select('commercial_invoices.*','customers.eng_name')
+          ->where('commercial_invoices.id','=',$id)->get();
           //get each inventory records
-          $inventory = PurchaseInventoryRecord::join('inventories','inventories.id','=','purchase_inventory_records.inventory_id')
-          ->select('purchase_inventory_records.*','inventories.item_id','inventories.item_name')
-          ->where('purchase_records_id','=',$id)->get();
+          $inventory = CommercialInvoiceInventory::join('inventories','inventories.id','=','commercial_invoice_inventories.inventory_id')
+          ->select('commercial_invoice_inventories.*','inventories.item_id','inventories.item_name')
+          ->where('commercial_invoice_id','=',$id)->get();
+          //get inventory kits
+          $inventory_kits_records = CommercialInvoiceInventory::join('inventory_kits','inventory_kits.id','=','commercial_invoice_inventories.kits_id')
+          ->select('commercial_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id','inventory_kits.kits_description')
+          ->whereNotNull('commercial_invoice_inventories.kits_id')->where('commercial_invoice_id','=',$id)->get();
           //data passed to purchase/excel.blade.php which copied from purchase/show.blade.php
-          $total = PurchaseInventoryRecord::where('purchase_records_id','=',$id)->sum('total');
-          //customer/supplier name + order id
-          $FileName = $records[0]->supplier_name."_".$records[0]->order_id;
+          $total = CommercialInvoiceInventory::select(DB::raw('SUM(total) as total'),DB::raw('SUM(weight) as weight'),DB::raw('SUM(quantity) as quantity'),DB::raw('SUM(unit_price) as unit_price'))
+          ->where('commercial_invoice_id','=',$id)->first();
+
+          $FileName = $records[0]->eng_name."_".$records[0]->order_id;
           break;
 
         default:
@@ -306,15 +312,16 @@ class ExcelController extends Controller
               break;
 
             case 'commercial':
-            $sheet->loadView('purchase.excel')->with('records',$records)->with('inventory',$inventory)
-                ->with('mycompany',$mycompany)->with('total',$total);
+            $sheet->loadView('shippment.commercial.excel')->with('records',$records)->with('inventory',$inventory)
+                ->with('mycompany',$mycompany)->with('total',$total)
+                ->with('inventory_kits_records',$inventory_kits_records);
               break;
 
             default:
               # code...
               break;
           }
-          
+
         });
 
       })->export('xls');

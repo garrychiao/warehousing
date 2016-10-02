@@ -24,17 +24,17 @@ tr td {
   </tr>
   <tr>
     <!--make newline character working -->
-    <td colspan="4">{!!nl2br(e($record->bill_to))!!}</td>
-    <td colspan="4">{!!nl2br(e($record->ship_to))!!}</td>
+    <td colspan="4" style="height:60px;">{!!nl2br(e($record->bill_to))!!}</td>
+    <td colspan="4" style="height:60px;">{!!nl2br(e($record->ship_to))!!}</td>
   </tr>
   <tr class="success">
-    <th class="col-sm-1">P.O. Number</th>
-    <th class="col-sm-1">Payment Terms</th>
-    <th class="col-sm-1">Rep</th>
-    <th class="col-sm-1">Ship</th>
-    <th class="col-sm-1">Via</th>
-    <th class="col-sm-1">Shipping Term</th>
-    <th class="col-sm-1">Due Date</th>
+    <th style="width:20px;">P.O. Number</th>
+    <th style="width:20px;">Payment Terms</th>
+    <th style="width:20px;">Rep</th>
+    <th style="width:20px;">Ship</th>
+    <th style="width:20px;">Via</th>
+    <th style="width:20px;">Shipping Term</th>
+    <th style="width:20px;">Due Date</th>
   </tr>
   <tr>
     <td>{{$record->POnumber}}</td>
