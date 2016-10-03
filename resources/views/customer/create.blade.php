@@ -176,7 +176,7 @@
             </td>
             <!--<td><input type="text" class="form-control" name="consignee_address" placeholder="Address"></td>-->
             <td>
-              <input type="text" id="consignee_zip" class="form-control" name="consignee_zip" placeholder="Zip Code">
+              <!--<input type="text" id="consignee_zip" class="form-control" name="consignee_zip" placeholder="Zip Code">-->
               <textarea name="consignee_address" id="consignee_address" type="text" rows="5" class="form-control" placeholder="Address"></textarea>
             </td>
           </tr>

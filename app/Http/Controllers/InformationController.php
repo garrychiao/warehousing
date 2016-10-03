@@ -91,13 +91,83 @@ class InformationController extends Controller
         break;
       //
       case 'invoices_proforma':
+        if($request->customer_id!=0){
+          $information = ProformaInvoice::join('customers','customers.id','=','proforma_invoices.customer_id')
+              ->select('proforma_invoices.*','customers.eng_name')
+              ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
+              ->where('proforma_invoices.customer_id','=',$request->customer_id)
+              ->whereBetween('create_date', [$request->start_date,$request->end_date])->get();
+          //convert objects to array
+          $id = array();
+          foreach($information as $inf){
+            array_push($id,$inf->id);
+          }
+          $invoice_records = ProformaInvoiceInventory::leftjoin('inventories','proforma_invoice_inventories.inventory_id','=','inventories.id')
+          ->leftjoin('inventory_kits','proforma_invoice_inventories.kits_id','=','inventory_kits.id')
+          ->whereIn('proforma_invoice_id', $id)->get();
 
+          return view('information/show_invoice')
+            ->with('type',$type)->with('information',$information)
+            ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
+        }else{
+          $information = ProformaInvoice::join('customers','customers.id','=','proforma_invoices.customer_id')
+              ->select('proforma_invoices.*','customers.eng_name')
+              ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
+              ->whereBetween('create_date', [$request->start_date,$request->end_date])->get();
+          //convert objects to array
+          $id = array();
+          foreach($information as $inf){
+            array_push($id,$inf->id);
+          }
+          $invoice_records = ProformaInvoiceInventory::leftjoin('inventories','proforma_invoice_inventories.inventory_id','=','inventories.id')
+          ->leftjoin('inventory_kits','proforma_invoice_inventories.kits_id','=','inventory_kits.id')
+          ->whereIn('proforma_invoice_id', $id)->get();
+
+          return view('information/show_invoice')
+            ->with('type',$type)->with('information',$information)
+            ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
+
+        }
 
         break;
       //
       case 'invoices_commercial':
+        if($request->customer_id!=0){
+          $information = Commercial::join('customers','customers.id','=','commercial_invoices.customer_id')
+              ->select('commercial_invoices.*','customers.eng_name')
+              ->addSelect(DB::raw("(SELECT sum(total) from commercial_invoice_inventories WHERE commercial_invoice_inventories.commercial_invoice_id = commercial_invoices.id) as amount"))
+              ->where('commercial_invoices.customer_id','=',$request->customer_id)
+              ->whereBetween('create_date', [$request->start_date,$request->end_date])->get();
+          //convert objects to array
+          $id = array();
+          foreach($information as $inf){
+            array_push($id,$inf->id);
+          }
+          $invoice_records = CommercialInvoiceInventory::leftjoin('inventories','commercial_invoice_inventories.inventory_id','=','inventories.id')
+          ->leftjoin('inventory_kits','commercial_invoice_inventories.kits_id','=','inventory_kits.id')
+          ->whereIn('commercial_invoice_id', $id)->get();
 
+          return view('information/show_invoice')
+            ->with('type',$type)->with('information',$information)
+            ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
+        }else{
+          $information = CommercialInvoice::join('customers','customers.id','=','commercial_invoices.customer_id')
+              ->select('commercial_invoices.*','customers.eng_name')
+              ->addSelect(DB::raw("(SELECT sum(total) from commercial_invoice_inventories WHERE commercial_invoice_inventories.commercial_invoice_id = commercial_invoices.id) as amount"))
+              ->whereBetween('create_date', [$request->start_date,$request->end_date])->get();
+          //convert objects to array
+          $id = array();
+          foreach($information as $inf){
+            array_push($id,$inf->id);
+          }
+          $invoice_records = CommercialInvoiceInventory::leftjoin('inventories','commercial_invoice_inventories.inventory_id','=','inventories.id')
+          ->leftjoin('inventory_kits','commercial_invoice_inventories.kits_id','=','inventory_kits.id')
+          ->whereIn('commercial_invoice_id', $id)->get();
 
+          return view('information/show_invoice')
+            ->with('type',$type)->with('information',$information)
+            ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
+        }
         break;
 
       default:

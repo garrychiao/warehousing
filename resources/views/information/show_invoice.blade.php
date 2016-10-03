@@ -56,56 +56,158 @@
 
           <!--Purchase Records Informations-->
           @if($type == "invoices_purchase")
-          <tr>
-            <th class="col-sm-1">ID</th>
-            <th class="col-sm-1">採購日期</th>
-            <th class="col-sm-1">供應廠商</th>
-            <th class="col-sm-2">進貨項目</th>
-            <th class="col-sm-1">數量</th>
-            <th class="col-sm-1">金額</th>
-            <th class="col-sm-1">交貨日期</th>
-          </tr>
-          @forelse($information as $pur)
-          <tr>
-            <td>{{ $pur->order_id}}</td>
-            <td>{{ $pur->purchase_date}}</td>
-            <td>{{ $pur->supplier_name}}</td>
-            <!--purchased inventories-->
-            <td>
-              @foreach($invoice_records as $inv_rec)
-                @if($inv_rec->purchase_records_id == $pur->id)
-                {{$inv_rec->item_name}}<br>
-                @endif
-              @endforeach
-            </td>
-            <td align="right">
-              @foreach($invoice_records as $inv_rec)
-                @if($inv_rec->purchase_records_id == $pur->id)
-                {{$inv_rec->quantity}}<br>
-                @endif
-              @endforeach
-            </td>
-            <td align="right">
-              @foreach($invoice_records as $inv_rec)
-                @if($inv_rec->purchase_records_id == $pur->id)
-                {{ number_format( $inv_rec->total , 2 ) }}<br>
-                @endif
-              @endforeach
-              <strong>{{ number_format($pur->amount,2) }}</strong>
-            </td>
-            <td>{{ $pur->delivery_date}}</td>
-          </tr>
-          @empty
-          <tr>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-            <td>無資料</td>
-          </tr>
-          @endforelse
+            <tr>
+              <th class="col-sm-1">ID</th>
+              <th class="col-sm-1">採購日期 / Purchased Date</th>
+              <th class="col-sm-1">供應廠商 / Supplier</th>
+              <th class="col-sm-2">進貨項目 / Item</th>
+              <th class="col-sm-1">數量 / Quantity</th>
+              <th class="col-sm-1">金額 / Total</th>
+              <th class="col-sm-1">交貨日期 / Delivery Date</th>
+            </tr>
+            @forelse($information as $pur)
+            <tr>
+              <td>{{ $pur->order_id}}</td>
+              <td>{{ $pur->purchase_date}}</td>
+              <td>{{ $pur->supplier_name}}</td>
+              <!--purchased inventories-->
+              <td>
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->purchase_records_id == $pur->id)
+                  {{$inv_rec->item_name}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->purchase_records_id == $pur->id)
+                  {{$inv_rec->quantity}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->purchase_records_id == $pur->id)
+                  {{ number_format( $inv_rec->total , 2 ) }}<br>
+                  @endif
+                @endforeach
+                <strong>{{ number_format($pur->amount,2) }}</strong>
+              </td>
+              <td>{{ $pur->delivery_date}}</td>
+            </tr>
+            @empty
+            <tr>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+            </tr>
+            @endforelse
+          @elseif($type == "invoices_proforma")
+            <tr>
+              <th class="col-sm-1">ID</th>
+              <th class="col-sm-1">日期 / Date</th>
+              <th class="col-sm-1">客戶 / Customer</th>
+              <th class="col-sm-2">項目 / Item</th>
+              <th class="col-sm-1">數量 / Quantity</th>
+              <th class="col-sm-1">金額 / Total</th>
+              <th class="col-sm-1">到期 / Due Date</th>
+            </tr>
+            @forelse($information as $pro)
+            <tr>
+              <td>{{ $pro->order_id}}</td>
+              <td>{{ $pro->create_date}}</td>
+              <td>{{ $pro->eng_name}}</td>
+              <!--purchased inventories-->
+              <td>
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->proforma_invoice_id == $pro->id)
+                  {{$inv_rec->item_name}} {{ $inv_rec->kits_name}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->proforma_invoice_id == $pro->id)
+                  {{$inv_rec->quantity}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->proforma_invoice_id == $pro->id)
+                  {{ number_format( $inv_rec->total , 2 ) }}<br>
+                  @endif
+                @endforeach
+                <strong>{{ number_format($pro->amount,2) }}</strong>
+              </td>
+              <td>{{ $pro->due_date}}</td>
+            </tr>
+            @empty
+            <tr>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+            </tr>
+            @endforelse
+          @elseif($type == "invoices_commercial")
+            <tr>
+              <th class="col-sm-1">ID</th>
+              <th class="col-sm-1">日期 / Date</th>
+              <th class="col-sm-1">客戶 / Customer</th>
+              <th class="col-sm-2">項目 / Item</th>
+              <th class="col-sm-1">數量 / Quantity</th>
+              <th class="col-sm-1">金額 / Total</th>
+              <th class="col-sm-1">出貨到期 / Export Date</th>
+            </tr>
+            @forelse($information as $pro)
+            <tr>
+              <td>{{ $pro->order_id}}</td>
+              <td>{{ $pro->create_date}}</td>
+              <td>{{ $pro->eng_name}}</td>
+              <!--purchased inventories-->
+              <td>
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->commercial_invoice_id == $pro->id)
+                  {{$inv_rec->item_name}} {{ $inv_rec->kits_name}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->commercial_invoice_id == $pro->id)
+                  {{$inv_rec->quantity}}<br>
+                  @endif
+                @endforeach
+              </td>
+              <td align="right">
+                @foreach($invoice_records as $inv_rec)
+                  @if($inv_rec->commercial_invoice_id == $pro->id)
+                  {{ number_format( $inv_rec->total , 2 ) }}<br>
+                  @endif
+                @endforeach
+                <strong>{{ number_format($pro->amount,2) }}</strong>
+              </td>
+              <td>{{ $pro->export_date}}</td>
+            </tr>
+            @empty
+            <tr>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+              <td>無資料</td>
+            </tr>
+            @endforelse
           @endif
 
           </table>

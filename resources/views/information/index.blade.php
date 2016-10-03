@@ -228,7 +228,7 @@ function check_all(obj,cName)
                         <div class="form-group">
                           <label for="select111" class="col-sm-12 control-label">客戶 <br> Customer</label>
                           <div class="col-sm-12">
-                            <select name="supllier_id" class="form-control">
+                            <select name="customer_id" class="form-control">
                               <option>--select--</option>
                               @forelse($customer as $cus)
                               <option value="{{ $cus->id}}">{{{ $cus->eng_name }}}</option>

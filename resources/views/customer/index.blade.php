@@ -10,7 +10,7 @@
     document.getElementById("consignee_name").value = document.getElementById("notify_name").value;
     document.getElementById("consignee_contact").value = document.getElementById("notify_contact").value;
     document.getElementById("consignee_phone").value = document.getElementById("notify_phone").value;
-    document.getElementById("consignee_zip").value = document.getElementById("notify_zip").value;
+    //document.getElementById("consignee_zip").value = document.getElementById("notify_zip").value;
     document.getElementById("consignee_address").value = document.getElementById("notify_address").value;
   }
 </script>
@@ -175,7 +175,7 @@
                           地址<br>Address
                         </td>
                         <td>
-                          <input type="text" id="notify_zip" class="form-control" name="notify_zip" value="{{ $show->notify_zip }}" placeholder="Zip Code">
+                          <!--<input type="text" id="notify_zip" class="form-control" name="notify_zip" value="{{ $show->notify_zip }}" placeholder="Zip Code">-->
                           <textarea name="notify_address" id="notify_address" type="text" rows="5" class="form-control">{{ $show->notify_address }}</textarea>
                         </td>
                       </tr>
@@ -202,7 +202,7 @@
                         <td>地址<br>Address</td>
                         <!--<td><input type="text" class="form-control" name="consignee_address" ss"></td>-->
                         <td>
-                          <input type="text" class="form-control" id="consignee_zip" name="consignee_zip" value="{{ $show->consignee_zip }}" placeholder="Zip Code">
+                          <!--<input type="text" class="form-control" id="consignee_zip" name="consignee_zip" value="{{ $show->consignee_zip }}" placeholder="Zip Code">-->
                           <textarea name="consignee_address" id="consignee_address" type="text" rows="5" class="form-control">{{ $show->consignee_address }}</textarea>
                         </td>
                       </tr>

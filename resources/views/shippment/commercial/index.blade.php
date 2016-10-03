@@ -4,58 +4,6 @@
 @section('content')
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
-/*
-function addRow() {
-  var table = document.getElementById("tblInventory");
-  var num = document.getElementById("tblInventory").rows.length;
-  var row = table.insertRow(num);
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
-  var cell3 = row.insertCell(2);
-  var cell4 = row.insertCell(3);
-  var cell5 = row.insertCell(4);
-  var cell6 = row.insertCell(5);
-  var cell7 = row.insertCell(6);
-  var cell8 = row.insertCell(7);
-  //Create and append select list
-  var selectList = document.createElement("select");
-  selectList.id = "Select_id";
-  selectList.name = "item_id[]";
-  selectList.className = "form-control";
-  selectList.setAttribute("onchange", "changeInventory(this)");
-  cell1.appendChild(selectList);
-  @if(count( $inventory_kits )>0)
-    @foreach( $inventory_kits as $kits)
-    var option = document.createElement("option");
-    option.value = "{{$kits->id}}K";
-    option.text = "{{$kits->kits_id}}";
-    selectList.appendChild(option);
-    @endforeach
-  @endif
-    @forelse($inventory as $lstInventory)
-      var option = document.createElement("option");
-      option.value = "{{$lstInventory->id}}";
-      option.text = "{{$lstInventory->item_id}}";
-      selectList.appendChild(option);
-    @empty
-      var option = document.createElement("option");
-      option.text = "No Inventory";
-      selectList.appendChild(option);
-      cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="">';
-    @endforelse
-    @if(count($inventory)>0)
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif" required>';
-    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_description}}@else{{$inventory->first()->description}}@endif">';
-    @else
-    cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="" required>';
-    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="">';
-    @endif
-  cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>';
-  cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
-  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" onchange="countTotal()" required>';
-  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
-  cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="Delete">';
-}*/
 function addRow() {
   var table = document.getElementById("tblInventory");
   var num = document.getElementById("tblInventory").rows.length;
@@ -167,30 +115,14 @@ function changeByName(name){
     }
     changeInventory(selItemId);
 }
-/*
-function changeExporter(name) {
-  var value = name.value;
-  var index = name.selectedIndex;
-  @forelse($customer as $lstCustomer)
-    if(value =="{{$lstCustomer->id}}"){
-      document.getElementById("Exporter").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->contact_person }}";
-      document.getElementById("Exporter").innerHTML += "\r\n{{ $lstCustomer->phone }}";
-      document.getElementById("Exporter").innerHTML +="\r\n{{ $lstCustomer->recieve_zip_code }} {{$lstCustomer->recieve_address}}";
-      changeShipCustomer(name);
-    }
-  @empty
-    document.getElementById("exporter").value = "";
-  @endforelse
-}
-*/
 function changeConsignee(name) {
   var value = name.value;
   var index = name.selectedIndex;
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("consignee").innerHTML = "{{ $lstCustomer->consignee_name }}\r\n{{ $lstCustomer->consignee_contact }}";
-      document.getElementById("consignee").innerHTML += "\r\n{{ $lstCustomer->consignee_phone }}";
       document.getElementById("consignee").innerHTML +="\r\n{{ $lstCustomer->consignee_zip }} {{$lstCustomer->consignee_address}}";
+      document.getElementById("consignee").innerHTML += "\r\n{{ $lstCustomer->consignee_phone }}";
     }
     changeNotifyParty(name);
     document.getElementById('Notify').selectedIndex=index;
@@ -204,8 +136,8 @@ function changeNotifyParty(name) {
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("NotifyParty").innerHTML = "{{ $lstCustomer->notify_name }}\r\n{{ $lstCustomer->notify_contact }}";
-      document.getElementById("NotifyParty").innerHTML += "\r\n{{ $lstCustomer->notify_phone }}";
       document.getElementById("NotifyParty").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{$lstCustomer->notify_address}}";
+      document.getElementById("NotifyParty").innerHTML += "\r\n{{ $lstCustomer->notify_phone }}";
     }
   @empty
     document.getElementById("Notify").value = "";
