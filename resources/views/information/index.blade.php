@@ -21,16 +21,16 @@ function check_all(obj,cName)
         </div>
         <div class="col-sm-12">
           <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer</a></li>
+            <li role="presentation" class="active"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
+            <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer</a></li>
             <li role="presentation"><a href="#inventory" aria-controls="inventory" role="tab" data-toggle="tab">Inventory</a></li>
             <li role="presentation"><a href="#supplier" aria-controls="supplier" role="tab" data-toggle="tab">Supplier</a></li>
-            <li role="presentation"><a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">Invoices</a></li>
           </ul>
 
           <!-- Tab panes -->
           <div class="tab-content">
             <!--Customer Informations-->
-            <div role="tabpanel" class="tab-pane fade in active" id="customer">
+            <div role="tabpanel" class="tab-pane fade" id="customer">
               <h2>Customer Informations</h2>
               <div class="form-group">
                 <form class="" action="{{ url('/information/customer') }}" method="post">
@@ -179,7 +179,7 @@ function check_all(obj,cName)
                 </form>
               </div>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="invoices">
+            <div role="tabpanel" class="tab-pane fade in active" id="invoices">
               <h2>Invoices</h2>
               <div class="col-sm-12">
                 <!--purchase records panel-->

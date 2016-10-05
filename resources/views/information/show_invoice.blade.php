@@ -24,6 +24,8 @@
               @empty
 
               @endforelse
+              <input type="hidden" name="start_date" value="{{ $start_date }}" />
+              <input type="hidden" name="end_date" value="{{ $end_date }}" />
               <input type="submit" class="btn btn-primary btn-raised btn-block" value="Excel">
             </form>
           </div>
@@ -41,9 +43,9 @@
                 @if($type == "invoices_purchase")
                 <h4>Purchased Informations</h4>
                 @elseif($type == "invoices_proforma")
-                <h4>Proforma Invoices Informations</h4>
+                <h4>Proforma Invoice Informations</h4>
                 @elseif($type == "invoices_commercial")
-                <h4>Commercial Invoices Informations</h4>
+                <h4>Commercial Invoice Informations</h4>
                 @endif
               </td>
               <td>

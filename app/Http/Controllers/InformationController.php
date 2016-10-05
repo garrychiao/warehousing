@@ -70,7 +70,9 @@ class InformationController extends Controller
 
         return view('information/show_invoice')
           ->with('type',$type)->with('information',$information)
+          ->with('start_date',$request->start_date)->with('end_date',$request->end_date)
           ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
+
       }else{
         $information = PurchaseRecord::join('suppliers','suppliers.id','=','purchase_records.supplier_id')
             ->select('purchase_records.id','purchase_records.order_id','purchase_records.purchase_date','purchase_records.delivery_date','suppliers.supplier_name')
@@ -85,6 +87,7 @@ class InformationController extends Controller
         ->whereIn('purchase_records_id', $id)->get();
         return view('information/show_invoice')
           ->with('type',$type)->with('information',$information)
+          ->with('start_date',$request->start_date)->with('end_date',$request->end_date)
           ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
 
       }
@@ -108,6 +111,7 @@ class InformationController extends Controller
 
           return view('information/show_invoice')
             ->with('type',$type)->with('information',$information)
+            ->with('start_date',$request->start_date)->with('end_date',$request->end_date)
             ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
         }else{
           $information = ProformaInvoice::join('customers','customers.id','=','proforma_invoices.customer_id')
@@ -125,6 +129,7 @@ class InformationController extends Controller
 
           return view('information/show_invoice')
             ->with('type',$type)->with('information',$information)
+            ->with('start_date',$request->start_date)->with('end_date',$request->end_date)
             ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
 
         }
@@ -149,6 +154,7 @@ class InformationController extends Controller
 
           return view('information/show_invoice')
             ->with('type',$type)->with('information',$information)
+            ->with('start_date',$request->start_date)->with('end_date',$request->end_date)
             ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
         }else{
           $information = CommercialInvoice::join('customers','customers.id','=','commercial_invoices.customer_id')
@@ -166,6 +172,7 @@ class InformationController extends Controller
 
           return view('information/show_invoice')
             ->with('type',$type)->with('information',$information)
+            ->with('start_date',$request->start_date)->with('end_date',$request->end_date)
             ->with('mycompany',$mycompany)->with('invoice_records',$invoice_records);
         }
         break;
