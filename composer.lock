@@ -4,9 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5761e3d857a958847891898607281237",
-    "content-hash": "7c1ccf4d132f2284e64a217616a06413",
+    "hash": "f12690284a3e144a3b9ef286947f3f1a",
+    "content-hash": "19bb59c082d9e6f31fd7bb6b168b9e60",
     "packages": [
+        {
+            "name": "barryvdh/laravel-dompdf",
+            "version": "v0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-dompdf.git",
+                "reference": "9b8bd179262ad6b200a11edfe7b53516afcfc42a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-dompdf/zipball/9b8bd179262ad6b200a11edfe7b53516afcfc42a",
+                "reference": "9b8bd179262ad6b200a11edfe7b53516afcfc42a",
+                "shasum": ""
+            },
+            "require": {
+                "dompdf/dompdf": "^0.7",
+                "illuminate/support": "5.1.x|5.2.x|5.3.x",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\DomPDF\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "A DOMPDF Wrapper for Laravel",
+            "keywords": [
+                "dompdf",
+                "laravel",
+                "pdf"
+            ],
+            "time": "2016-08-17 08:17:33"
+        },
         {
             "name": "classpreloader/classpreloader",
             "version": "3.0.0",
@@ -565,30 +613,46 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "v0.6.2",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "cc06008f75262510ee135b8cbb14e333a309f651"
+                "reference": "5c98652b1a5beb7e3cc8ec35419b2828dd63ab14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/cc06008f75262510ee135b8cbb14e333a309f651",
-                "reference": "cc06008f75262510ee135b8cbb14e333a309f651",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/5c98652b1a5beb7e3cc8ec35419b2828dd63ab14",
+                "reference": "5c98652b1a5beb7e3cc8ec35419b2828dd63ab14",
                 "shasum": ""
             },
             "require": {
-                "phenx/php-font-lib": "0.2.*"
+                "ext-dom": "*",
+                "ext-gd": "*",
+                "ext-mbstring": "*",
+                "phenx/php-font-lib": "0.4.*",
+                "phenx/php-svg-lib": "0.1.*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.7-dev"
+                }
+            },
             "autoload": {
+                "psr-4": {
+                    "Dompdf\\": "src/"
+                },
                 "classmap": [
-                    "include/"
+                    "lib/"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "LGPL-2.1"
             ],
             "authors": [
                 {
@@ -598,11 +662,15 @@
                 {
                     "name": "Brian Sweeney",
                     "email": "eclecticgeek@gmail.com"
+                },
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com"
                 }
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
-            "time": "2015-12-07 04:07:13"
+            "time": "2016-05-11 00:36:29"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1386,49 +1454,6 @@
             "time": "2016-07-29 03:23:52"
         },
         {
-            "name": "mpdf/mpdf",
-            "version": "v5.7.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mpdf/mpdf.git",
-                "reference": "f9a374c7ea975ce8c795cec4dfd17ef55addac9c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/f9a374c7ea975ce8c795cec4dfd17ef55addac9c",
-                "reference": "f9a374c7ea975ce8c795cec4dfd17ef55addac9c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=4.3.10"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "mpdf.php",
-                    "classes"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-1.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Ian Back"
-                }
-            ],
-            "description": "A PHP class to generate PDF files from HTML with Unicode/UTF-8 and CJK support",
-            "homepage": "http://www.mpdf1.com/mpdf/index.php",
-            "keywords": [
-                "pdf",
-                "php",
-                "utf-8"
-            ],
-            "time": "2014-12-14 18:32:11"
-        },
-        {
             "name": "mtdowling/cron-expression",
             "version": "v1.1.0",
             "source": {
@@ -1620,27 +1645,27 @@
         },
         {
             "name": "phenx/php-font-lib",
-            "version": "0.2.2",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82"
+                "reference": "b8af0cacdc3cbf1e41a586fcb78f506f4121a088"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
-                "reference": "c30c7fc00a6b0d863e9bb4c5d5dd015298b2dc82",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/b8af0cacdc3cbf1e41a586fcb78f506f4121a088",
+                "reference": "b8af0cacdc3cbf1e41a586fcb78f506f4121a088",
                 "shasum": ""
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "classes/"
-                ]
+                "psr-0": {
+                    "FontLib\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL"
+                "LGPL-3.0"
             ],
             "authors": [
                 {
@@ -1650,7 +1675,41 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2014-02-01 15:22:28"
+            "time": "2015-05-06 20:02:39"
+        },
+        {
+            "name": "phenx/php-svg-lib",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhenX/php-svg-lib.git",
+                "reference": "b419766515b3426c6da74b0e29e93d71c4f17099"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/b419766515b3426c6da74b0e29e93d71c4f17099",
+                "reference": "b419766515b3426c6da74b0e29e93d71c4f17099",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Svg\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Ménager",
+                    "email": "fabien.menager@gmail.com"
+                }
+            ],
+            "description": "A library to read, parse and export to PDF SVG files.",
+            "homepage": "https://github.com/PhenX/php-svg-lib",
+            "time": "2015-05-06 18:49:49"
         },
         {
             "name": "phpoffice/phpexcel",

@@ -138,7 +138,6 @@
               地址
             </td>
             <td>
-              <input type="text" id="notify_zip" class="form-control" name="notify_zip" placeholder="Zip Code">
               <textarea id="notify_address" name="notify_address" type="text" rows="5" class="form-control" placeholder="Address"></textarea>
             </td>
           </tr>

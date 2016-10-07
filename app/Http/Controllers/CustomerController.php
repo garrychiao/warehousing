@@ -64,12 +64,12 @@ class CustomerController extends Controller
             'consignee_name' => $request->consignee_name,
             'consignee_contact' => $request->consignee_contact,
             'consignee_phone' => $request->consignee_phone,
-            'consignee_zip' => $request->consignee_zip,
+            //'consignee_zip' => $request->consignee_zip,
             'consignee_address' => $request->consignee_address,
             'notify_name' => $request->notify_name,
             'notify_contact' => $request->notify_contact,
             'notify_phone' => $request->notify_phone,
-            'notify_zip' => $request->notify_zip,
+            //'notify_zip' => $request->notify_zip,
             'notify_address' => $request->notify_address,
 
           ));
@@ -133,12 +133,12 @@ class CustomerController extends Controller
                 'consignee_name' => $request->consignee_name,
                 'consignee_contact' => $request->consignee_contact,
                 'consignee_phone' => $request->consignee_phone,
-                'consignee_zip' => $request->consignee_zip,
+                //'consignee_zip' => $request->consignee_zip,
                 'consignee_address' => $request->consignee_address,
                 'notify_name' => $request->notify_name,
                 'notify_contact' => $request->notify_contact,
                 'notify_phone' => $request->notify_phone,
-                'notify_zip' => $request->notify_zip,
+                //'notify_zip' => $request->notify_zip,
                 'notify_address' => $request->notify_address,
         ]);
         return redirect('customer/'.$id)->with('message', 'Customer updated!');

@@ -19,6 +19,7 @@ use App\ProformaInvoiceInventory;
 use DB;
 use Mail;
 use Excel;
+use PDF;
 
 class DashboardController extends Controller
 {

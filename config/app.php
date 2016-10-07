@@ -160,6 +160,9 @@ return [
         //Laravel excel
         Collective\Bus\BusServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        //Barryvdh PDF
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -209,7 +212,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         //Laravel Excel
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        //Barryvdh PDF
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

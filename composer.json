@@ -11,9 +11,8 @@
         "intervention/image": "^2.3",
         "maatwebsite/excel": "~2.1.0",
         "laravelcollective/bus": "^5.2",
-        "dompdf/dompdf": "~0.6.1",
-        "mpdf/mpdf": "~5.7.3",
-        "guzzlehttp/guzzle": "~5.3|~6.0"
+        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "barryvdh/laravel-dompdf": "^0.7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
