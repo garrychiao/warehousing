@@ -99,22 +99,24 @@
           <!--invnentory shows as products here-->
           @elseif($type == "inventory")
           <tr>
-            <td>ID</td>
-            <td>名稱</td>
-            <td>內容</td>
-            <td>重量(per)</td>
-            <td>價格1</td>
-            <td>價格2</td>
-            <td>價格3</td>
-            <td>價格4</td>
-            <td>價格5</td>
-            <td>價格6</td>
+            <td class="col-sm-2">ID</td>
+            <td class="col-sm-4">名稱 / Name</td>
+            <td class="col-sm-1">庫存量 / Inventory</td>
+            <td class="col-sm-1">安全庫存量 / Safety Inventory</td>
+            <td class="col-sm-1">重量 / Weight (per)</td>
+            <td class="col-sm-1">價格1 (1~20)</td>
+            <td class="col-sm-1">價格2 (21~100)</td>
+            <td class="col-sm-1">價格3 (101~300)</td>
+            <td class="col-sm-1">價格4 (301~500)</td>
+            <td class="col-sm-1">價格5 (501~1000)</td>
+            <td class="col-sm-1">價格6 (1000~)</td>
           </tr>
           @forelse($information as $inv)
           <tr>
             <td><p>{{ $inv->item_id}}</p></td>
             <td><p>{{ $inv->item_name}}</p></td>
-            <td><p>{{ $inv->descriptions}}</p></td>
+            <td><p>{{ $inv->inventory}}</p></td>
+            <td><p>{{ $inv->safety_inventory}}</p></td>
             <td><p>{{ $inv->unit_weight}}</p></td>
             <td><p>{{ $inv->price1}}</p></td>
             <td><p>{{ $inv->price2}}</p></td>

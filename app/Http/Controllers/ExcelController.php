@@ -33,7 +33,7 @@ class ExcelController extends Controller
 
         case 'inventory':
         $FileName = "ProductInfo";
-        $information = Inventory::select('item_id as ItemID','category','item_name as ItemName','descriptions','unit_weight as UnitWeight','price1 as SamplePrice','price2 as 21~100','price3 as 101~300','price4 as 301~500','price5 as 501~1000','price6 as 1000~')
+        $information = Inventory::select('item_id as ItemID','category','item_name as ItemName','inventory as Inventory','safety_inventory as SafetyInventory','unit_weight as UnitWeight','price1 as SamplePrice','price2 as 21~100','price3 as 101~300','price4 as 301~500','price5 as 501~1000','price6 as 1000~')
         ->whereIn('id', $request->item_id)->get();
           break;
 
