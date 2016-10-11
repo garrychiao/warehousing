@@ -181,7 +181,7 @@ class InventoryController extends Controller
               'remark' =>$request->remark,
       ]);
 
-      return redirect('inventory/'.$id)->with('message', 'Inventory updated!');
+      return redirect('inventory')->with('message', 'Inventory updated!');
     }
 
     /**
