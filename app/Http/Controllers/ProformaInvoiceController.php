@@ -140,7 +140,7 @@ class ProformaInvoiceController extends Controller
         $mycompany = MyCompany::firstOrNew(['id' => '1']);
         $records = ProformaInvoice::findOrFail($id);
         $inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
-        ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.descriptions')
+        ->select('proforma_invoice_inventories.*','inventories.item_id')
         ->where('proforma_invoice_id', $id)->get();
         $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
         $total = $total_inv + $records->sandh;
@@ -166,7 +166,7 @@ class ProformaInvoiceController extends Controller
       $customer = Customer::distinct()->orderBy('id','asc')->get();
       $records = ProformaInvoice::findOrFail($id);
       $rec_inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
-      ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name','inventories.descriptions')
+      ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name')
       ->where('proforma_invoice_id', $id)->get();
       $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
 

@@ -86,7 +86,7 @@
                 <tr>
                   <td>{{$inv->quantity}}</td>
                   <td>{{$inv->item_id}}</td>
-                  <td colspan="2">{{$inv->descriptions}}</td>
+                  <td colspan="2">{{$inv->description}}</td>
                   <td>{{number_format($inv->weight,2)}}</td>
                   <td>{{number_format($inv->unit_price,2)}}</td>
                   <td>{{number_format($inv->total,2)}}</td>
