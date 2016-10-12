@@ -102,7 +102,7 @@ class ProformaInvoiceController extends Controller
             'unit_price' => $request->unit_price[$i],
             'total' => $request->total[$i],
             'weight' => $request->weight[$i],
-            'description' => $request->description[$i],
+            //'description' => $request->description[$i],
           ));
         }else{
           $PurchaseInventory = ProformaInvoiceInventory::create(array(
@@ -113,7 +113,7 @@ class ProformaInvoiceController extends Controller
             'unit_price' => $request->unit_price[$i],
             'total' => $request->total[$i],
             'weight' => $request->weight[$i],
-            'description' => $request->description[$i],
+            //'description' => $request->description[$i],
           ));
         }
         /*
@@ -140,7 +140,7 @@ class ProformaInvoiceController extends Controller
         $mycompany = MyCompany::firstOrNew(['id' => '1']);
         $records = ProformaInvoice::findOrFail($id);
         $inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
-        ->select('proforma_invoice_inventories.*','inventories.item_id')
+        ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name')
         ->where('proforma_invoice_id', $id)->get();
         $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
         $total = $total_inv + $records->sandh;
@@ -168,7 +168,7 @@ class ProformaInvoiceController extends Controller
       $rec_inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')
       ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name')
       ->where('proforma_invoice_id', $id)->get();
-      $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
+      $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total')+$records->sandh;
 
       return view('shippment/proforma/edit')->with('inventory',$inventory)->with('customer',$customer)
               ->with('records',$records)->with('rec_inventory',$rec_inventory)
@@ -219,7 +219,7 @@ class ProformaInvoiceController extends Controller
             'unit_price' => $request->unit_price[$i],
             'total' => $request->total[$i],
             'weight' => $request->weight[$i],
-            'description' => $request->description[$i],
+            //'description' => $request->description[$i],
           ));
         }else{
           $PurchaseInventory = ProformaInvoiceInventory::create(array(
@@ -230,7 +230,7 @@ class ProformaInvoiceController extends Controller
             'unit_price' => $request->unit_price[$i],
             'total' => $request->total[$i],
             'weight' => $request->weight[$i],
-            'description' => $request->description[$i],
+            //'description' => $request->description[$i],
           ));
         }
       }

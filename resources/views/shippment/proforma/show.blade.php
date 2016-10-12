@@ -67,14 +67,16 @@
               <td>{{$records->due_date}}</td>
             </tr>
             <tr class="success">
-              <th>Quantity</th><th>Item Code</th><th colspan="2">Description</th><th>Weight</th><th>Price Each</th><th>Amount</th>
+              <th>Quantity</th><th>Item Code</th><th colspan="2">Item Name</th>
+              <!--<th>Description</th>--><th>Weight</th><th>Price Each</th><th>Amount</th>
             </tr>
             @if(count($inventory_kits_records)>0)
               @foreach($inventory_kits_records as $kit)
               <tr>
                 <td>{{$kit->quantity}}</td>
                 <td>{{$kit->item_id}}</td>
-                <td colspan="2">{{$kit->kits_description}}</td>
+                <td colspan="2">{{$kit->kits_name}}</td>
+                <!--<td>{{$kit->kits_description}}</td>-->
                 <td>{{number_format($kit->weight,2)}}</td>
                 <td>{{number_format($kit->unit_price,2)}}</td>
                 <td>{{number_format($kit->total,2)}}</td>
@@ -86,7 +88,8 @@
                 <tr>
                   <td>{{$inv->quantity}}</td>
                   <td>{{$inv->item_id}}</td>
-                  <td colspan="2">{{$inv->description}}</td>
+                  <td colspan="2">{{$inv->item_name}}</td>
+                  <!--<td>{{$inv->description}}</td>-->
                   <td>{{number_format($inv->weight,2)}}</td>
                   <td>{{number_format($inv->unit_price,2)}}</td>
                   <td>{{number_format($inv->total,2)}}</td>

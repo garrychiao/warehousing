@@ -57,13 +57,13 @@ tr td {
     <td colspan="4">{{ $record->airwaybill_number}}</td>
   </tr>
   <tr class="success">
-    <th>Item Code</th><th colspan="3">Description</th><th>Weight (kg)</th><th>Quantity</th><th>Price Each</th><th>Amount</th>
+    <th>Item Code</th><th colspan="3">Item Name</th><th>Weight (kg)</th><th>Quantity</th><th>Price Each</th><th>Amount</th>
   </tr>
   @if(count($inventory_kits_records)>0)
     @foreach($inventory_kits_records as $kit)
     <tr>
       <td>{{$kit->item_id}}</td>
-      <td colspan="3">{{$kit->kits_description}}</td>
+      <td colspan="3">{{$kit->kits_name}}</td>
       <td>{{number_format($kit->weight,2)}}</td>
       <td>{{number_format($kit->quantity,0)}}</td>
       <td>{{number_format($kit->unit_price,2)}}</td>
@@ -75,7 +75,7 @@ tr td {
     @foreach($inventory as $inv)
       <tr>
         <td>{{$inv->item_id}}</td>
-        <td colspan="3">{{$inv->descriptions}}</td>
+        <td colspan="3">{{$inv->item_name}}</td>
         <td>{{$inv->weight}}</td>
         <td>{{$inv->quantity}}</td>
         <td>{{number_format($inv->unit_price,2)}}</td>

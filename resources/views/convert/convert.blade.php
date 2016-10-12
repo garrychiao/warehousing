@@ -12,9 +12,9 @@ function addRow() {
   var cell3 = row.insertCell(2);
   var cell4 = row.insertCell(3);
   var cell5 = row.insertCell(4);
-  var cell6 = row.insertCell(5);
-  var cell7 = row.insertCell(6);
-  var cell8 = row.insertCell(7);
+  //var cell6 = row.insertCell(5);
+  var cell7 = row.insertCell(5);
+  var cell8 = row.insertCell(6);
   //Create and append select list
   var selectList = document.createElement("select");
   selectList.id = "Select_id";
@@ -43,10 +43,10 @@ function addRow() {
     @endforelse
     @if(count($inventory)>0)
     cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif" required>';
-    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_description}}@else{{$inventory->first()->description}}@endif">';
+    //cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_description}}@else{{$inventory->first()->description}}@endif">';
     @else
     cell2.innerHTML = '<input type="text" class="form-control" name="item_name[]" value="" required>';
-    cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="">';
+    //cell6.innerHTML = '<input type="text" class="form-control" name="description[]" value="">';
     @endif
   cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>';
   cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
@@ -64,15 +64,15 @@ function changeInventory(name) {
   var row = name.parentNode.parentNode.cells;
   if(value =="0"){
     row[1].children[0].value = "S&H";
-    row[2].children[0].value = "0";
+    row[2].children[0].value = "Shipping and Handling Charge";
     row[3].children[0].value = "0";
     row[4].children[0].value = "0";
-    row[5].children[0].value = "Shipping and Handling Charge";
+    //row[5].children[0].value = "Shipping and Handling Charge";
   }
   @forelse($inventory as $lstInventory)
     if(value =="{{$lstInventory->id}}"){
       row[1].children[0].value = "{{ $lstInventory->item_name }}";
-      row[5].children[0].value = "{{ $lstInventory->descriptions }}";
+      //row[5].children[0].value = "{{ $lstInventory->descriptions }}";
     }
   @empty
     row[1].children[0].text = " ";
@@ -152,7 +152,7 @@ function setUnitPrice(rowid){
           row[3].children[0].value = "{{ $kits->price6 }}";
         }
         //set total weight
-        row[6].children[0].value = (Qty * {{ $kits->kits_weight }}).toFixed(2);
+        row[5].children[0].value = (Qty * {{ $kits->kits_weight }}).toFixed(2);
       }
       @endforeach
     @endif
@@ -177,7 +177,7 @@ function setUnitPrice(rowid){
         row[3].children[0].value = "{{ $lstInventory->price6 }}";
       }
       //set total weight
-      row[6].children[0].value = (Qty * "{{ $lstInventory->unit_weight }}").toFixed(2);
+      row[5].children[0].value = (Qty * "{{ $lstInventory->unit_weight }}").toFixed(2);
     }
     @empty
       row[3].children[0].value = "";
@@ -330,7 +330,7 @@ function countTotal(){
                 <th class="col-sm-1">Quantity</th>
                 <th class="col-sm-1">Unit Value</th>
                 <th class="col-sm-2">Total Value</th>
-                <th class="col-sm-2">Full Description of Goods</th>
+                <!--<th class="col-sm-2">Full Description of Goods</th>-->
                 <th class="col-sm-1">Weight (kg)</th>
                 <th class="col-sm-1">操作</th>
               </tr>
@@ -368,9 +368,10 @@ function countTotal(){
                   <td>
                     <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="{{$kit->total}}" required>
                   </td>
+                  <!--
                   <td>
                     <input type="text" class="form-control" name="description[]" value="{{$kit->description}}">
-                  </td>
+                  </td>-->
                   <td>
                     <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="{{$kit->weight}}">
                   </td>
@@ -417,9 +418,10 @@ function countTotal(){
                   <td>
                     <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="{{$inv->total}}" required>
                   </td>
+                  <!--
                   <td>
                     <input type="text" class="form-control" name="description[]" value="{{$inv->description}}">
-                  </td>
+                  </td>-->
                   <td>
                     <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="{{$inv->weight}}">
                   </td>
@@ -462,9 +464,10 @@ function countTotal(){
                 <td>
                   <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="{{$inv->total}}" required>
                 </td>
+                <!--
                 <td>
                   <input type="text" class="form-control" name="description[]" value="{{$inv->description}}">
-                </td>
+                </td>-->
                 <td>
                   <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="{{$inv->weight}}">
                 </td>

@@ -242,7 +242,7 @@ class ExcelController extends Controller
           ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
           //data passed to purchase/excel.blade.php which copied from purchase/show.blade.php
           $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
-          $total = $total_inv + $records->sandh;
+          $total = $total_inv + $records[0]->sandh;
           //customer/supplier name + order id
           $FileName = $records[0]->eng_name."_".$records[0]->order_id;
           break;

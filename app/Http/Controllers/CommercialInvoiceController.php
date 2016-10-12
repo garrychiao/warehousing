@@ -107,7 +107,7 @@ class CommercialInvoiceController extends Controller
             'unit_price' => $request->unit_price[$i],
             'total' => $request->total[$i],
             'weight' => $request->weight[$i],
-            'description' => $request->description[$i],
+            //'description' => $request->description[$i],
           ));
           /*$kit_qty = InventoryKitMember::select('inventory_id','quantity')->where('kits_id','=',$kits_id)->get();
           foreach ($kit_qty as $qty) {
@@ -127,7 +127,7 @@ class CommercialInvoiceController extends Controller
             'unit_price' => $request->unit_price[$i],
             'total' => $request->total[$i],
             'weight' => $request->weight[$i],
-            'description' => $request->description[$i],
+            //'description' => $request->description[$i],
           ));
           /*
           $Inventory = Inventory::find($request->item_id[$i]);
@@ -153,7 +153,7 @@ class CommercialInvoiceController extends Controller
       $mycompany = MyCompany::firstOrNew(['id' => '1']);
       $records = CommercialInvoice::findOrFail($id);
       $inventory = CommercialInvoiceInventory::join('inventories','inventories.id','=','commercial_invoice_inventories.inventory_id')
-            ->select('commercial_invoice_inventories.*','inventories.item_id')
+            ->select('commercial_invoice_inventories.*','inventories.item_id','inventories.item_name')
             ->where('commercial_invoice_id', $id)->get();
       $inventory_kits_records = CommercialInvoiceInventory::join('inventory_kits','inventory_kits.id','=','commercial_invoice_inventories.kits_id')
             ->select('commercial_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id')
