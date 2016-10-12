@@ -541,7 +541,7 @@ function setTotal(rowid){
                   <th class="col-sm-3">Shipping & Handling Cost</th>
                   <th class="col-sm-3"><input type="text" class="form-control" name="sandh" value="{{ $records->sandh}}"></th>
                   <th class="col-sm-3">Total : $</th>
-                  <th class="col-sm-3"><h4 id="FinalTotal"></h4></th>
+                  <th class="col-sm-3"><h4 id="FinalTotal">{{ $total }}</h4></th>
                 </tr>
               </table>
             </div>
