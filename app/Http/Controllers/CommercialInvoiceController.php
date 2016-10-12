@@ -153,10 +153,10 @@ class CommercialInvoiceController extends Controller
       $mycompany = MyCompany::firstOrNew(['id' => '1']);
       $records = CommercialInvoice::findOrFail($id);
       $inventory = CommercialInvoiceInventory::join('inventories','inventories.id','=','commercial_invoice_inventories.inventory_id')
-            ->select('commercial_invoice_inventories.*','inventories.item_id','inventories.descriptions')
+            ->select('commercial_invoice_inventories.*','inventories.item_id')
             ->where('commercial_invoice_id', $id)->get();
       $inventory_kits_records = CommercialInvoiceInventory::join('inventory_kits','inventory_kits.id','=','commercial_invoice_inventories.kits_id')
-            ->select('commercial_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id','inventory_kits.kits_description')
+            ->select('commercial_invoice_inventories.*','inventory_kits.kits_name','inventory_kits.kits_id as item_id')
             ->whereNotNull('commercial_invoice_inventories.kits_id')->where('commercial_invoice_id','=',$id)->get();
       $total = CommercialInvoiceInventory::select(DB::raw('SUM(total) as total'),DB::raw('SUM(weight) as weight'),DB::raw('SUM(quantity) as quantity'),DB::raw('SUM(unit_price) as unit_price'))
       ->where('commercial_invoice_id','=',$id)->first();
