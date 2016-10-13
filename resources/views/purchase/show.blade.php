@@ -27,36 +27,36 @@
               <small>採購日期：{{$records->purchase_date}}</small></th>
             </tr>
             <tr>
-              <td>訂單編號</td>
+              <th class="success">訂單編號</th>
               <td colspan="2">{{ $records->order_id }}</td>
-              <td>交貨日期</td>
+              <th class="success">交貨日期</th>
               <td colspan="2">{{ $records->delivery_date}}</td>
             </tr>
             <tr>
-              <td>供應廠商</td>
+              <th class="success">供應廠商</th>
               <td colspan="2">{{ $records->supplier_name }}</td>
-              <td>付款條件</td>
+              <th class="success">付款條件</th>
               <td colspan="2">{{ $records->payment_terms }}</td>
             </tr>
             <tr>
-              <td>公司地址</td>
+              <th class="success">公司地址</th>
               <td colspan="2">{{ $mycompany->address }}</td>
-              <td>統一編號</td>
+              <th class="success">統一編號</th>
               <td colspan="2">{{ $mycompany->EIN }}</td>
             </tr>
             <tr>
-              <td>聯絡人</td>
+              <th class="success">聯絡人</th>
               <td colspan="2">{{ $mycompany->contact_person }}</td>
-              <td>電話</td>
+              <th class="success">電話</th>
               <td colspan="2">{{ $mycompany->cell_phone }}</td>
             </tr>
             <tr class="success">
-              <td>產品編號</td>
-              <td>產品名稱</td>
-              <td>訂單數量</td>
-              <td>單價</td>
-              <td>金額</td>
-              <td>備註</td>
+              <th>產品編號</th>
+              <th>產品名稱</th>
+              <th>訂單數量</th>
+              <th>單價</th>
+              <th>金額</th>
+              <th>備註</th>
             </tr>
             @if(count($inventory)>0)
               @foreach($inventory as $inv)
@@ -70,25 +70,25 @@
                 </tr>
               @endforeach
               <tr>
-                <td colspan="4" align="right">總計：</td>
+                <th colspan="4" align="right">總計：</th>
                 <td align="right">{{ number_format($total,2) }}</td>
                 <td></td>
               </tr>
             @endif
             <tr>
-              <td>送貨地點</td>
+              <th class="success">送貨地點</th>
               <td colspan="5">{{ $records->delivery_address}}</td>
             </tr>
             <tr>
-              <td>包裝方式</td>
+              <th class="success">包裝方式</th>
               <td colspan="5">{{ $records->packing}}</td>
             </tr>
             <tr>
-              <td>出貨樣</td>
+              <th class="success">出貨樣</th>
               <td colspan="5">{{ $records->shipping_sample}}</td>
             </tr>
             <tr>
-              <td>注意事項</td>
+              <th class="success">注意事項</th>
               <td colspan="5">{{ $records->precautions}}</td>
             </tr>
           </table>

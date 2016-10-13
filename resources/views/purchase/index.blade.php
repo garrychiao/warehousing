@@ -43,7 +43,7 @@ function addRow() {
   cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)">';
   cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="">';
   cell6.innerHTML = '<input type="text" class="form-control" name="remark[]" value="">';
-  cell7.innerHTML = '<input type="button" class="btn btn-raised btn-danger" onclick="delRow(this)" value="Delete">';
+  cell7.innerHTML = '<input type="button" class="btn btn-raised btn-danger btn-sm" onclick="delRow(this)" value="刪除 / Delete">';
   resetTypeahead();
 }
 function delRow(btn) {
@@ -99,8 +99,8 @@ function setTotal(rowid){
           採購單 / Purchasing
         </div>
         <div class="btn-group btn-group-justified">
-          <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-          <a href="/purchase/create"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+          <a href="{{ url('/home') }}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+          <a href="{{ url('/purchase/create') }}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
         </div>
       </div>
       <!--info needed for purchase sheet-->
@@ -119,12 +119,12 @@ function setTotal(rowid){
           <div class="form-group">
             <table class="table table-condensed table-hover table-bordered">
               <tr>
-                <td>訂單號碼</td><td><input id="form_id" type="text" class="form-control" name="order_id"></td>
-                <td>交貨日期</td><td><input type="date" class="form-control" name="delivery_date" required></td>
+                <th class="success col-sm-2">訂單號碼 / ID</th><td class="col-sm-4"><input id="form_id" type="text" class="form-control" name="order_id"></td>
+                <th class="success col-sm-2">交貨日期 / Delivery Date</th><td class="col-sm-4"><input type="date" class="form-control" name="delivery_date" required></td>
               </tr>
               <tr>
-                <td>供應廠商</td>
-                <td>
+                <th class="success col-sm-2">供應廠商 / Supplier</th>
+                <td class="col-sm-4">
                   <select id="supplier_id" name="supplier_id" class="form-control">
                     @forelse($supplier as $lstSupplier)
                     <option value="{{ $lstSupplier->id }}">{{{ $lstSupplier->supplier_name }}}</option>
@@ -133,28 +133,28 @@ function setTotal(rowid){
                     @endforelse
                   </select>
                 </td>
-                <td>付款條件</td><td><input type="text" class="form-control" name="payment_terms"></td>
+                <th class="success col-sm-2">付款條件 / Payment Terms</th><td class="col-sm-4"><input type="text" class="form-control" name="payment_terms"></td>
               </tr>
               @if( count($mycompany)>0 )
               <tr>
-                <td>公司地址</td><td>{{ $mycompany->address }}</td>
-                <td>統一編號</td><td>{{ $mycompany->EIN }}</td>
+                <th class="success col-sm-2">公司地址 / Company Address</th><td class="col-sm-4">{{ $mycompany->address }}</td>
+                <th class="success col-sm-2">統一編號 / EIN</th><td class="col-sm-4">{{ $mycompany->EIN }}</td>
               </tr>
               <tr>
-                <td>聯絡人</td><td>{{ $mycompany->contact_person }}</td>
-                <td>電話</td><td>{{ $mycompany->phone }}</td>
+                <th class="success col-sm-2">聯絡人 / Contact Person</th><td class="col-sm-4">{{ $mycompany->contact_person }}</td>
+                <th class="success col-sm-2">電話 / Phone</th><td class="col-sm-4">{{ $mycompany->phone }}</td>
               </tr>
               @endif
             </table>
             <table class="table table-condensed table-hover table-bordered" id="tblInventory">
               <tr>
-                <td class="col-sm-2">產品編號</td>
-                <td class="col-sm-2">產品名稱</td>
-                <td class="col-sm-2">訂單數量</td>
-                <td class="col-sm-2">單價</td>
-                <td class="col-sm-2">金額</td>
-                <td class="col-sm-2">備註</td>
-                <td class="col-sm-2">操作</td>
+                <th class="success col-sm-1">產品編號 / Item ID</th>
+                <th class="success col-sm-2">產品名稱 / Item Name</th>
+                <th class="success col-sm-1">訂單數量 / Quantity</th>
+                <th class="success col-sm-1">單價 / Unit Price</th>
+                <th class="success col-sm-1">金額 / Total</th>
+                <th class="success col-sm-2">備註 / Remarks</th>
+                <th class="success col-sm-1"></th>
               </tr>
               <tr>
                 <td>
@@ -186,21 +186,21 @@ function setTotal(rowid){
                   <input type="text" class="form-control" name="remark[]" value="">
                 </td>
                 <td>
-                  <input type="button" class="btn btn-info btn-raised" onclick="addRow()" value="新增">
+                  <input type="button" class="btn btn-sm btn-info btn-raised" onclick="addRow()" value="新增 / Add">
                 </td>
               </tr>
             </table>
             <table class="table table-condensed table-hover table-bordered">
               <tr>
-                <td>送貨地點</td><td><input type="text" class="form-control" name="delivery_address"></td>
-                <td>包裝方式</td><td><input type="text" class="form-control" name="packing"></td>
+                <th class="success col-sm-2">送貨地點 / Delivery Address</th><td class="col-sm-4"><input type="text" class="form-control" name="delivery_address"></td>
+                <th class="success col-sm-2">包裝方式 / Packing</th><td class="col-sm-4"><input type="text" class="form-control" name="packing"></td>
               </tr>
               <tr>
-                <td>出貨樣</td><td><input type="text" class="form-control" name="shipping_sample"></td>
-                <td>注意事項</td><td><input type="text" class="form-control" name="precautions"></td>
+                <th class="success col-sm-2">出貨樣 / Shipping Sample</th><td class="col-sm-4"><input type="text" class="form-control" name="shipping_sample"></td>
+                <th class="success col-sm-2">注意事項 / Precautions</th><td class="col-sm-4"><input type="text" class="form-control" name="precautions"></td>
               </tr>
               <tr>
-                <td>採購日期</td><td><input type="date" id="date_now" class="form-control" name="purchase_date" required></td>
+                <th class="success col-sm-2">採購日期 / Purchase Date</th><td class="col-sm-4"><input type="date" id="date_now" class="form-control" name="purchase_date" required></td>
                 <script type="text/javascript">
                   var now = new Date();
                   var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
@@ -208,7 +208,7 @@ function setTotal(rowid){
                   document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
                   document.getElementById('date_now').value = date;
                 </script>
-                <td>承辦人</td><td><input type="text" class="form-control" name="undertaker"></td>
+                <th class="success col-sm-2">承辦人 / Undertaker</th><td class="col-sm-4"><input type="text" class="form-control" name="undertaker"></td>
               </tr>
             </table>
           </div>

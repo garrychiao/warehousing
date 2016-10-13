@@ -85,7 +85,7 @@ function changeExporter(name) {
   var index = name.selectedIndex;
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
-      document.getElementById("Exporter").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->contact_person }}";
+      document.getElementById("Exporter").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->eng_name }}";
       document.getElementById("Exporter").innerHTML += "\r\n{{ $lstCustomer->phone }}";
       document.getElementById("Exporter").innerHTML +="\r\n{{ $lstCustomer->recieve_zip_code }} {{$lstCustomer->recieve_address}}";
       changeShipCustomer(name);
@@ -264,9 +264,9 @@ function countTotal(){
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
                       @if($lstCustomer->id == $records->customer_id)
-                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @else
-                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @endif
                     @empty
                     <option>No Customer!</option>
@@ -292,9 +292,9 @@ function countTotal(){
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
                       @if($lstCustomer->id == $records->customer_id)
-                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @else
-                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @endif
                     @empty
                     <option>No Customer!</option>

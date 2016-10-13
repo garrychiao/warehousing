@@ -54,7 +54,7 @@ function addRow() {
   cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
   cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" required>';
   cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
-  cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="Delete">';
+  cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="刪除 / Delete">';
   resetTypeahead();
 }
 function delRow(btn) {
@@ -132,7 +132,7 @@ function changeBillCustomer(name) {
   var index = name.selectedIndex;
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
-      document.getElementById("BillToInfo").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->contact_person }}";
+      document.getElementById("BillToInfo").innerHTML = "{{ $lstCustomer->eng_name }}\r\n{{ $lstCustomer->contact_person }}";
       document.getElementById("BillToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{$lstCustomer->notify_address}}";
       document.getElementById("BillToInfo").innerHTML += "\r\n{{ $lstCustomer->phone }}";
       changeShipCustomer(name);
@@ -146,7 +146,7 @@ function changeShipCustomer(name) {
   var value = name.value;
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
-      document.getElementById("ShipToInfo").innerHTML = "{{ $lstCustomer->chi_name }}\r\n{{ $lstCustomer->contact_person }}";
+      document.getElementById("ShipToInfo").innerHTML = "{{ $lstCustomer->eng_name }}\r\n{{ $lstCustomer->contact_person }}";
       document.getElementById("ShipToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }}{{$lstCustomer->notify_address}}";
       document.getElementById("ShipToInfo").innerHTML += "\r\n{{ $lstCustomer->phone }}";
     }
@@ -268,27 +268,27 @@ function countTotal(){
           <div class="form-group">
             <table class="table table-condensed table-hover table-bordered">
               <tr>
-                <td>編號</td><td><input id="form_id" type="text" class="form-control" name="order_id" required></td>
-                <td>日期</td><td><input type="date" id="date_now" class="form-control" name="create_date" value="" required></td>
+                <th class="success">編號 / ID</th><td><input id="form_id" type="text" class="form-control" name="order_id" required></td>
+                <th class="success">日期 / Date</th><td><input type="date" id="date_now" class="form-control" name="create_date" value="" required></td>
               </tr>
               <tr>
-                <td>Bill To:</td>
+                <th class="success">Bill To:</th>
                 <td>
                   <select id="customer_id" name="customer_id" class="form-control" onchange="changeBillCustomer(this)" value="{{Request::old('customer_id')}}">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                     @empty
                     <option>No Customer!</option>
                     @endforelse
                   </select>
                 </td>
-                <td>Ship To</td>
+                <th class="success">Ship To</th>
                 <td>
                   <select id="shipTo" class="form-control" onchange="changeShipCustomer(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                     @empty
                     <option>No Customer!</option>
                     @endforelse
@@ -302,13 +302,13 @@ function countTotal(){
             </table>
             <table class="table table-condensed table-hover table-bordered">
               <tr>
-                <td class="col-sm-2">P.O Number</td>
-                <td class="col-sm-2">Payment Terms</td>
-                <td class="col-sm-2">Rep</td>
-                <td class="col-sm-2">Ship</td>
-                <td class="col-sm-2">Via</td>
-                <td class="col-sm-2">Shipping Term</td>
-                <td class="col-sm-2">Due Date</td>
+                <th class="success col-sm-2">P.O Number</th>
+                <th class="success col-sm-2">Payment Terms</th>
+                <th class="success col-sm-2">Rep</th>
+                <th class="success col-sm-2">Ship</th>
+                <th class="success col-sm-2">Via</th>
+                <th class="success col-sm-2">Shipping Term</th>
+                <th class="success col-sm-2">Due Date</th>
               </tr>
               <tr>
                 <td><input type="text" class="form-control" name="POnumber" value="{{Request::old('POnumber')}}"></td>
@@ -323,14 +323,14 @@ function countTotal(){
             </table>
             <table class="table table-condensed table-hover table-bordered" id="tblInventory">
               <tr>
-                <td class="col-sm-2">產品編號</td>
-                <td class="col-sm-2">產品名稱</td>
-                <td class="col-sm-1">訂單數量</td>
-                <td class="col-sm-1">單價</td>
-                <td class="col-sm-1">金額</td>
-                <!--<td class="col-sm-2">內容</td>-->
-                <td class="col-sm-1">重量</td>
-                <td class="col-sm-1">操作</td>
+                <th class="success col-sm-2">產品編號 / Item ID</th>
+                <th class="success col-sm-3">產品名稱 / Item Name</th>
+                <th class="success col-sm-2">訂單數量 / Quantity</th>
+                <th class="success col-sm-2">單價 / Unit Price</th>
+                <th class="success col-sm-2">金額 / Total</th>
+                <!--<th class="success col-sm-2">內容</th>-->
+                <th class="success col-sm-2">重量 / Weight</th>
+                <th class="success col-sm-1"></th>
               </tr>
               <tr>
                 <td>
@@ -390,17 +390,17 @@ function countTotal(){
                   <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">
                 </td>
                 <td>
-                  <input type="button" class="btn btn-info btn-sm btn-raised" onclick="addRow()" value="新增">
+                  <input type="button" class="btn btn-info btn-sm btn-raised" onclick="addRow()" value="新增 / Add">
                 </td>
               </tr>
             </table>
             <div class="col-sm-12">
               <table class="table">
                 <tr>
-                  <th class="col-sm-3">Shipping & Handling Cost</th>
-                  <th class="col-sm-3"><input type="text" class="form-control" name="sandh" id="sandh" value="0" onchange="countTotal();"></th>
-                  <th class="col-sm-3">Total : $</th>
-                  <th class="col-sm-3"><h4 id="FinalTotal"></h4></th>
+                  <th class="success col-sm-3">Shipping & Handling Cost</th>
+                  <td class="col-sm-3"><input type="text" class="form-control" name="sandh" id="sandh" value="0" onchange="countTotal();"></td>
+                  <th class="success col-sm-3">Total : $</th>
+                  <td class="col-sm-3"><h4 id="FinalTotal"></h4></td>
                 </tr>
               </table>
             </div>

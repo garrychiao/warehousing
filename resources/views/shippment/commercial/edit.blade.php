@@ -293,9 +293,9 @@ function countTotal(){
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
                       @if($lstCustomer->id == $records->customer_id)
-                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @else
-                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @endif
                     @empty
                     <option>No Customer!</option>
@@ -315,9 +315,9 @@ function countTotal(){
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
                       @if($lstCustomer->id == $records->customer_id)
-                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option selected="selected" value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @else
-                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                        <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                       @endif
                     @empty
                     <option>No Customer!</option>

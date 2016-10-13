@@ -18,16 +18,16 @@
         <div class="col-sm-12">
           @if(count($records)>0)
           <table class="table table-condensed table-bordered table-hover">
-            <tr>
-              <td class="col-sm-1">訂單編號</td>
-              <td class="col-sm-1">客戶</td>
-              <td class="col-sm-1">聯絡人</td>
-              <td class="col-sm-1">輸出至出貨單</td>
-              <td class="col-sm-1">報價日期</td>
-              <td class="col-sm-1">到期日</td>
-              <td class="col-sm-3">報價項目</td>
-              <td class="col-sm-1">報價金額</td>
-              <td class="col-sm-2">詳細內容</td>
+            <tr class="success">
+              <th class="col-sm-1">訂單編號 / ID</th>
+              <th class="col-sm-1">客戶 / Customer</th>
+              <th class="col-sm-1">聯絡人 / Contact</th>
+              <th class="col-sm-1">輸出至出貨單 / Converted</th>
+              <th class="col-sm-1">報價日期 / Create Date</th>
+              <th class="col-sm-1">到期日 / Due Date</th>
+              <th class="col-sm-3">報價項目 / Item</th>
+              <th class="col-sm-1">報價金額 / Total</th>
+              <th class="col-sm-2">內容 / Info</th>
             </tr>
             @foreach($records as $record)
             <tr>

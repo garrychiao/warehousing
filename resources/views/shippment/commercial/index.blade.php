@@ -304,7 +304,7 @@ function countTotal(){
                   <select id="customer_id" name="customer_id" class="form-control" onchange="changeConsignee(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                     @empty
                     <option>No Customer!</option>
                     @endforelse
@@ -325,7 +325,7 @@ function countTotal(){
                   <select id="Notify" class="form-control" onchange="changeNotifyParty(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
-                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->contact_person }}}</option>
+                    <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
                     @empty
                     <option>No Customer!</option>
                     @endforelse

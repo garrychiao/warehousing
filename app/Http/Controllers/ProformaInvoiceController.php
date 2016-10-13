@@ -50,7 +50,7 @@ class ProformaInvoiceController extends Controller
           ->select('proforma_invoices.*','customers.chi_name','customers.contact_person')
           ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
           ->addSelect(DB::raw("(SELECT CASE WHEN due_date >= '".date("Y-m-d")."' THEN false ELSE true END) as overdue"))
-          ->orderby('proforma_invoices.id')->paginate(10);
+          ->orderby('proforma_invoices.id','desc')->paginate(10);
 
       $id = array();
       foreach($records as $rec){
@@ -234,11 +234,13 @@ class ProformaInvoiceController extends Controller
           ));
         }
       }
+
+      /*if the converted proforma invoice has been modified, whether the commercial invoice should be changed?
       if($proforma_records->converted == true){
-        echo "has converted";
+
         $commercial_records = CommercialInvoice::where('reference','=',$request->order_id)->get();
 
-        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records->id)->get();
+        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records[0]->id)->get();
 
         foreach ($del_inventory_records as $del) {
           //echo $del->inventory_id;
@@ -249,7 +251,7 @@ class ProformaInvoiceController extends Controller
           $Inventory->inventory = $del_totalInv;
           $Inventory->save();
         }
-        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records->id);
+        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records[0]->id);
         $del_inventory_records->delete();
 
         $commercial_records = CommercialInvoice::where('reference','=',$request->order_id)->delete();
@@ -257,6 +259,7 @@ class ProformaInvoiceController extends Controller
         $proforma_records->converted = false;
         $proforma_records->save();
       }
+      */
 
       return redirect('/shippment/proforma/create')->with('message', 'Success!');
     }

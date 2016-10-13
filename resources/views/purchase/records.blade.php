@@ -14,16 +14,16 @@
           <a href="/purchase/"><button type="button" class="btn btn-primary btn-raised">新增採購 / New Purchase</button></a>
         </div>
       </div>
-        <div class="col-sm-10 col-sm-offset-1">
+        <div class="col-sm-12">
           @if(count($records)>0)
           <table class="table table-condensed table-bordered table-hover">
-            <tr>
-              <td>訂單編號</td>
-              <td>採購日期</td>
-              <td>供應廠商</td>
-              <td>採購項目</td>
-              <td>總金額</td>
-              <td>內容</td>
+            <tr class="success">
+              <th class="col-sm-1">訂單編號 / ID</th>
+              <th class="col-sm-1">採購日期 / Purchase Date</th>
+              <th class="col-sm-1">供應廠商 / Supplier</th>
+              <th class="col-sm-1">採購項目 / Items</th>
+              <th class="col-sm-1">總金額 / Total</th>
+              <th class="col-sm-1">內容 / Info</th>
             </tr>
             @foreach($records as $record)
             <tr>
