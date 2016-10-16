@@ -21,7 +21,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-      $lists = Supplier::orderBy('id', 'asc')->get();
+      $lists = Supplier::orderBy('id', 'asc')->paginate(10);
       $show = Supplier::first();
       return view('/supplier/index')->withLists($lists)->with('show',$show);
     }
@@ -109,7 +109,7 @@ class SupplierController extends Controller
               'address' => $request->address,
               'remark' => $request->remark,
       ]);
-      return redirect('supplier/'.$id)->with('message', '更新成功 / Supplier updated!');
+      return redirect('supplier/')->with('message', '更新成功 / Supplier updated!');
     }
 
     /**

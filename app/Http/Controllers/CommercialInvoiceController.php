@@ -45,7 +45,7 @@ class CommercialInvoiceController extends Controller
     public function create()
     {
       $records = CommercialInvoice::join('customers','customers.id','=','commercial_invoices.customer_id')
-          ->select('commercial_invoices.*','customers.eng_name','customers.contact_person')
+          ->select('commercial_invoices.*','customers.eng_name','customers.chi_name','customers.contact_person')
           ->orderby('commercial_invoices.id','desc')->paginate(10);
 
       $id = array();

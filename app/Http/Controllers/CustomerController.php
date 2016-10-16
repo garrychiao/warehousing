@@ -21,7 +21,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $lists = Customer::orderBy('id', 'asc')->get();
+        $lists = Customer::orderBy('id', 'asc')->paginate(10);
         $show = Customer::first();
         return view('/customer/index')->withLists($lists)->with('show',$show);
     }
@@ -141,7 +141,7 @@ class CustomerController extends Controller
                 //'notify_zip' => $request->notify_zip,
                 'notify_address' => $request->notify_address,
         ]);
-        return redirect('customer/'.$id)->with('message', 'Customer updated!');
+        return redirect('customer/')->with('message', 'Customer updated!');
     }
 
     /**

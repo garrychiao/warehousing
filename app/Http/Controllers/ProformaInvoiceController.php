@@ -47,7 +47,7 @@ class ProformaInvoiceController extends Controller
     public function create()
     {
       $records = ProformaInvoice::leftjoin('customers','customers.id','=','proforma_invoices.customer_id')
-          ->select('proforma_invoices.*','customers.chi_name','customers.contact_person')
+          ->select('proforma_invoices.*','customers.chi_name','customers.eng_name','customers.contact_person')
           ->addSelect(DB::raw("(SELECT sum(total) from proforma_invoice_inventories WHERE proforma_invoice_inventories.proforma_invoice_id = proforma_invoices.id) as amount"))
           ->addSelect(DB::raw("(SELECT CASE WHEN due_date >= '".date("Y-m-d")."' THEN false ELSE true END) as overdue"))
           ->orderby('proforma_invoices.id','desc')->paginate(10);

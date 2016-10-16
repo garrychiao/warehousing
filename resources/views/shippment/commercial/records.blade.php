@@ -31,7 +31,7 @@
             @foreach($records as $record)
             <tr>
               <td>{{ $record->order_id }}</td>
-              <td>{{ $record->eng_name }}</td>
+              <td>{{ $record->eng_name }}<br>{{ $record->chi_name}}</td>
               <td>{{ $record->contact_person }}</td>
               <td>{{ $record->reference }}</td>
               <td>{{ $record->export_date }}</td>

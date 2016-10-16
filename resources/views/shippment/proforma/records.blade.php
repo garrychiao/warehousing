@@ -32,7 +32,7 @@
             @foreach($records as $record)
             <tr>
               <td>{{ $record->order_id }}</td>
-              <td>{{ $record->chi_name }}</td>
+              <td>{{ $record->eng_name }}</br>{{ $record->chi_name }}</td>
               <td>{{ $record->contact_person }}</td>
               <td>
                 @if( $record->converted == true)
