@@ -27,7 +27,7 @@ class ManagePurchaseController extends Controller
      */
     public function index()
     {
-        $inventory = Inventory::distinct()->select('item_id','item_name','id')->orderBy('id', 'asc')->get();
+        $inventory = Inventory::distinct()->select('item_id','item_name','id')->orderBy('display_order', 'asc')->get();
         $supplier = Supplier::distinct()->select('supplier_name','id')->orderBy('id','asc')->get();
         $mycompany = MyCompany::firstOrNew(['id' => '1']);
         $idcount = PurchaseRecord::select('created_at')->whereDate('created_at','=',date("Y-m-d"))->count()+1;
@@ -140,7 +140,7 @@ class ManagePurchaseController extends Controller
       $inventory = PurchaseInventoryRecord::join('inventories','inventories.id','=','purchase_inventory_records.inventory_id')
       ->select('purchase_inventory_records.*','inventories.item_id','inventories.item_name')
       ->where('purchase_records_id','=',$id)->get();
-      $select_inventory = Inventory::distinct()->select('item_id','item_name','id')->orderBy('id', 'asc')->get();
+      $select_inventory = Inventory::distinct()->select('item_id','item_name','id')->orderBy('display_order', 'asc')->get();
       $total = PurchaseInventoryRecord::where('purchase_records_id','=',$id)->sum('total');
 
       $supplier = Supplier::distinct()->select('supplier_name','id')->orderBy('id','asc')->get();

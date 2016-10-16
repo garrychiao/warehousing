@@ -31,7 +31,7 @@ class ProformaInvoiceController extends Controller
      */
      public function index()
      {
-       $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+       $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('display_order', 'asc')->get();
        $inventory_kits = InventoryKit::distinct()->get();
        $customer = Customer::distinct()->orderBy('id','asc')->get();
        $idcount = ProformaInvoice::select('created_at')->whereDate('created_at','=',date("Y-m-d"))->count()+1;
@@ -162,7 +162,7 @@ class ProformaInvoiceController extends Controller
       $inventory_kits_records = ProformaInvoiceInventory::join('inventory_kits','inventory_kits.id','=','proforma_invoice_inventories.kits_id')
               ->select('proforma_invoice_inventories.*','inventory_kits.kits_name')
               ->whereNotNull('proforma_invoice_inventories.kits_id')->where('proforma_invoice_id','=',$id)->get();
-      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','unit_weight','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','unit_weight','inventory','price1','price2','price3','price4','price5','price6','id')->orderBy('display_order', 'asc')->get();
       $customer = Customer::distinct()->orderBy('id','asc')->get();
       $records = ProformaInvoice::findOrFail($id);
       $rec_inventory = ProformaInvoiceInventory::join('inventories','inventories.id','=','proforma_invoice_inventories.inventory_id')

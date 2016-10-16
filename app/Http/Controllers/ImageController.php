@@ -13,7 +13,7 @@ use File;
 class ImageController extends Controller
 {
     public function myImage(){
-      $inventory = Inventory::select('id','item_id','item_name','chi_item_name','graph_id')->paginate(10);
+      $inventory = Inventory::select('id','item_id','item_name','chi_item_name','graph_id')->orderby('display_order')->paginate(10);
       $img = DB::table('image_url')->get();
       return view('/image/index')->with('inventory',$inventory)->with('img',$img);
     }

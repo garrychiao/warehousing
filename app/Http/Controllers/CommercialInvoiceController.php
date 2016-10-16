@@ -29,7 +29,7 @@ class CommercialInvoiceController extends Controller
     public function index()
     {
       $mycompany = MyCompany::firstOrNew(['id' => '1']);
-      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('display_order', 'asc')->get();
       $inventory_kits = InventoryKit::distinct()->get();
       $customer = Customer::distinct()->orderBy('id','asc')->get();
       $idcount = CommercialInvoice::select('created_at')->whereDate('created_at','=',date("Y-m-d"))->count()+1;
@@ -176,7 +176,7 @@ class CommercialInvoiceController extends Controller
      */
     public function edit($id)
     {
-      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('display_order', 'asc')->get();
       $customer = Customer::distinct()->orderBy('id','asc')->get();
       $mycompany = MyCompany::firstOrNew(['id' => '1']);
       $inventory_kits = InventoryKit::distinct()->get();

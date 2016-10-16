@@ -21,7 +21,7 @@ use DB;
 class InformationController extends Controller
 {
   public function InformationIndex(){
-    $inventory = Inventory::distinct()->orderby('id','asc')->get();
+    $inventory = Inventory::distinct()->orderby('display_order','asc')->get();
     $customer = Customer::distinct()->orderby('id','asc')->get();
     $supplier = Supplier::distinct()->orderby('id','asc')->get();
     return view('information/index')->with('inventory',$inventory)
@@ -40,7 +40,7 @@ class InformationController extends Controller
         break;
 
       case 'inventory':
-      $information = Inventory::whereIn('id', $request->inventory)->get();
+      $information = Inventory::whereIn('id', $request->inventory)->orderby('display_order')->get();
       return view('information/show')
         ->with('type',$type)->with('information',$information)->with('mycompany',$mycompany);
         break;

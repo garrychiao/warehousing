@@ -78,7 +78,7 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
       $length = count($request->id);
-      var_dump($request->administrator);
+      
       for($i=0 ; $i<$length ; $i++){
         DB::table('users')
             ->where('id', $request->id[$i])

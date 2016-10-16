@@ -115,12 +115,41 @@
     </div>
     <input type="hidden" name="inventory" value="0"/>
     <input type="hidden" name ="avg_cost" value="0"/>
+
+    <div class="col-sm-12">
+      <h3>設定排序</h3>
+    </div>
     <div class="form-group">
-      <div class="col-sm-6">
+      <div class="col-sm-12">
+        <div class="col-sm-3">
+          <label>
+            <input type="checkbox" name="order_setup" onchange="setOrder(this);" checked>   默認 / Default
+          </label>
+        </div>
+        <div class="col-sm-6">
+          After :
+          <select class="form-control" name="display_order" id="display_order" disabled>
+            @foreach($inventory as $key => $inv)
+            <option value="{{ $inv->display_order }}">{{$key+1}} : {{ $inv->item_id}} {{ $inv->item_name}}</option>
+            @endforeach
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
         <input type="submit" class="btn btn-success btn-raised" value="Submit"/>
       </div>
     </div>
   </form>
 </div>
-
+<script type="text/javascript">
+function setOrder(select){
+  if(select.checked){
+    document.getElementById('display_order').disabled = true;
+  }else{
+    document.getElementById('display_order').disabled = false;
+  }
+}
+</script>
 @endsection

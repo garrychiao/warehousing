@@ -23,13 +23,13 @@ use Excel;
 class DashboardController extends Controller
 {
     public function welcome(){
-      $data_inv = Inventory::distinct()->select('item_id as letter','shipped_inv as frequency')->where('shipped_inv','>',0)->take(10)->orderBy('id', 'asc')->get();
+      $data_inv = Inventory::distinct()->select('item_id as letter','shipped_inv as frequency')->where('shipped_inv','>',0)->take(10)->orderBy('display_order', 'asc')->get();
       return view('welcome')->with('data_inv',$data_inv);
     }
     public function convert($id)
     {
       $mycompany = MyCompany::firstOrNew(['id' => '1']);
-      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('id', 'asc')->get();
+      $inventory = Inventory::distinct()->select('item_id','item_name','descriptions','inventory','unit_weight','price1','price2','price3','price4','price5','price6','id')->orderBy('display_order', 'asc')->get();
       //kits
       $inventory_kits = InventoryKit::distinct()->get();
       $inventory_kits_records = ProformaInvoiceInventory::join('inventory_kits','inventory_kits.id','=','proforma_invoice_inventories.kits_id')
@@ -54,14 +54,11 @@ class DashboardController extends Controller
     }
 
     public function test(){
-      Excel::create('New file', function($excel) {
-
-        $excel->sheet('New sheet', function($sheet) {
-
-          $sheet->loadView('information.show');
-
-        });
-
-      });
+      $inv = Inventory::select('id')->orderby('id')->get();
+      foreach($inv as $key => $i){
+        DB::table('inventories')
+            ->where('id', $i->id)
+            ->update(['display_order' => $key]);
+      }
     }
 }

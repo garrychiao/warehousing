@@ -18,7 +18,7 @@ class setKitsController extends Controller
      */
     public function index()
     {
-      $lists = Inventory::orderBy('id', 'asc')->get();
+      $lists = Inventory::orderBy('display_order', 'asc')->get();
       return view('inventory/setKits')->with('lists',$lists);
     }
 
