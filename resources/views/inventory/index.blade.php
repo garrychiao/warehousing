@@ -22,7 +22,8 @@ function inventory_search(){
       <div class="col-sm-7">
         @if(count($alert)>0)
         <div class="col-sm-12">
-          <div class="alert alert-warning">
+          <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             @foreach($alert as $a)
             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
             {{$a->item_id}} {{$a->item_name}} inventory low ! (current:{{$a->inventory}} , safety:{{$a->safety_inventory}})<br>
