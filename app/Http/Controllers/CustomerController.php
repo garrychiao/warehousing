@@ -22,8 +22,8 @@ class CustomerController extends Controller
     public function index()
     {
         $lists = Customer::orderBy('id', 'asc')->paginate(10);
-        $show = Customer::first();
-        return view('/customer/index')->withLists($lists)->with('show',$show);
+        $customer = Customer::select('id','eng_name')->orderBy('eng_name')->get();
+        return view('/customer/index')->withLists($lists)->with('customer',$customer);
     }
 
     /**
@@ -85,9 +85,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-      $lists = Customer::orderBy('id', 'asc')->get();
-      $show = Customer::findOrFail($id);
-      return view('/customer/index')->withLists($lists)->with('show',$show);
+      $lists = Customer::where('id','=', $id)->paginate(10);
+      $customer = Customer::select('id','eng_name')->orderBy('eng_name')->get();
+      return view('/customer/index')->withLists($lists)->with('customer',$customer);
     }
 
     /**

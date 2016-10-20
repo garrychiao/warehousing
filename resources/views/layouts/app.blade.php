@@ -19,6 +19,7 @@
     <link href="{{asset('css/photoswipe.css')}}" rel="stylesheet">-->
     <!--<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">-->
     <link href="{{asset('css/ripples.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/select2.min.css')}}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
     <script type="text/javascript">
@@ -179,12 +180,12 @@
     <script type="text/javascript">
       $.material.init();
     </script>
-    <!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <script src="{{asset('js/select2.min.js')}}"></script>
     <script type="text/javascript">
       $('.select_search').select2({
         theme: "classic"
       });
-    </script>-->
+    </script>
 </body>
 </html>

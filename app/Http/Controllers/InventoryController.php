@@ -65,16 +65,11 @@ class InventoryController extends Controller
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
                 ->orderBy('display_order', 'asc')->paginate(10);
+      $inventory = Inventory::select('id','item_name')->orderBy('item_name')->get();
+      $alert = Inventory::select('item_id','item_name','inventory','safety_inventory')->where('safety_inventory','>','inventory')
+                ->orderBy('id')->get();
 
-      //$show = Inventory::select('*',DB::raw("(SELECT CASE WHEN sum(quantity) IS NULL THEN 0 ELSE sum(quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date <= '".date('Y-m-d')."' and a2.converted = false) as preserved_inventory"))->first();
-      /*if(isset($show->item_id)){
-        $img =  DB::table('image_url')->where('img_resource','=',$show->item_id)->get();
-        return view('/inventory/index')->withLists($lists)->with('img',$img);
-      }else{
-        return view('/inventory/index')->withLists($lists);
-      }*/
-      //$img =  DB::table('image_url')->whereIn('img_resource', $lists->item_id)->get();
-      return view('/inventory/index')->withLists($lists)->with('img',null);
+      return view('/inventory/index')->withLists($lists)->with('img',null)->with('inventory',$inventory)->with('alert',$alert);
     }
 
     /**
@@ -137,11 +132,15 @@ class InventoryController extends Controller
      */
     public function show($id)
     {
-      $lists = Inventory::select('*',DB::raw("(SELECT CASE WHEN sum(quantity) IS NULL THEN 0 ELSE sum(quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date <= '".date('Y-m-d')."' and a2.converted = false) as preserved_inventory"))
-                ->orderBy('display_order', 'asc')->paginate(10);
-      $show = Inventory::select('*',DB::raw("(SELECT CASE WHEN sum(quantity) IS NULL THEN 0 ELSE sum(quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date <= '".date('Y-m-d')."' and a2.converted = false) as preserved_inventory"))->findOrFail($id);
-      $img =  DB::table('image_url')->where('img_resource','=',$show->item_id)->get();
-      return view('/inventory/index')->withLists($lists)->with('show',$show)->with('img',$img);
+      $lists = Inventory::select('*',
+                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
+                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
+                ->where('id','=',$id)->paginate(10);
+      $inventory = Inventory::select('id','item_name')->orderBy('item_name')->get();
+      $alert = Inventory::select('item_id','item_name','inventory','safety_inventory')->where('safety_inventory','>','inventory')
+                ->orderBy('id')->get();
+
+      return view('/inventory/index')->withLists($lists)->with('img',null)->with('inventory',$inventory)->with('alert',$alert);
     }
 
     /**

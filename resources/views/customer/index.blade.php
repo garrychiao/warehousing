@@ -10,8 +10,11 @@
     document.getElementById("consignee_name").value = document.getElementById("notify_name").value;
     document.getElementById("consignee_contact").value = document.getElementById("notify_contact").value;
     document.getElementById("consignee_phone").value = document.getElementById("notify_phone").value;
-    //document.getElementById("consignee_zip").value = document.getElementById("notify_zip").value;
     document.getElementById("consignee_address").value = document.getElementById("notify_address").value;
+  }
+  function customer_search(){
+    var id = document.getElementById('select_search').value;
+    window.location.href= "{{url('/customer')}}/"+id;
   }
 </script>
 <div class="container">
@@ -26,6 +29,16 @@
         </div>
       </div>
         <div class="col-sm-7">
+            <div class="col-sm-12">
+              <div class="col-sm-12">
+                <select class="select_search" id="select_search" style="width:60%;">
+                  @foreach($customer as $cus)
+                  <option value="{{ $cus->id }}"> {{ $cus->eng_name }}</option>
+                  @endforeach
+                </select>
+                <button type="button" class="btn btn-warning btn-raised btn-sm" onclick="customer_search();">Search</button>
+              </div>
+            </div>
             @if (count($lists) > 0)
             <table class="table table-striped table-hover">
               <thead>

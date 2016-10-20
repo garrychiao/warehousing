@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<script type="text/javascript">
+function inventory_search(){
+  var id = document.getElementById('select_search').value;
+  window.location.href= "{{url('/inventory')}}/"+id;
+}
+</script>
 <div class="container">
     <div class="row">
       <div class="col-sm-12">
@@ -14,6 +20,24 @@
         </div>
       </div>
       <div class="col-sm-7">
+        @if(count($alert)>0)
+        <div class="col-sm-12">
+          <div class="alert alert-warning">
+            @foreach($alert as $a)
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+            {{$a->item_id}} {{$a->item_name}} inventory low ! (current:{{$a->inventory}} , safety:{{$a->safety_inventory}})<br>
+            @endforeach
+          </div>
+        </div>
+        @endif
+        <div class="col-sm-12">
+          <select class="select_search" id="select_search" style="width:75%;">
+            @foreach($inventory as $inv)
+            <option value="{{ $inv->id }}"> {{ $inv->item_name }}</option>
+            @endforeach
+          </select>
+          <button type="button" class="btn btn-warning btn-raised btn-sm" onclick="inventory_search();">Search</button>
+        </div>
           @if (count($lists) > 0)
           <table class="table table-striped table-hover">
             <thead>
@@ -29,7 +53,7 @@
             </thead>
             <tbody>
               @foreach ($lists as $list)
-              <tr>
+              <tr @if($list->safety_inventory>$list->inventory) class="warning" @endif>
                 <td>
                   <a>{{ $list->item_id }}</a>
                 </td>
