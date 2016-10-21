@@ -229,41 +229,34 @@ class CommercialInvoiceController extends Controller
               'cost_additional' => $request->cost_additional,
               'final_total' => $request->final_total
       ]);
-      //delete former inventory inputs and insert new ones
-
-      /*$del_inventory = CommercialInvoiceInventory::where('commercial_invoice_id','=',$id)->get();
-
-      foreach ($del_inventory as $del) {
-        //echo $del->inventory_id;
-        $Inventory = Inventory::find($del->inventory_id);
-        //add to inventory to item
-        $del_totalInv = $Inventory->inventory+$del->quantity;
-        //update
-        $Inventory->inventory = $del_totalInv;
-        $Inventory->save();
-      }*/
       $del_inventory = CommercialInvoiceInventory::where('commercial_invoice_id','=',$id);
       $del_inventory->delete();
 
       $length = count($request->item_id);
       for($i=0 ; $i<$length ; $i++){
-        $CommercialInventory = CommercialInvoiceInventory::create(array(
-          'commercial_invoice_id' => $id,
-          'inventory_id' => $request->item_id[$i],
-          'quantity' => $request->quantity[$i],
-          'unit_price' => $request->unit_price[$i],
-          'total' => $request->total[$i],
-          'description' => $request->description[$i],
-          'weight' => $request->weight[$i],
-        ));
-        /*
-        $Inventory = Inventory::find($request->item_id[$i]);
-        //add to inventory to item
-        $totalInv = $Inventory->inventory-$request->quantity[$i];
-        //update
-        $Inventory->inventory = $totalInv;
-        $Inventory->save();
-        */
+        //$check_is_kit = strstr($request->item_id[$i],'K',true);
+        if(strpos($request->item_id[$i],"K")){
+          $kits_id = strstr($request->item_id[$i],'K',true);
+          $PurchaseInventory = CommercialInvoiceInventory::create(array(
+            'inventory_id' => null,
+            'kits_id'=> $kits_id,
+            'commercial_invoice_id' => $id,
+            'quantity' => $request->quantity[$i],
+            'unit_price' => $request->unit_price[$i],
+            'total' => $request->total[$i],
+            'weight' => $request->weight[$i],
+          ));
+        }else{
+          $PurchaseInventory = CommercialInvoiceInventory::create(array(
+            'inventory_id' => $request->item_id[$i],
+            'kits_id'=> null,
+            'commercial_invoice_id' => $id,
+            'quantity' => $request->quantity[$i],
+            'unit_price' => $request->unit_price[$i],
+            'total' => $request->total[$i],
+            'weight' => $request->weight[$i],
+          ));
+        }
       }
 
       return redirect('/shippment/commercial/create')->with('message', 'Success!');

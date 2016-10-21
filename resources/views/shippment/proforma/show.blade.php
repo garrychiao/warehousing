@@ -48,6 +48,8 @@
               <td colspan="4">{!!nl2br(e($records->bill_to))!!}</td>
               <td colspan="4">{!!nl2br(e($records->ship_to))!!}</td>
             </tr>
+          </table>
+          <table class="table table-condensed table-bordered table-hover">
             <tr class="success">
               <th class="col-sm-1">P.O. Number</th>
               <th class="col-sm-1">Payment Terms</th>
@@ -66,6 +68,8 @@
               <td>{{$records->FOB}}</td>
               <td>{{$records->due_date}}</td>
             </tr>
+          </table>
+          <table class="table table-condensed table-bordered table-hover">
             <tr class="success">
               <th>Quantity</th><th>Item Code</th><th colspan="2">Item Name</th>
               <!--<th>Description</th>--><th>Weight</th><th>Price Each</th><th>Amount</th>
@@ -108,6 +112,8 @@
                 <td colspan="2">{{number_format($total,2)}}</td>
               </tr>
             @endif
+          </table>
+          <table class="table table-condensed table-bordered table-hover">
             <tr class="success">
               <th>Phone#</th><th>Fax#</th><th colspan="3">E-mail</th><th colspan="3">Web Site</th>
             </tr>

@@ -313,7 +313,7 @@ function countTotal(){
               </tr>
               <tr>
                 <td colspan="2">
-                  <textarea type="text" rows="7" class="form-control" name="exporter" id="Exporter">{{ $mycompany->eng_name }}&#10;{{ $mycompany->contact_person }}&#10;{{ $mycompany->phone }}&#10;{{ $mycompany->eng_address }}
+                  <textarea type="text" rows="7" class="form-control" name="exporter" id="Exporter">{{ $mycompany->eng_name }}&#10;{{ $mycompany->eng_address }}&#10;{{ $mycompany->phone }}
                   </textarea>
                 </td>
                 <td colspan="2"><textarea type="text" rows="7" class="form-control" name="consignee" id="consignee"></textarea></td>
