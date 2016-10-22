@@ -231,11 +231,23 @@
             <tr class="success">
               <!--<th>Item Code</th>--><th colspan="4">Description</th><th>Weight (kg)</th><th>Quantity</th><th>Price Each</th><th>Amount</th>
             </tr>
+            @if(count($inventory_kits_records)>0)
+              @foreach($inventory_kits_records as $kit)
+              <tr>
+                <td>{{$kit->item_id}}</td>
+                <td colspan="3">{{$kit->kits_name}}</td>
+                <td>{{number_format($kit->weight,2)}}</td>
+                <td>{{number_format($kit->quantity,0)}}</td>
+                <td>{{number_format($kit->unit_price,2)}}</td>
+                <td align="right">{{number_format($kit->total,2)}}</td>
+              </tr>
+              @endforeach
+            @endif
             @if(count($inventory)>0)
               @foreach($inventory as $inv)
                 <tr>
-                  <!--<td>{{$inv->item_id}}</td>-->
-                  <td colspan="4">{{$inv->descriptions}}</td>
+                  <td>{{$inv->item_id}}</td>
+                  <td colspan="3">{{$inv->item_name}}</td>
                   <td>{{$inv->weight}}</td>
                   <td>{{$inv->quantity}}</td>
                   <td>{{number_format($inv->unit_price,2)}}</td>
