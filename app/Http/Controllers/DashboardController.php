@@ -23,8 +23,23 @@ use Excel;
 class DashboardController extends Controller
 {
     public function welcome(){
-      $data_inv = Inventory::distinct()->select('item_id as letter','shipped_inv as frequency')->where('shipped_inv','>',0)->take(10)->orderBy('display_order', 'asc')->get();
-      return view('welcome')->with('data_inv',$data_inv);
+      $pur_records = PurchaseRecord::where('delivery_date','>',date('Y-m-d')-30)->get();
+      $com_records = CommercialInvoice::where('export_date','>',date('Y-m-d')-30)->get();
+      $id = array();
+      foreach($pur_records as $rec){
+        array_push($id,$rec->id);
+      }
+      $pur_inv_records = PurchaseInventoryRecord::join('inventories','purchase_inventory_records.inventory_id','=','inventories.id')
+          ->whereIn('purchase_records_id', $id)->get();
+      $id = array();
+      foreach($com_records as $rec){
+        array_push($id,$rec->id);
+      }
+      $com_inv_records = CommercialInvoiceInventory::leftjoin('inventories','commercial_invoice_inventories.inventory_id','=','inventories.id')
+          ->leftjoin('inventory_kits','commercial_invoice_inventories.kits_id','=','inventory_kits.id')
+          ->whereIn('commercial_invoice_inventories.commercial_invoice_id', $id)->get();
+      return view('welcome')->with('pur_records',$pur_records)->with('com_records',$com_records)
+                            ->with('pur_inv_records',$pur_inv_records)->with('com_inv_records',$com_inv_records);
     }
     public function convert($id)
     {

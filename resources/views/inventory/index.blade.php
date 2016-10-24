@@ -43,13 +43,14 @@ function inventory_search(){
           <table class="table table-striped table-hover">
             <thead>
               <tr>
-                <th>品號<br><small>Item ID</small></th>
-                <th>類別<br><small>Category</small></th>
+                <th class="col-sm-1">品號<br><small>Item ID</small></th>
+                <th class="col-sm-1">類別<br><small>Category</small></th>
                 <th class="col-sm-2">品名<br><small>Item Name</small></th>
+                <th>即將入庫<br><small>Incoming</small></th>
                 <th>實際庫存<br><small>Inventory</small></th>
                 <th>預約庫存<br><small>Preserved</small></th>
                 <th>可用庫存<br><small>Available</small></th>
-                <th class="col-sm-3">操作<br><small>Actions</small></th>
+                <th>操作<br><small>Actions</small></th>
               </tr>
             </thead>
             <tbody>
@@ -65,18 +66,22 @@ function inventory_search(){
                   {{ $list->item_name }}
                 </td>
                 <td>
-                  {{ $list->inventory - $list->shipped_inv }}
+                  {{ $list->incoming_inv }}
+                </td>
+                <td>
+                  {{ $list->inventory}}
                 </td>
                 <td>
                   {{ $list->preserved_inv }}
                 </td>
                 <td class="danger">
-                  {{ $list->inventory - $list->preserved_inv - $list->shipped_inv }}
+                  {{ $list->inventory - $list->preserved_inv}}
                 </td>
                 <td>
                   <div class="btn-group">
                     <!--<button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('inventory.show', $list->id) }}'">Details</button>-->
                     <a href="#{{ $list->id }}" aria-controls="" class="btn btn-sm btn-raised btn-info" role="tab" data-toggle="tab">Details</a>
+                    <!--
                     <button type="button" class="btn btn-info dropdown-toggle btn-raised btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="caret"></span>
                       <span class="sr-only">Toggle Dropdown</span>
@@ -90,6 +95,7 @@ function inventory_search(){
                         </form>
                       </li>
                     </ul>
+                  -->
                   </div>
                 </td>
               </tr>
@@ -105,58 +111,35 @@ function inventory_search(){
         <div class="tab-content">
           @foreach($lists as $key => $list)
           <div role="tabpanel" class="tab-pane fade @if($key ==0 ) in active @endif" id="{{ $list->id }}">
-            <!--<div class="col-sm-12">
-              <div class="row">
-                <div class="col-sm-12">
-                  <button type="button" class="btn btn-raised btn-default" data-toggle="modal" data-target="#addImage">
-                    新增圖片/Add Image
-                  </button>
-                </div>
-                @if(count($img)>0)
-                  @foreach($img as $image)
-                  <div class="col-xs-6 col-sm-6">
-                    <a href="{{ url('/viewImage/'.$image->id.'/'.$list->id)}}" class="thumbnail">
-                      <img src="../{{ $image->img_url }}">
-                    </a>
-                  </div>
-                  @endforeach
-                @endif
-              </div>
-
-              <div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title" id="myModalLabel">Add Image</h4>
-                    </div>
-                    <form class="" action="{{ url('/addImage/inventory/'.$list->item_id.'/'.$list->id)}}" method="post" enctype="multipart/form-data">
-                      {!! csrf_field() !!}
-                    <div class="modal-body">
-                      <div class="form-group">
-                        <input type="text" readonly="" class="form-control" placeholder="Browse...">
-                        <input type="file" id="fileToUpload" name="fileToUpload" multiple="" onchange="modifyImg(this);">
-                      </div>
-                      <div class="col-sm-12">
-                        <img id="modified_img" src="#" alt="your image"/>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>-->
             <div class="col-sm-12">
-              <form class="form-horizontal" action="{{ url('/inventory/'.$list->id)}}" method="post" role="form">
-                {!! csrf_field() !!}
-                <input type="hidden" name="_method" value="put" />
                 <div class="form-group">
                   <table class="table table-bordered table-condensed">
-                    <tr class="success"><td colspan="4"><h3>{{ $list->item_name }}</h3></td></tr>
+                    <tr class="success">
+                      <td colspan="4">
+                        <div class="col-sm-10">
+                          <h3>{{ $list->item_name }}</h3>
+                        </div>
+                        <div class="col-sm-2">
+                          <!--<button type="button" target="center" class="btn btn-info btn-raised btn-sm" onclick="window.location.href='{{ URL::route('inventory.show', $list->id) }}'">Details</button>-->
+                          <button type="button" class="btn btn-primary dropdown-toggle btn-raised btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu">
+                            <li align="center">
+                              <form class="form-horizontal" action="{{ url('/inventory/'.$list->id)}}" method="post" role="form">
+                                {!! csrf_field() !!}
+                                <input type="hidden" name="_method" value="delete" />
+                                <input type="submit" class="btn btn-sm btn-danger" value="Delete">
+                              </form>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                    <form class="form-horizontal" action="{{ url('/inventory/'.$list->id)}}" method="post" role="form">
+                    {!! csrf_field() !!}
+                    <input type="hidden" name="_method" value="put" />
                     <tr>
                       <th class="col-sm-3">品號<br>Item ID</th><td class="col-sm-3"><input type="text" class="form-control" name="item_id" value="{{ $list->item_id }}"></td>
                       <th class="col-sm-3">類別<br>Category</th><td class="col-sm-3"><input type="text" class="form-control" name="category" value="{{ $list->category }}"></td>
@@ -168,7 +151,7 @@ function inventory_search(){
                     <tr>
                       <th>庫存<br>Inventory</th>
                       <td>
-                        <h4>{{ number_format( $list->inventory-$list->shipped_inv ) }}</h4>
+                        <h4>{{ number_format( $list->inventory ) }}</h4>
                         <input type="text" class="form-control hidden" name="inventory" value="{{ $list->inventory }}">
                       </td>
                       <th>預約庫存<br>Preserved</th>
@@ -180,7 +163,7 @@ function inventory_search(){
                     <tr>
                       <th>可用庫存<br>Available</th>
                       <td>
-                        <h4>{{ number_format( $list->inventory-$list->preserved_inv-$list->shipped_inv)}}</h4>
+                        <h4>{{ number_format( $list->inventory-$list->preserved_inv )}}</h4>
                         <input type="text" class="form-control hidden" name="avg_cost" value="{{ $list->avg_cost }}">
                       </td>
                       <th>平均成本<br>Average</th>

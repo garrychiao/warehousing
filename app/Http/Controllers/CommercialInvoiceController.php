@@ -14,6 +14,7 @@ use App\MyCompany;
 use DB;
 use App\CommercialInvoice;
 use App\CommercialInvoiceInventory;
+use App\CustomClass\MyClass;
 
 class CommercialInvoiceController extends Controller
 {
@@ -109,15 +110,6 @@ class CommercialInvoiceController extends Controller
             'weight' => $request->weight[$i],
             //'description' => $request->description[$i],
           ));
-          /*$kit_qty = InventoryKitMember::select('inventory_id','quantity')->where('kits_id','=',$kits_id)->get();
-          foreach ($kit_qty as $qty) {
-            $Inventory = Inventory::find($qty->inventory_id);
-            //add to inventory to item
-            $totalInv = $Inventory->inventory-$qty->quantity;
-            //update
-            $Inventory->inventory = $totalInv;
-            $Inventory->save();
-          }*/
         }else{
           $PurchaseInventory = CommercialInvoiceInventory::create(array(
             'inventory_id' => $request->item_id[$i],
@@ -129,16 +121,12 @@ class CommercialInvoiceController extends Controller
             'weight' => $request->weight[$i],
             //'description' => $request->description[$i],
           ));
-          /*
-          $Inventory = Inventory::find($request->item_id[$i]);
-          //add to inventory to item
-          $totalInv = $Inventory->inventory-$request->quantity[$i];
-          //update
-          $Inventory->inventory = $totalInv;
-          $Inventory->save();
-          */
+
         }
       }
+
+      MyClass::setInventory();
+
       return redirect('/shippment/commercial/create')->with('message', 'Success!');
     }
 
@@ -258,6 +246,7 @@ class CommercialInvoiceController extends Controller
           ));
         }
       }
+      MyClass::setInventory();
 
       return redirect('/shippment/commercial/create')->with('message', 'Success!');
 

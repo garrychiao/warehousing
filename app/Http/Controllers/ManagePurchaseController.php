@@ -13,6 +13,7 @@ use App\Supplier;
 use App\MyCompany;
 use App\PurchaseInventoryRecord;
 use DB;
+use App\CustomClass\MyClass;
 
 class ManagePurchaseController extends Controller
 {
@@ -90,18 +91,8 @@ class ManagePurchaseController extends Controller
           'total' => $request->total[$i],
           'remark' => $request->remark[$i],
         ));
-        $Inventory = Inventory::find($request->item_id[$i]);
-        //add to inventory to item
-        $totalInv = $Inventory->inventory+$request->quantity[$i];
-        //calculating the total cost of the item
-        $totalCost = $Inventory->avg_cost*$Inventory->inventory + $request->total[$i];
-        //calculating the average cost
-        $avgCost = $totalCost/$totalInv;
-        //update
-        $Inventory->inventory = $totalInv;
-        $Inventory->avg_cost = $avgCost;
-        $Inventory->save();
       }
+      MyClass::setInventory();
 
       return redirect('/purchase/create')->with('message', 'Purchase success!');
     }
@@ -210,21 +201,10 @@ class ManagePurchaseController extends Controller
             'total' => $request->total[$i],
             'remark' => $request->remark[$i],
           ));
-          $Inventory = Inventory::find($request->item_id[$i]);
-          //add to inventory to item
-          $totalInv = $Inventory->inventory+$request->quantity[$i];
-          //calculating the total cost of the item
-          $totalCost = $Inventory->avg_cost*$Inventory->inventory + $request->total[$i];
-          //calculating the average cost
-          $avgCost = $totalCost/$totalInv;
-          //update
-          $Inventory->inventory = $totalInv;
-          $Inventory->avg_cost = $avgCost;
-          $Inventory->save();
         }
+        MyClass::setInventory();
 
         return redirect('/purchase/create')->with('message', 'Success!');
-
     }
 
     /**

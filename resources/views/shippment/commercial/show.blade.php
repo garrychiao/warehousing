@@ -71,48 +71,6 @@
             <tr>
               <td colspan="4">{{ $records->airwaybill_number}}</td>
             </tr>
-            <!--<tr>
-              <td colspan="2" align="center">
-              @if(isset($mycompany->img_url))
-              <img src="../../{{ $mycompany->img_url }}" alt="" width="120px" />
-              @endif
-              </td>
-              <td colspan="8" class="col-sm-10" align="center">
-                <h2>{{$mycompany->eng_name}}</h2>{{$mycompany->eng_address}}<br>
-                {{$mycompany->email}}<br>Tel. {{$mycompany->phone}} +886{{$mycompany->cell_phone}}
-                <h3>Commercial Invoice</h3>
-                <small>Date : {{$records->create_date}}<br>
-                Invoice# : {{$records->order_id}}</small>
-              </td>
-            </tr>
-            <tr class="success">
-              <th colspan="4" class="col-sm-6">Consignee</th>
-              <th colspan="4" class="col-sm-6">Shipper / Exporter</th>
-            </tr>
-            <tr>-->
-              <!--make newline character working -->
-              <!--<td colspan="4">{!!nl2br(e($records->consignee))!!}</td>
-              <td colspan="4">{!!nl2br(e($records->exporter))!!}</td>
-            </tr>
-            <tr class="success">
-              <th colspan="4">Notify Party</th>
-              <th colspan="2">Date of Export</th>
-              <th colspan="2">Reference</th>
-            </tr>
-            <tr>-->
-              <!--make newline character working -->
-              <!--<td colspan="4" rowspan="3">{!!nl2br(e($records->notify_party))!!}</td>
-              <td colspan="2">{{ $records->export_date }}</td>
-              <td colspan="2">{{ $records->reference }}</td>
-            </tr>
-            <tr class="success">
-              <th colspan="2">Currency</th>
-              <th colspan="2">Terms of Sales</th>
-            </tr>
-            <tr>
-              <td colspan="2">{{ $records->currency }}</td>
-              <td colspan="2">{{ $records->terms_of_sale }}</td>
-            </tr>-->
             <tr class="success">
               <th>Item Code</th><th colspan="3">Item Name</th><th>Weight (kg)</th><th>Quantity</th><th>Price Each</th><th>Amount</th>
             </tr>

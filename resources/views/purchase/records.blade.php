@@ -20,6 +20,7 @@
             <tr class="success">
               <th class="col-sm-1">訂單編號 / ID</th>
               <th class="col-sm-1">採購日期 / Purchase Date</th>
+              <th class="col-sm-1">到貨日期 / Delivery Date</th>
               <th class="col-sm-1">供應廠商 / Supplier</th>
               <th class="col-sm-1">採購項目 / Items</th>
               <th class="col-sm-1">總金額 / Total</th>
@@ -29,6 +30,7 @@
             <tr>
               <td>{{ $record->order_id }}</td>
               <td>{{ $record->purchase_date }}</td>
+              <td>{{ $record->delivery_date }}</td>
               <td>{{ $record->supplier_name }}</td>
               <td>
                 @foreach($inv_records as $inv_rec)

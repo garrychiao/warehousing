@@ -26,15 +26,18 @@ class InventoryController extends Controller
      */
     public function index()
     {
-      $lists = Inventory::select('*',
+      /*
+      $lists = Inventory::select('id',
                 DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
-                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
-                ->orderBy('display_order', 'asc')->get();
+                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"),
+                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from purchase_inventory_records a1 join purchase_records a2 on a1.purchase_records_id = a2.id WHERE a1.inventory_id = inventories.id and a2.delivery_date >= '".date('Y-m-d')."' and a1.inventory_id IS NOT NULL) as incoming_inv"))
+                ->orderBy('id', 'asc')->get();
       //Update invenotry datas
       foreach($lists as $list){
         DB::table('inventories')
               ->where('id','=',$list->id)
               ->update(['preserved_inv' => $list->preserved_inventory,
+                        'incoming_inv' => $list->incoming_inv,
                         'shipped_inv' => $list->shipped_inventory]);
       }
       //select proforma inventory "kits" part and add to the above before due_date for each item
@@ -60,11 +63,8 @@ class InventoryController extends Controller
                 ->increment('shipped_inv', $find->quantity*$c_kits->quantity);
         }
       }
-
-      $lists = Inventory::select('*',
-                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from proforma_invoice_inventories a1 join proforma_invoices a2 on a1.proforma_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a2.due_date >= '".date('Y-m-d')."' and a2.converted = false and a1.inventory_id IS NOT NULL) as preserved_inventory"),
-                DB::raw("(SELECT CASE WHEN sum(a1.quantity) IS NULL THEN 0 ELSE sum(a1.quantity) END from commercial_invoice_inventories a1 join commercial_invoices a2 on a1.commercial_invoice_id = a2.id WHERE a1.inventory_id = inventories.id and a1.inventory_id IS NOT NULL) as shipped_inventory"))
-                ->orderBy('display_order', 'asc')->paginate(10);
+      */
+      $lists = Inventory::orderBy('display_order', 'asc')->paginate(10);
       $inventory = Inventory::select('id','item_name')->orderBy('item_name')->get();
       $alert = Inventory::select('item_id','item_name','inventory','safety_inventory')->where('safety_inventory','>','inventory')
                 ->orderBy('id')->get();

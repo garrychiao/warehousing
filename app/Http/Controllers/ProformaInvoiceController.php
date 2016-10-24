@@ -17,6 +17,7 @@ use App\InventoryKit;
 use App\InventoryKitMember;
 use App\Http\Requests\ProformaInvoiceRequest;
 use DB;
+use App\CustomClass\MyClass;
 
 class ProformaInvoiceController extends Controller
 {
@@ -122,6 +123,7 @@ class ProformaInvoiceController extends Controller
         $Inventory->preserved_inv += $request->quantity[$i];
         $Inventory->save();*/
       }
+      MyClass::setInventory();
 
       return redirect('/shippment/proforma/create')->with('message', 'Success!');
     }
@@ -235,31 +237,7 @@ class ProformaInvoiceController extends Controller
         }
       }
 
-      /*if the converted proforma invoice has been modified, whether the commercial invoice should be changed?
-      if($proforma_records->converted == true){
-
-        $commercial_records = CommercialInvoice::where('reference','=',$request->order_id)->get();
-
-        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records[0]->id)->get();
-
-        foreach ($del_inventory_records as $del) {
-          //echo $del->inventory_id;
-          $Inventory = Inventory::find($del->inventory_id);
-          //add to inventory to item
-          $del_totalInv = $Inventory->inventory+$del->quantity;
-          //update
-          $Inventory->inventory = $del_totalInv;
-          $Inventory->save();
-        }
-        $del_inventory_records = CommercialInvoiceInventory::where('commercial_invoice_id','=',$commercial_records[0]->id);
-        $del_inventory_records->delete();
-
-        $commercial_records = CommercialInvoice::where('reference','=',$request->order_id)->delete();
-
-        $proforma_records->converted = false;
-        $proforma_records->save();
-      }
-      */
+      MyClass::setInventory();
 
       return redirect('/shippment/proforma/create')->with('message', 'Success!');
     }
