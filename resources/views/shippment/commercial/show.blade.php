@@ -97,6 +97,7 @@
                   <td align="right">{{number_format($inv->total,2)}}</td>
                 </tr>
               @endforeach
+            @endif
               <tr class="success">
                 <td colspan="4" align="right"><strong>Sub-Total : </strong></td>
                 <td align="right">{{number_format($total->weight)}}</td>
@@ -120,7 +121,6 @@
                 <td colspan="6" align="right"><h4>Total Incoive Value : </h4></td>
                 <td colspan="2" align="right"><h4>{{number_format($final_total,2)}}</h4></td>
               </tr>
-            @endif
             <tr class="success">
               <th colspan="2">Phone#</th>
               <th colspan="2">E-mail</th>
@@ -212,6 +212,7 @@
                   <td align="right">{{number_format($inv->total,2)}}</td>
                 </tr>
               @endforeach
+            @endif
               <tr class="success">
                 <td colspan="4" align="right"><strong>Sub-Total : </strong></td>
                 <td align="right">{{number_format($total->weight)}}</td>
@@ -235,7 +236,6 @@
                 <td colspan="6" align="right"><h5>Total Invoice Value : </h5></td>
                 <td colspan="2" align="right"><h5>{{number_format($final_total,2)}}</h5></td>
               </tr>
-            @endif
             <tr class="success">
               <th colspan="2">Phone#</th>
               <th colspan="2">E-mail</th>

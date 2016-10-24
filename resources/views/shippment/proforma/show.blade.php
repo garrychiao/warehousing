@@ -99,6 +99,7 @@
                   <td>{{number_format($inv->total,2)}}</td>
                 </tr>
               @endforeach
+            @endif
               <tr>
                 <td>1</td>
                 <td>S&H</td>
@@ -111,7 +112,6 @@
                 <td align="right"><strong>Total : </strong></td>
                 <td colspan="2">{{number_format($total,2)}}</td>
               </tr>
-            @endif
           </table>
           <table class="table table-condensed table-bordered table-hover">
             <tr class="success">
