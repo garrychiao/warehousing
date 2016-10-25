@@ -112,6 +112,14 @@
                 <td align="right"><strong>Total : </strong></td>
                 <td colspan="2">{{number_format($total,2)}}</td>
               </tr>
+              @if(isset($records->quotation))
+              <tr>
+                <td align="right" colspan="2">
+                  Quatation :
+                </td>
+                <td colspan="5">{{$records->quotation}}</td>
+              </tr>
+              @endif
           </table>
           <table class="table table-condensed table-bordered table-hover">
             <tr class="success">

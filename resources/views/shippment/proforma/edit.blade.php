@@ -230,6 +230,9 @@ function countTotal(){
   FinalTotal += parseFloat(document.getElementById('sandh').value, 2);
   document.getElementById("FinalTotal").innerHTML = FinalTotal.toFixed(2);
 }
+function addQuotation(){
+  document.getElementById('quotation').value="{{$quotation->quotation}}";
+}
 </script>
 <div class="container">
     <div class="row">
@@ -546,6 +549,15 @@ function countTotal(){
             </table>
             <div class="col-sm-12">
               <table class="table">
+                <tr>
+                  <th class="success col-sm-3">
+                    Quatation :
+                    <button type="button" onclick="addQuotation();" class="btn btn-primary btn-sm btn-raised">ADD</button>
+                  </th>
+                  <td colspan="3">
+                    <input type="text" class="form-control" name="quotation" id="quotation" value="{{$records->quotation}}">
+                  </td>
+                </tr>
                 <tr>
                   <th class="success col-sm-3">Shipping & Handling Cost</th>
                   <td class="col-sm-3"><input type="text" class="form-control" name="sandh" id="sandh" value="{{ $records->sandh}}" onchange="countTotal();"></td>

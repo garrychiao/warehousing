@@ -36,8 +36,9 @@ class ProformaInvoiceController extends Controller
        $inventory_kits = InventoryKit::distinct()->get();
        $customer = Customer::distinct()->orderBy('id','asc')->get();
        $idcount = ProformaInvoice::select('created_at')->whereDate('created_at','=',date("Y-m-d"))->count()+1;
+       $quotation = MyCompany::select('quotation')->first();
        return view('shippment/proforma/index')->with('inventory',$inventory)->with('inventory_kits',$inventory_kits)
-              ->with('customer',$customer)->with('form_id',$idcount);
+              ->with('customer',$customer)->with('form_id',$idcount)->with('quotation',$quotation);
      }
 
     /**
@@ -85,6 +86,7 @@ class ProformaInvoiceController extends Controller
             'via' => $request->via,
             'FOB' => $request->FOB,
             'sandh' => $request->sandh,
+            'quotation' => $request->quotation,
             'converted' => false,
             'due_date' => $request->due_date
           ));
@@ -171,11 +173,12 @@ class ProformaInvoiceController extends Controller
       ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name')
       ->where('proforma_invoice_id', $id)->get();
       $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total')+$records->sandh;
+      $quotation = MyCompany::select('quotation')->first();
 
       return view('shippment/proforma/edit')->with('inventory',$inventory)->with('customer',$customer)
               ->with('records',$records)->with('rec_inventory',$rec_inventory)
               ->with('inventory_kits',$inventory_kits)->with('inventory_kits_records',$inventory_kits_records)
-              ->with('total',$total);
+              ->with('total',$total)->with('quotation',$quotation);
     }
 
     /**
@@ -203,6 +206,7 @@ class ProformaInvoiceController extends Controller
               'via' => $request->via,
               'FOB' => $request->FOB,
               'sandh' => $request->sandh,
+              'quotation' => $request->quotation,
               'due_date' => $request->due_date
       ]);
       $del_inventory = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id);

@@ -49,6 +49,10 @@
                 <td><input type="text" class="form-control" name="address" value="{{ $show->phone_foreign }}"></td>
               </tr>
               <tr>
+                <td>報價備註 / Quotation</td>
+                <td colspan="3"><input type="text" class="form-control" name="quotation" value="{{ $show->quotation }}"></td>
+              </tr>
+              <tr>
                 <td>網站連結</td>
                 <td colspan="3"><input type="text" class="form-control" name="website" value="{{ $show->website }}"></td>
               </tr>

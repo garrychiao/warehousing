@@ -57,6 +57,7 @@ class MyCompanyController extends Controller
         'phone' => $request->phone,
         'cell_phone' => $request->cell_phone,
         'fax' => $request->fax,
+        'quotation' => $request->quotation,
         'email' => $request->email,
         'website' => $request->website,
       ));
@@ -108,6 +109,7 @@ class MyCompanyController extends Controller
               'phone' => $request->phone,
               'cell_phone' => $request->cell_phone,
               'fax' => $request->fax,
+              'quotation' => $request->quotation,
               'email' => $request->email,
               'website' => $request->website,
       ]);
