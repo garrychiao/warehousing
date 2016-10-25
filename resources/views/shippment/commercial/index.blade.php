@@ -322,7 +322,7 @@ function countTotal(){
                 <th colspan="2">Country of Ultimate Destination</th>
                 <th>Notify Party :</th>
                 <td>
-                  <select id="Notify" class="form-control" onchange="changeNotifyParty(this)">
+                  <select id="Notify" class="form-control" name="notify_id" onchange="changeNotifyParty(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
                     <option value="{{ $lstCustomer->id }}">{{{ $lstCustomer->eng_name }}}</option>
@@ -380,22 +380,6 @@ function countTotal(){
                   </select>
                 </td>
                 <td>
-                  <!--
-                  <select name="item_name[]" class="form-control" onchange="changeByName(this)">
-                    @if(count( $inventory_kits )>0)
-                      @foreach( $inventory_kits as $kits)
-                      Kits return value with heading "K"
-                      <option value="{{ $kits->kits_name}}">{{{ $kits->kits_name }}}</option>
-                      @endforeach
-                    @endif
-                    @forelse($inventory as $lstInventory)
-                    <option value="{{ $lstInventory->item_name}}">{{{ $lstInventory->item_name }}}</option>
-                    @empty
-                    <option>Inventory empty!</option>
-                    @endforelse
-                  </select>
-                -->
-
                   @if(count($inventory)>0)
                   <input type="text" class="form-control typeahead" name="item_name[]" data-provide="typeahead" onchange="changeByName(this);" value="@if(count($inventory_kits)>0){{$inventory_kits->first()->kits_name}}@else{{$inventory->first()->item_name}}@endif">
                   @else
@@ -445,38 +429,6 @@ function countTotal(){
             <div class="col-sm-2">
               <input type="submit" name="name" value="Submit" class="btn btn-success btn-lg btn-raised">
             </div>
-
-<!--
-          <div class="form-group">
-            <label class="col-sm-2 control-label">產品編號</label>
-            <label class="col-sm-2 control-label">產品名稱</label>
-            <label class="col-sm-2 control-label">訂單數量</label>
-            <label class="col-sm-2 control-label">單價</label>
-            <label class="col-sm-2 control-label">金額</label>
-            <label class="col-sm-2 control-label">操作</label>
-            <div class="col-sm-2" id="div_item_id">
-              <input type="text" class="form-control" name="item_id[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_item_name">
-              <input type="text" class="form-control" name="item_name[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_quantity">
-              <input type="text" class="form-control" name="quantity[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_unit_price">
-              <input type="text" class="form-control" name="unit_price[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_total">
-              <input type="text" class="form-control" name="total[]" value="">
-            </div>
-            <div class="col-sm-2" id="div_remark">
-              <input type="button" class="btn btn-danger btn-raised" disabled="true" value="Del">
-            </div>
-            <div class="col-sm-2">
-              <input type="button" name="btnAddInput" id="btnAddInput" class="btn btn-raised btn-lg" value="+">
-              <input type="button" name="btnDelInput" id="btnDelInput" class="btn btn-raised btn-lg" value="-">
-            </div>
-          </div>-->
         </form>
       </div>
     </div>

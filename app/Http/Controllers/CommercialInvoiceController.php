@@ -45,7 +45,7 @@ class CommercialInvoiceController extends Controller
      */
     public function create()
     {
-      $records = CommercialInvoice::join('customers','customers.id','=','commercial_invoices.customer_id')
+      $records = CommercialInvoice::leftjoin('customers','customers.id','=','commercial_invoices.notify_id')
           ->select('commercial_invoices.*','customers.notify_name','customers.notify_contact')
           ->orderby('commercial_invoices.id','desc')->paginate(10);
 
@@ -79,7 +79,9 @@ class CommercialInvoiceController extends Controller
             'customer_id' => $request->customer_id,
             'exporter' => $request->exporter,
             'manufacture_country' => $request->manufacture_country,
+            'consignee_id' => $request->customer_id,
             'consignee' => $request->consignee,
+            'notify_id' => $request->notify_id,
             'notify_party' => $request->notify_party,
             'destination_country' => $request->destination_country,
             'airwaybill_number' => $request->airwaybill_number,
@@ -207,7 +209,9 @@ class CommercialInvoiceController extends Controller
               'customer_id' => $request->customer_id,
               'exporter' => $request->exporter,
               'manufacture_country' => $request->manufacture_country,
+              'consignee_id' => $request->customer_id,
               'consignee' => $request->consignee,
+              'notify_id' => $request->notify_id,
               'notify_party' => $request->notify_party,
               'destination_country' => $request->destination_country,
               'airwaybill_number' => $request->airwaybill_number,
