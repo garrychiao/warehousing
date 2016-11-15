@@ -133,7 +133,7 @@ function changeBillCustomer(name) {
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("BillToInfo").innerHTML = "{{ $lstCustomer->eng_name }}\r\n{{ $lstCustomer->contact_person }}";
-      document.getElementById("BillToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{$lstCustomer->notify_address}}";
+      document.getElementById("BillToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{trim(preg_replace('/\s\s+/', ' ', $lstCustomer->notify_address))}}";
       document.getElementById("BillToInfo").innerHTML += "\r\n{{ $lstCustomer->phone }}";
       changeShipCustomer(name);
       document.getElementById('shipTo').selectedIndex=index;
@@ -147,7 +147,7 @@ function changeShipCustomer(name) {
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("ShipToInfo").innerHTML = "{{ $lstCustomer->eng_name }}\r\n{{ $lstCustomer->contact_person }}";
-      document.getElementById("ShipToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }}{{$lstCustomer->notify_address}}";
+      document.getElementById("ShipToInfo").innerHTML +="\r\n{{ $lstCustomer->notify_zip }}{{trim(preg_replace('/\s\s+/', ' ', $lstCustomer->notify_address))}}";
       document.getElementById("ShipToInfo").innerHTML += "\r\n{{ $lstCustomer->phone }}";
     }
   @empty

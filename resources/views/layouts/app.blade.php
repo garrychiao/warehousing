@@ -22,7 +22,7 @@
     <link href="{{asset('css/select2.min.css')}}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <!--Calendar-->
-    <link rel='stylesheet' href='css/fullcalendar.min.css' />
+    <link rel='stylesheet' href='{{asset("css/fullcalendar.min.css")}}' />
 
     <script type="text/javascript">
       function modifyImg(input) {

@@ -128,7 +128,7 @@ function changeConsignee(name) {
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("consignee").innerHTML = "{{ $lstCustomer->consignee_name }}\r\n{{ $lstCustomer->consignee_contact }}";
-      document.getElementById("consignee").innerHTML +="\r\n{{ $lstCustomer->consignee_zip }} {{$lstCustomer->consignee_address}}";
+      document.getElementById("consignee").innerHTML +="\r\n{{ $lstCustomer->consignee_zip }} {{trim(preg_replace('/\s\s+/', ' ', $lstCustomer->consignee_address))}}";
       document.getElementById("consignee").innerHTML += "\r\n{{ $lstCustomer->consignee_phone }}";
     }
     changeNotifyParty(name);
@@ -143,7 +143,7 @@ function changeNotifyParty(name) {
   @forelse($customer as $lstCustomer)
     if(value =="{{$lstCustomer->id}}"){
       document.getElementById("NotifyParty").innerHTML = "{{ $lstCustomer->notify_name }}\r\n{{ $lstCustomer->notify_contact }}";
-      document.getElementById("NotifyParty").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{$lstCustomer->notify_address}}";
+      document.getElementById("NotifyParty").innerHTML +="\r\n{{ $lstCustomer->notify_zip }} {{trim(preg_replace('/\s\s+/', ' ', $lstCustomer->notify_address))}}";
       document.getElementById("NotifyParty").innerHTML += "\r\n{{ $lstCustomer->notify_phone }}";
     }
   @empty
