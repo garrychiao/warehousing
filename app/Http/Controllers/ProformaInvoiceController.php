@@ -207,6 +207,7 @@ class ProformaInvoiceController extends Controller
               'FOB' => $request->FOB,
               'sandh' => $request->sandh,
               'quotation' => $request->quotation,
+              'converted' => false,
               'due_date' => $request->due_date
       ]);
       $del_inventory = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id);

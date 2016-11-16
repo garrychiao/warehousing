@@ -288,7 +288,7 @@ function countTotal(){
                 <th colspan="2">Country of Ultimate Destination</th>
                 <th>Notify Party :</th>
                 <td>
-                  <select id="Notify" class="form-control" onchange="changeNotifyParty(this)">
+                  <select id="Notify" name="notify_id" class="form-control" onchange="changeNotifyParty(this)">
                     <option>--Setect--</option>
                     @forelse($customer as $lstCustomer)
                       @if($lstCustomer->id == $records->customer_id)
