@@ -206,8 +206,23 @@ function inventory_search(){
                       <th>商品描述<br> Descriptions</th><td colspan="3"><input type="text" class="form-control" name="descriptions" value="{{ $list->descriptions }}"></td>
                     </tr>
                     <tr>
+                      <th>排序<br> Display Order (After)</th>
+                      <td colspan="3">
+                        <div>
+                          <select class="form-control" name="display_order">
+                            @foreach($inventory as $key => $inv)
+                              @if($inv->display_order != $list->display_order)
+                              <option value="{{ $inv->display_order }}" @if($inv->display_order+1 == $list->display_order) selected @endif>{{$key+1}} : {{ $inv->item_id}} {{ $inv->item_name}}</option>
+                              @endif
+                            @endforeach
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
                       <th>備註<br> Remarks</th><td colspan="3"><input type="text" class="form-control" name="remark" value="{{ $list->remark }}"></td>
                     </tr>
+
                   </table>
                 </div>
                 <input type="submit" class="btn btn-success btn-raised" value="修改/Update"/>

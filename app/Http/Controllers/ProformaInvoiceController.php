@@ -148,8 +148,10 @@ class ProformaInvoiceController extends Controller
         ->where('proforma_invoice_id', $id)->get();
         $total_inv = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total');
         $total = $total_inv + $records->sandh;
+        $total_weight = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('weight');
+
         return view('/shippment/proforma/show')->with('records',$records)
-        ->with('total',$total)->with('inventory_kits_records',$inventory_kits_records)
+        ->with('total',$total)->with('total_weight',$total_weight)->with('inventory_kits_records',$inventory_kits_records)
         ->with('inventory',$inventory)->with('mycompany',$mycompany);
 
     }
@@ -173,12 +175,13 @@ class ProformaInvoiceController extends Controller
       ->select('proforma_invoice_inventories.*','inventories.item_id','inventories.item_name')
       ->where('proforma_invoice_id', $id)->get();
       $total = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('total')+$records->sandh;
+      $total_weight = ProformaInvoiceInventory::where('proforma_invoice_id','=',$id)->sum('weight');
       $quotation = MyCompany::select('quotation')->first();
 
       return view('shippment/proforma/edit')->with('inventory',$inventory)->with('customer',$customer)
               ->with('records',$records)->with('rec_inventory',$rec_inventory)
               ->with('inventory_kits',$inventory_kits)->with('inventory_kits_records',$inventory_kits_records)
-              ->with('total',$total)->with('quotation',$quotation);
+              ->with('total',$total)->with('total_weight',$total_weight)->with('quotation',$quotation);
     }
 
     /**

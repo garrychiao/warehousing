@@ -108,7 +108,9 @@
                 <td>{{$records->sandh}}</td>
               </tr>
               <tr>
-                <td colspan="5"></td>
+                <td colspan="3"></td>
+                <td align="right"><strong>Total Weight : </strong></td>
+                <td>{{number_format($total_weight,2)}}</td>
                 <td align="right"><strong>Total : </strong></td>
                 <td colspan="2">{{number_format($total,2)}}</td>
               </tr>

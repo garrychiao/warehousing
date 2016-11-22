@@ -65,7 +65,7 @@ class InventoryController extends Controller
       }
       */
       $lists = Inventory::orderBy('display_order', 'asc')->paginate(10);
-      $inventory = Inventory::select('id','item_name')->orderBy('item_name')->get();
+      $inventory = Inventory::select('id','item_name','display_order')->orderBy('display_order', 'asc')->get();
       $alert = Inventory::select('item_id','item_name','inventory','safety_inventory')->where('safety_inventory','>','inventory')
                 ->orderBy('id')->get();
 
@@ -164,12 +164,24 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
       $list = Inventory::findOrFail($id);
+      //display_order setup
+      $display_order = $request->display_order+1;
+      if($list->display_order != $display_order && $list->display_order!=0){
+        if($list->display_order > $display_order){//put forward
+          Inventory::whereBetween('display_order',[$display_order, $list->display_order])->increment('display_order');
+        }elseif ($list->display_order < $display_order) {//put back
+          $display_order = $request->display_order;
+          Inventory::whereBetween('display_order',[$list->display_order , $display_order])->decrement('display_order');
+        }
+      }
+
 
       $list->update([
               'item_id' => $request->item_id,
               'category' => $request->category,
               'chi_item_name' => $request->chi_item_name,
               'item_name' => $request->item_name,
+              'display_order' => $display_order,
               'standard' => $request->standard,
               'graph_id' => $request->graph_id,
               'barcode' => $request->barcode,

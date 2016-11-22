@@ -52,8 +52,8 @@ function addRow() {
     @endif
   cell3.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="quantity[]" value="" onchange="setUnitPrice(this)" required>';
   cell4.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>';
-  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" required>';
-  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">';
+  cell5.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="total[]" value="0" onchange="countTotal()" required>';
+  cell7.innerHTML = '<input type="number" step="0.01" min="0" class="form-control" name="weight[]" onchange="countTotal()" value="0">';
   cell8.innerHTML = '<input type="button" class="btn btn-raised btn-sm btn-danger" onclick="delRow(this)" value="刪除 / Delete">';
   resetTypeahead();
 }
@@ -234,11 +234,14 @@ function countTotal(){
   var length = tblInventory.rows.length - 1;
   var i;
   var FinalTotal=0;
+  var FinalWeight=0;
   for (i=1;i<=length;i++) {
       FinalTotal += parseFloat(tblInventory.rows[i].cells[4].children[0].value, 2);
+      FinalWeight += parseFloat(tblInventory.rows[i].cells[5].children[0].value, 2);
   }
   FinalTotal += parseFloat(document.getElementById('sandh').value, 2);
   document.getElementById("FinalTotal").innerHTML = FinalTotal.toFixed(2);
+  document.getElementById("FinalWeight").innerHTML = FinalWeight.toFixed(2);
 }
 function addQuotation(){
   document.getElementById('quotation').value="{{$quotation->quotation}}";
@@ -382,7 +385,7 @@ function addQuotation(){
                   <input type="number" step="0.01" min="0" class="form-control" name="unit_price[]" value="" onchange="setTotal(this)" required>
                 </td>
                 <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="total[]" value="" required>
+                  <input type="number" step="0.01" min="0" class="form-control" name="total[]" onchange="countTotal()" value="0" required>
                 </td>
                 <!--
                 <td>
@@ -390,7 +393,7 @@ function addQuotation(){
                 </td>
               -->
                 <td>
-                  <input type="number" step="0.01" min="0" class="form-control" name="weight[]" value="">
+                  <input type="number" step="0.01" min="0" class="form-control" name="weight[]" onchange="countTotal()" value="0">
                 </td>
                 <td>
                   <input type="button" class="btn btn-info btn-sm btn-raised" onclick="addRow()" value="新增 / Add">
@@ -400,19 +403,21 @@ function addQuotation(){
             <div class="col-sm-12">
               <table class="table">
                 <tr>
-                  <th class="success col-sm-3">
+                  <th class="success col-sm-3" colspan="2">
                     Quatation :
                     <button type="button" onclick="addQuotation();" class="btn btn-primary btn-sm btn-raised">ADD</button>
                   </th>
-                  <td colspan="3">
+                  <td colspan="4">
                     <input type="text" class="form-control" name="quotation" id="quotation">
                   </td>
                 </tr>
                 <tr>
-                  <th class="success col-sm-3">Shipping & Handling Cost</th>
-                  <td class="col-sm-3"><input type="text" class="form-control" name="sandh" id="sandh" value="0" onchange="countTotal();"></td>
-                  <th class="success col-sm-3">Total : $</th>
-                  <td class="col-sm-3"><h4 id="FinalTotal"></h4></td>
+                  <th class="success col-sm-2">Shipping & Handling Cost</th>
+                  <td class="col-sm-2"><input type="text" class="form-control" name="sandh" id="sandh" value="0" onchange="countTotal();"></td>
+                  <th class="success col-sm-2">Total Weight: </th>
+                  <td class="col-sm-2"><h4 id="FinalWeight"></h4></td>
+                  <th class="success col-sm-2">Total : $</th>
+                  <td class="col-sm-2"><h4 id="FinalTotal"></h4></td>
                 </tr>
               </table>
             </div>

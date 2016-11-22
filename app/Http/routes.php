@@ -48,6 +48,8 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::resource('mycompany', 'MyCompanyController');
 
+    Route::resource('annual_report', 'AnnualReportController');
+
     Route::resource('shippment/proforma', 'ProformaInvoiceController');
 
     Route::resource('shippment/commercial', 'CommercialInvoiceController');

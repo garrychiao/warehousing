@@ -25,9 +25,7 @@ function check_all(obj,cName)
             <li role="presentation"><a href="#customer" aria-controls="customer" role="tab" data-toggle="tab">Customer</a></li>
             <li role="presentation"><a href="#inventory" aria-controls="inventory" role="tab" data-toggle="tab">Inventory</a></li>
             <li role="presentation"><a href="#supplier" aria-controls="supplier" role="tab" data-toggle="tab">Supplier</a></li>
-            <li role="presentation"><a href="#annual" aria-controls="annual" role="tab" data-toggle="tab">Annual</a></li>
           </ul>
-
           <!-- Tab panes -->
           <div class="tab-content">
             <!--Customer Informations-->
@@ -181,17 +179,6 @@ function check_all(obj,cName)
               </div>
             </div>
             <!--supplier div ends here, annual reports start-->
-            <div role="tabpanel" class="tab-pane fade" id="annual">
-              <h2>Annual Reports</h2>
-              <div class="form-group">
-                <form class="" action="{{ url('/information/annual') }}" method="post">
-                  {!! csrf_field() !!}
-                  
-                  <input type="submit" name="name" class="btn btn-success btn-raised" value="Export">
-                </form>
-              </div>
-            </div>
-            <!--annual report ends-->
             <div role="tabpanel" class="tab-pane fade in active" id="invoices">
               <h2>Invoices</h2>
               <div class="col-sm-12">
@@ -358,7 +345,6 @@ function check_all(obj,cName)
               </form>
             -->
             </div>
-
           </div>
         </div>
       </div>
