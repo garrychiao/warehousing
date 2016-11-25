@@ -167,44 +167,31 @@
 
     <div class="row">
       <div class="col-md-12">
-          @yield('content')
+        <div class="container">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="alert alert-success hidden-print" role="alert">
+                  國際快捷郵件列印 / Express Mail Service
+                </div>
+                <div class="btn-group btn-group-justified hidden-print">
+                  <a href="{{ url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+                </div>
+                <div class="col-sm-12">
+                  <page size="ems" style="background-image:">
+                    hello
+                    <!--<img src="{{url('img/ems.jpg')}}" alt="" />-->
+                  </page>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
-
   </div>
     <!-- JavaScripts -->
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="{{asset('js/bootstrap3-typeahead.min.js')}}"></script>
-    <script type="text/javascript">
-      //$('.typeahead').typeahead()
-      var $input = $('.typeahead');
-      $input.typeahead({source:[
-        {id: "someId1", name: "Display name 1"},
-        {id: "hahaha1", name: "Display name jaja1"},
-        {id: "hahaha2", name: "Display name jaja2"},
-        {id: "hahaha3", name: "Display name jaja3"},
-        {id: "hahaha4", name: "Display name jaja4"},
-        {id: "someId2", name: "Display name 2"}
-      ],
-        autoSelect: true});
-    </script>
-    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
-    <!--<script src="{{asset('js/bootstrap.min.js')}}"></script>-->
-    <script src="{{asset('js/material.min.js')}}"></script>
-    <script src="{{asset('js/ripples.min.js')}}"></script>
-    <!--<script src="{{asset('js/photoswipe-ui-default.min.js')}}"></script>
-    <script src="{{asset('js/photoswipe.min.js')}}"></script>-->
-    <script type="text/javascript">
-      $.material.init();
-    </script>
 
-    <script src="{{asset('js/select2.min.js')}}"></script>
-    <script type="text/javascript">
-      $('.select_search').select2({
-        theme: "classic"
-      });
-    </script>
 </body>
 </html>

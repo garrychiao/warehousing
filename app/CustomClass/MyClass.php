@@ -60,5 +60,13 @@ class MyClass
               ->decrement('inventory', $find->quantity*$c_kits->quantity);
       }
     }
+
+    //inventory deviation
+    $deviation = DB::table('inventory_deviation')->get();
+    foreach ($deviation as $dev) {
+      DB::table('inventories')
+            ->where('id','=',$dev->inventory_id)
+            ->increment('inventory', $dev->deviation);
+    }
   }
 }

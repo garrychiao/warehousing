@@ -10,7 +10,7 @@
                     <a href="{{ url('/information') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->data_export==false) disabled @endif>資料輸出<br><i class="fa fa-file-text-o fa-3x" aria-hidden="true"></i><br>Data Export</button></a>
                     <a href="{{ url('/employee') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>員工管理<br><i class="fa fa-users fa-3x" aria-hidden="true"></i><br>Employee</button></a>
                     <a href="{{ url('/myImage') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>產品圖片<br><i class="fa fa-picture-o fa-3x" aria-hidden="true"></i><br>Inv Pictures</button></a>
-                    <a href="{{ url('/annual_report') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>年度進耗存表<br><i class="fa fa-pie-chart fa-3x" aria-hidden="true"></i><br>Annual Report</button></a>
+                    <!--<a href="{{ url('/annual_report') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>年度進耗存表<br><i class="fa fa-pie-chart fa-3x" aria-hidden="true"></i><br>Annual Report</button></a>-->
                     <!--<a href="{{ url('/test') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>Test<br><i class="fa fa-picture-o fa-3x" aria-hidden="true"></i><br>Test</button></a>-->
                 </div>
             </div>
@@ -29,6 +29,7 @@
                 <div class="panel-body">
                     <a href="{{ url('/purchase/create') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->purchase==false) disabled @endif>進貨管理<br><i class="fa fa-cloud-download fa-3x" aria-hidden="true"></i><br>Manage Purchase</button></a>
                     <a href="{{ url('/shippment') }}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->proforma==false && Auth::user()->commercial==false) disabled @endif>出貨管理<br><i class="fa fa-cloud-upload fa-3x" aria-hidden="true"></i><br>Manage Shipment</button></a>
+                    <a href="{{ url('/ems') }}"><button type="button" class="btn btn-primary btn-raised">國際快捷郵件<br><i class="fa fa-envelope fa-3x" aria-hidden="true"></i><br>EMS</button></a>
                 </div>
             </div>
         </div>

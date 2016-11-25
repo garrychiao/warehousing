@@ -17,6 +17,7 @@ function inventory_search(){
           <a href="{{ url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
           <a href="{{ url('/inventory/create')}}"><button type="button" class="btn btn-primary btn-raised">新增 / create</button></a>
           <a href="{{ url('/setKits')}}"><button type="button" class="btn btn-primary btn-raised">設定套件 / kits</button></a>
+          <a href="{{ url('/inventory_deviation')}}"><button type="button" class="btn btn-primary btn-raised" @if(Auth::user()->administrator==false) disabled @endif>庫存誤差 / Inventory Deviation</button></a>
         </div>
       </div>
       <div class="col-sm-7">

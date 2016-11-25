@@ -40,6 +40,14 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::resource('inventory', 'InventoryController');
 
+    Route::get('inventory_deviation', 'InventoryController@deviation_index');
+
+    Route::post('inventory_deviation', 'InventoryController@deviation_create');
+
+    Route::post('inventory_deviation_delete', 'InventoryController@deviation_delete');
+
+    Route::resource('setKits','setKitsController');
+
     Route::resource('supplier', 'SupplierController');
 
     Route::resource('employee', 'EmployeeController');
@@ -54,7 +62,6 @@ Route::group(['middleware' => ['web','auth']], function () {
 
     Route::resource('shippment/commercial', 'CommercialInvoiceController');
 
-    Route::resource('setKits','setKitsController');
     //Editing Images
     //new version
     Route::get('myImage/','ImageController@myImage');
@@ -77,6 +84,8 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('information/{type}','InformationController@InformationExport');
     //Converts the proforma records to shipping records
     Route::get('convert/{id}','DashboardController@convert');
+    //ems export
+    Route::get('ems','EMSController@index');
     //Excel and PDF
     //excel
     Route::post('excel','ExcelController@exportExcel');
@@ -88,5 +97,5 @@ Route::group(['middleware' => ['web','auth']], function () {
     //pdf
     Route::post('pdf','ExcelController@exportPDF');
 
-    Route::get('test','DashboardController@test');
+    //Route::get('test','DashboardController@test');
 });

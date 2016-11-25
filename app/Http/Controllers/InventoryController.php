@@ -66,9 +66,8 @@ class InventoryController extends Controller
       */
       $lists = Inventory::orderBy('display_order', 'asc')->paginate(10);
       $inventory = Inventory::select('id','item_name','display_order')->orderBy('display_order', 'asc')->get();
-      $alert = Inventory::select('item_id','item_name','inventory','safety_inventory')->where('safety_inventory','>','inventory')
-                ->orderBy('id')->get();
-
+      $alert = Inventory::select('item_id','item_name','inventory','safety_inventory')->whereColumn('safety_inventory','>','inventory')
+                ->orderBy('display_order')->get();
       return view('/inventory/index')->withLists($lists)->with('img',null)->with('inventory',$inventory)->with('alert',$alert);
     }
 
@@ -217,5 +216,41 @@ class InventoryController extends Controller
 
       return \Redirect::route('inventory.index')
             ->with('message', 'Inventory deleted!');
+    }
+
+    public function deviation_index(){
+      if(Auth::user()->administrator==false){
+        return view('unauthorized');
+      }else{
+        $deviation = DB::table('inventory_deviation')
+          ->join('inventories','inventory_deviation.inventory_id','=','inventories.id')
+          ->select('inventory_deviation.*','inventories.item_id','inventories.item_name')
+          ->get();
+        $inventory = Inventory::select('id','item_id','item_name')->get();
+        return view('inventory/deviation')->with('inventory',$inventory)->with('deviation',$deviation);
+      }
+    }
+
+    public function deviation_create(Request $request){
+      if($request->type == "minus"){
+        $deviation = -$request->quantity;
+      }else{
+        $deviation = $request->quantity;
+      }
+
+      DB::table('inventory_deviation')->insert([
+        'inventory_id' => $request->inventory_id,
+        'deviation' => $deviation,
+        'date' => $request->date
+      ]);
+
+      return redirect('inventory_deviation');
+    }
+
+    public function deviation_delete(Request $request){
+
+      DB::table('inventory_deviation')->where('id','=',$request->id)->delete();
+      return redirect('inventory_deviation');
+
     }
 }

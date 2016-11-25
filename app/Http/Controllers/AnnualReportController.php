@@ -16,7 +16,7 @@ class AnnualReportController extends Controller
      */
     public function index()
     {
-        $pre_inventory = Inventory::get();
+        $inventory = Inventory::get();
         return view('annual/index')->with('inventory',$inventory);
     }
 
