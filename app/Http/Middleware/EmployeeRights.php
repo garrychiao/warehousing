@@ -25,9 +25,11 @@ class EmployeeRights
 
     private function check($role)
     {
-      $check = User::where('id','=', Auth::id())->pluck($role);
-      echo $check;
-      if($check != '["0"]'){
+      $permission_check = User::where('id','=', Auth::id())->pluck($role);
+      //case occurred on different OS like mac OS or Ubuntu
+      //in case of further modification would cause the sam problem
+      //below if function will double check
+      if($permission_check == '[1]' || $permission_check == '["1"]'){
         return true;
       }else{
         return false;
