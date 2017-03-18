@@ -10,9 +10,9 @@
           出貨紀錄 / Commercial Invoice Records
         </div>
         <div class="btn-group btn-group-justified">
-          <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-          <a href="/shippment"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
-          <a href="/shippment/commercial"><button type="button" class="btn btn-primary btn-raised">新增出貨單 / New Commercial Invoice</button></a>
+          <a href="{{url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+          <a href="{{url('/shippment')}}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+          <a href="{{url('/shippment/commercial')}}"><button type="button" class="btn btn-primary btn-raised">新增出貨單 / New Commercial Invoice</button></a>
         </div>
       </div>
         <div class="col-sm-12">

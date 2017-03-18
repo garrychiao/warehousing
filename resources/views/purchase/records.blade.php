@@ -10,8 +10,8 @@
           採購紀錄 / Purchasing Records
         </div>
         <div class="btn-group btn-group-justified">
-          <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-          <a href="/purchase/"><button type="button" class="btn btn-primary btn-raised">新增採購 / New Purchase</button></a>
+          <a href="{{url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+          <a href="{{url('/purchase')}}"><button type="button" class="btn btn-primary btn-raised">新增採購 / New Purchase</button></a>
         </div>
       </div>
         <div class="col-sm-12">

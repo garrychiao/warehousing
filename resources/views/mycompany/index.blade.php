@@ -8,7 +8,7 @@
             我的公司 / My Company
           </div>
           <div class="btn-group btn-group-justified">
-            <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+            <a href="{{url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
           </div>
         </div>
         <div class="col-sm-9">

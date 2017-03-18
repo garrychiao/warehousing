@@ -10,9 +10,9 @@
           報價紀錄 / Proforma Invoice Records
         </div>
         <div class="btn-group btn-group-justified">
-          <a href="/home"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
-          <a href="/shippment"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
-          <a href="/shippment/proforma"><button type="button" class="btn btn-primary btn-raised">新增報價單 / New Proforma Invoice</button></a>
+          <a href="{{url('/home')}}"><button type="button" class="btn btn-primary btn-raised">主控台 / Home</button></a>
+          <a href="{{url('/shippment')}}"><button type="button" class="btn btn-primary btn-raised">返回 / Back</button></a>
+          <a href="{{url('/shippment/proforma')}}"><button type="button" class="btn btn-primary btn-raised">新增報價單 / New Proforma Invoice</button></a>
         </div>
       </div>
         <div class="col-sm-12">

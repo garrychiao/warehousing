@@ -426,13 +426,22 @@ function addQuotation(){
             </div>
             <script type="text/javascript">
               var now = new Date();
-              var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
+              var dd = now.getDate();
+              var mm = now.getMonth()+1; //January is 0!
+              var yyyy = ('0'+now.getFullYear()).slice(-2);
+              if(dd<10) {
+                  dd='0'+dd
+              }
+              if(mm<10) {
+                  mm='0'+mm
+              }
+              //var time_now = ("0" + now.getYear()).slice(-2) + ("0" + now.getMonth(now.setMonth(now.getMonth()+1))).slice(-2) + ("0" + now.getDate()).slice(-2);
+              document.getElementById('form_id').value = "FA" + yyyy+mm+dd + "-{{ $form_id }}";
               var date = new Date();
               var due_date = new Date();
               date.setHours(now.getDate() + 8 );
               due_date.setDate(now.getDate() + 7);
               due_date.setHours(due_date.getDate() + 8 );
-              document.getElementById('form_id').value = "FA" + time_now + "-{{ $form_id }}";
               document.getElementById('date_now').valueAsDate = date;
               document.getElementById('due_date').valueAsDate = due_date;
             </script>
