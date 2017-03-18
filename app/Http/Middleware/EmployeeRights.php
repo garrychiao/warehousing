@@ -27,7 +27,7 @@ class EmployeeRights
     {
       $check = User::where('id','=', Auth::id())->pluck($role);
       echo $check;
-      if($check != '[0]'){
+      if($check != '["0"]'){
         return true;
       }else{
         return false;
