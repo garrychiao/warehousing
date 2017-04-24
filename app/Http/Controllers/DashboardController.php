@@ -19,6 +19,8 @@ use App\ProformaInvoiceInventory;
 use DB;
 use Mail;
 use Excel;
+use GeoIP;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -69,11 +71,6 @@ class DashboardController extends Controller
     }
 
     public function test(){
-      $inv = Inventory::select('id')->orderby('id')->get();
-      foreach($inv as $key => $i){
-        DB::table('inventories')
-            ->where('id', $i->id)
-            ->update(['display_order' => $key]);
-      }
+      
     }
 }

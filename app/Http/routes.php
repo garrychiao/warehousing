@@ -93,7 +93,6 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::post('excel_invoice','ExcelController@exportExcel_invoice');
     //
     Route::get('excel/{invoice}/{id}','ExcelController@exportExcel_record');
-
     //pdf
     Route::post('pdf','ExcelController@exportPDF');
 

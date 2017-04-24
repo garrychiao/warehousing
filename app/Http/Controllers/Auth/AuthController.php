@@ -7,6 +7,8 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use DB;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -96,5 +98,28 @@ class AuthController extends Controller
             'purchase' => $purchase,
             'data_export' => $data_export,
         ]);
+    }
+    //record if login authenticated
+    protected function authenticated()
+    {
+      DB::table('login_log')->insert([
+        'user_id' => Auth::user()->id,
+        'login_status' => 1,
+        'ip' => geoip()->getLocation()->ip,
+        'iso_code' => geoip()->getLocation()->iso_code,
+        'country' => geoip()->getLocation()->country,
+        'city' => geoip()->getLocation()->city,
+        'state' => geoip()->getLocation()->state,
+        'state_name' => geoip()->getLocation()->state_name,
+        'postal_code' => geoip()->getLocation()->postal_code,
+        'lat' => geoip()->getLocation()->lat,
+        'lon' => geoip()->getLocation()->lon,
+        'timezone' => geoip()->getLocation()->timezone,
+        'continent' => geoip()->getLocation()->continent,
+        'currency' => geoip()->getLocation()->currency,
+        'dateTime' => date("Y-m-d H:i:s")
+      ]);
+
+      return redirect('/home');
     }
 }

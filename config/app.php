@@ -162,6 +162,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //Barryvdh PDF
         Barryvdh\DomPDF\ServiceProvider::class,
+        //Geo Location
+        \Torann\GeoIP\GeoIPServiceProvider::class,
 
     ],
 
@@ -214,6 +216,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         //Barryvdh PDF
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        //Geo Location
+        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
     ],
 
 ];
