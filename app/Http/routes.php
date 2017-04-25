@@ -36,6 +36,9 @@ Route::group(['middleware' => ['web','auth']], function () {
     Route::get('shippment', function () {
         return view('shippment.index');
     });
+    //added system log 20170425
+    Route::get('systemlog', 'SystemController@systemlog');
+
     Route::resource('customer', 'CustomerController');
 
     Route::resource('inventory', 'InventoryController');

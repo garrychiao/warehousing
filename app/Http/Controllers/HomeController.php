@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\User;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -25,6 +26,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = User::select('name')->where('id', Auth::user()->id)->first();
+        $geo_info = geoip()->getLocation();
+
+        $data = compact(
+            'user',
+            'geo_info'
+          );
+
+        return view('home', $data);
     }
 }
